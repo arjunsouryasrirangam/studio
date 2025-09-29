@@ -4,7 +4,6 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowRight, Code, Music, Piano, Waves, Dna, Contact, Images } from 'lucide-react';
-import { ReactElement } from 'react';
 
 // Custom icon for Badminton
 function ShuttlecockIcon(props: React.SVGProps<SVGSVGElement>) {
@@ -66,40 +65,44 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative w-full h-[60vh] md:h-[70vh]">
-        {heroImage && (
-          <Image
-            src={heroImage.imageUrl}
-            alt={heroImage.description}
-            fill
-            className="object-cover"
-            priority
-            data-ai-hint={heroImage.imageHint}
-          />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
-        <div className="relative container mx-auto flex h-full items-end pb-12 md:pb-20">
-          <div className="max-w-3xl text-left">
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight font-headline text-foreground">
-              Echoes of Arjun
-            </h1>
-            <p className="mt-4 text-lg md:text-xl text-muted-foreground max-w-2xl">
-              A symphony of code, chords, and competition. Explore the diverse portfolio of a passionate creator and athlete.
-            </p>
-            <div className="mt-6 flex gap-4">
-              <Button asChild size="lg">
-                <Link href="/contact">Get in Touch <Contact className="ml-2" /></Link>
-              </Button>
-              <Button asChild variant="secondary" size="lg">
-                <Link href="/tech">View Tech Projects <Code className="ml-2" /></Link>
-              </Button>
+      <section className="container mx-auto py-20 md:py-32">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div className="max-w-xl">
+                <h1 className="text-4xl md:text-6xl font-bold tracking-tight font-headline text-foreground">
+                    Arjun Kumar
+                </h1>
+                <p className="mt-4 text-lg md:text-xl text-muted-foreground">
+                    Software Engineer & Creative Technologist. I build beautiful, functional, and accessible digital experiences.
+                </p>
+                <div className="mt-8 flex gap-4">
+                <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
+                    <Link href="/contact">Get in Touch <Contact className="ml-2" /></Link>
+                </Button>
+                <Button asChild variant="outline" size="lg">
+                    <Link href="/tech">View Tech Projects <Code className="ml-2" /></Link>
+                </Button>
+                </div>
             </div>
-          </div>
+            <div className="flex justify-center">
+                 {heroImage && (
+                    <div className="relative w-80 h-80 md:w-96 md:h-96">
+                        <Image
+                            src={heroImage.imageUrl}
+                            alt={heroImage.description}
+                            fill
+                            className="object-cover rounded-full shadow-2xl"
+                            priority
+                            data-ai-hint={heroImage.imageHint}
+                        />
+                        <div className="absolute inset-0 rounded-full border-4 border-primary/50 animate-pulse"></div>
+                    </div>
+                )}
+            </div>
         </div>
       </section>
 
       {/* Features Grid */}
-      <section className="py-16 md:py-24 bg-background">
+      <section className="py-16 md:py-24 bg-secondary">
         <div className="container mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold font-headline">A Man of Many Talents</h2>
@@ -108,7 +111,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature) => (
               <Link href={feature.href} key={feature.title} className="group">
-                <Card className="h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-2">
+                <Card className="h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-2 bg-background/50 hover:bg-background">
                   <CardHeader className="flex flex-row items-center gap-4 pb-2">
                     {feature.icon}
                     <CardTitle className="font-headline text-2xl">{feature.title}</CardTitle>

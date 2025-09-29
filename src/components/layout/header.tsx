@@ -41,7 +41,7 @@ const NavLink = ({ href, children, className }: { href: string; children: React.
   return (
     <Link href={href} className={cn(
       "font-medium text-sm transition-colors hover:text-primary",
-      isActive ? "text-primary font-bold" : "text-muted-foreground",
+      isActive ? "text-primary font-bold" : "text-foreground/80 hover:text-foreground",
       className
     )}>
       {children}
@@ -53,7 +53,7 @@ const NavLink = ({ href, children, className }: { href: string; children: React.
 export default function Header() {
   const pathname = usePathname();
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
@@ -61,48 +61,51 @@ export default function Header() {
             <span className="hidden font-bold sm:inline-block font-headline">Arjun's Echoes</span>
           </Link>
           <nav className="flex items-center space-x-6 text-sm">
-            {navLinks.slice(1).map((link) => (
+            {navLinks.slice(1, 5).map((link) => (
               <NavLink key={link.href} href={link.href}>{link.label}</NavLink>
             ))}
           </nav>
         </div>
-
-        <div className="flex flex-1 items-center justify-between md:hidden">
-          <Link href="/" className="flex items-center space-x-2">
-            <Logo className="h-8 w-auto" />
-            <span className="font-bold font-headline">Arjun's Echoes</span>
-          </Link>
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Menu className="h-6 w-6" />
-                <span className="sr-only">Toggle Menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="w-[300px]">
-              <div className="flex flex-col p-6">
-                <Link href="/" className="mb-8 flex items-center space-x-2">
-                  <Logo className="h-8 w-auto" />
-                   <span className="font-bold font-headline">Arjun's Echoes</span>
-                </Link>
-                <nav className="flex flex-col space-y-4">
-                  {navLinks.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className={cn(
-                        'flex items-center space-x-3 rounded-md p-2 transition-colors hover:bg-accent hover:text-accent-foreground',
-                        pathname === link.href ? 'bg-accent text-accent-foreground' : 'text-foreground'
-                      )}
-                    >
-                      {link.icon}
-                      <span className="font-medium">{link.label}</span>
-                    </Link>
-                  ))}
-                </nav>
-              </div>
-            </SheetContent>
-          </Sheet>
+        
+        <div className="flex flex-1 items-center justify-end gap-4">
+            <nav className="hidden md:flex items-center space-x-6 text-sm">
+                 {navLinks.slice(5).map((link) => (
+                    <NavLink key={link.href} href={link.href}>{link.label}</NavLink>
+                ))}
+            </nav>
+            <Sheet>
+                <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden">
+                    <Menu className="h-6 w-6" />
+                    <span className="sr-only">Toggle Menu</span>
+                </Button>
+                </SheetTrigger>
+                <SheetContent side="left" className="w-[300px] p-0">
+                <div className="flex flex-col h-full">
+                    <div className="p-6">
+                        <Link href="/" className="flex items-center space-x-2">
+                        <Logo className="h-8 w-auto" />
+                        <span className="font-bold font-headline">Arjun's Echoes</span>
+                        </Link>
+                    </div>
+                    <nav className="flex-1 flex flex-col space-y-2 p-6">
+                    {navLinks.map((link) => (
+                        <Link
+                        key={link.href}
+                        href={link.href}
+                        className={cn(
+                            'flex items-center space-x-3 rounded-md p-3 transition-colors hover:bg-secondary',
+                            pathname === link.href ? 'bg-secondary text-primary font-semibold' : 'text-foreground/80 hover:text-foreground'
+                        )}
+                        >
+                        {link.icon}
+                        <span className="font-medium">{link.label}</span>
+                        </Link>
+                    ))}
+                    </nav>
+                </div>
+                </SheetContent>
+            </Sheet>
         </div>
       </div>
     </header>
