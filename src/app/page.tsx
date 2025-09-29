@@ -69,7 +69,7 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="max-w-xl">
                 <h1 className="text-4xl md:text-6xl font-bold tracking-tight font-headline text-foreground">
-                    Arjun Kumar
+                    Arjun
                 </h1>
                 <p className="mt-4 text-lg md:text-xl text-muted-foreground">
                     Software Engineer & Creative Technologist. I build beautiful, functional, and accessible digital experiences.

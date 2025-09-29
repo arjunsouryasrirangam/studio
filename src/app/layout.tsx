@@ -16,7 +16,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Arjun's Echoes",
+  title: "Echoes of Arjun",
   description: "The personal portfolio of Arjun, showcasing skills in tech, music, and sports.",
 };
 
