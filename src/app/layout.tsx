@@ -16,8 +16,8 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Echoes of Arjun",
-  description: "The personal portfolio of Arjun, showcasing skills in tech, music, and sports.",
+  title: "Arjun Sourya Srirangam",
+  description: "The personal portfolio of Arjun Sourya Srirangam, showcasing skills in tech, music, and sports.",
 };
 
 export default function RootLayout({

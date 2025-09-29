@@ -58,7 +58,7 @@ export default function Header() {
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
             <Logo className="h-8 w-auto" />
-            <span className="hidden font-bold sm:inline-block font-headline">Echoes of Arjun</span>
+            <span className="hidden font-bold sm:inline-block font-headline">Arjun Sourya Srirangam</span>
           </Link>
           <nav className="flex items-center space-x-6 text-sm">
             {navLinks.slice(1, 5).map((link) => (
@@ -85,7 +85,7 @@ export default function Header() {
                     <div className="p-6">
                         <Link href="/" className="flex items-center space-x-2">
                         <Logo className="h-8 w-auto" />
-                        <span className="font-bold font-headline">Echoes of Arjun</span>
+                        <span className="font-bold font-headline">Arjun Sourya Srirangam</span>
                         </Link>
                     </div>
                     <nav className="flex-1 flex flex-col space-y-2 p-6">

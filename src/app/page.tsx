@@ -69,10 +69,10 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="max-w-xl">
                 <h1 className="text-4xl md:text-6xl font-bold tracking-tight font-headline text-foreground">
-                    Arjun
+                    Arjun Sourya Srirangam
                 </h1>
                 <p className="mt-4 text-lg md:text-xl text-muted-foreground">
-                    Software Engineer & Creative Technologist. I build beautiful, functional, and accessible digital experiences.
+                    A passionate individual exploring the intersections of technology, music, and sports. Welcome to my personal portfolio.
                 </p>
                 <div className="mt-8 flex gap-4">
                 <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
