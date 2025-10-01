@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, Code, Music, Piano, Waves, Dna, Contact, Home, Images } from 'lucide-react';
+import { Menu, Code, Music, Piano, Waves, Dna, Contact, Home, Images, PencilRuler } from 'lucide-react';
 import Logo from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -31,7 +31,7 @@ const navLinks = [
   { href: '/swimming', label: 'Swimming', icon: <Waves size={20} /> },
   { href: '/badminton', label: 'Badminton', icon: <ShuttlecockIcon /> },
   { href: '/gallery', label: 'Gallery', icon: <Images size={20} /> },
-  { href: '/ai-bio', label: 'AI Bio', icon: <Dna size={20} /> },
+  { href: '/request-website', label: 'Request Website', icon: <PencilRuler size={20} /> },
   { href: '/contact', label: 'Contact', icon: <Contact size={20} /> },
 ];
 

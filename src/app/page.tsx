@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { ArrowRight, Code, Music, Briefcase, Bot, User, Sparkles } from 'lucide-react';
+import { ArrowRight, Code, Music, Briefcase, Bot, User, Sparkles, PencilRuler } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 // Custom icon for Badminton
@@ -53,9 +53,9 @@ export default function Home() {
                 </h1>
                 
                 <Button asChild size="lg" className="bg-primary/10 border border-primary/30 text-primary hover:bg-primary/20">
-                    <Link href="/ai-bio">
-                        <Sparkles className="mr-2 h-5 w-5"/>
-                        Ask my AI Assistant!
+                    <Link href="/request-website">
+                        <PencilRuler className="mr-2 h-5 w-5"/>
+                        Request a Website!
                     </Link>
                 </Button>
 
@@ -70,10 +70,10 @@ export default function Home() {
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
                         <div className="relative flex flex-col h-full justify-end p-6 min-h-[400px]">
-                            <h3 className="text-3xl font-bold font-headline text-white">AI Bio Generator</h3>
-                            <p className="text-white/80 mt-2">Generate a custom biography for Arjun tailored to any audience or purpose.</p>
+                            <h3 className="text-3xl font-bold font-headline text-white">Request a Website!</h3>
+                            <p className="text-white/80 mt-2">Request Arjun to make a website for you!</p>
                              <Button asChild className="mt-4 w-fit">
-                                <Link href="/ai-bio">Explore AI <ArrowRight className="ml-2"/></Link>
+                                <Link href="/request-website">Get a Quote <ArrowRight className="ml-2"/></Link>
                             </Button>
                         </div>
                     </Card>
