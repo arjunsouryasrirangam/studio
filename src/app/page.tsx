@@ -98,45 +98,6 @@ export default function Home() {
           </div>
       </section>
 
-      {/* Hero Section */}
-      <section className="py-16 md:py-24 bg-secondary">
-        <div className="container mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                 <div className="flex justify-center md:order-last">
-                    {heroImage && (
-                        <div className="relative w-80 h-80 md:w-96 md:h-96">
-                            <Image
-                                src={heroImage.imageUrl}
-                                alt={heroImage.description}
-                                fill
-                                className="object-cover rounded-full shadow-2xl"
-                                priority
-                                data-ai-hint={heroImage.imageHint}
-                            />
-                            <div className="absolute inset-0 rounded-full border-4 border-primary/50 animate-pulse"></div>
-                        </div>
-                    )}
-                </div>
-                <div className="max-w-xl">
-                    <h1 className="text-4xl md:text-6xl font-bold tracking-tight font-headline text-foreground">
-                        Arjun Sourya Srirangam
-                    </h1>
-                    <p className="mt-4 text-lg md:text-xl text-muted-foreground">
-                        A passionate individual exploring the intersections of technology, music, and sports. Welcome to my personal portfolio.
-                    </p>
-                    <div className="mt-8 flex gap-4">
-                    <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                        <Link href="/contact">Get in Touch <Contact className="ml-2" /></Link>
-                    </Button>
-                    <Button asChild variant="outline" size="lg">
-                        <Link href="/tech">View Tech Projects <Code className="ml-2" /></Link>
-                    </Button>
-                    </div>
-                </div>
-            </div>
-        </div>
-      </section>
-
       {/* Explore More Section */}
       <section className="py-16 md:py-24">
         <div className="container mx-auto text-center">
