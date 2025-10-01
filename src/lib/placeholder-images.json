@@ -8,21 +8,27 @@
     },
     {
       "id": "tech-project-1",
-      "description": "Screenshot of a web application dashboard",
-      "imageUrl": "https://images.unsplash.com/photo-1609921141835-710b7fa6e438?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHx3ZWIlMjBhcHB8ZW58MHx8fHwxNzU5MTUzOTE4fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "web app"
+      "description": "Abstract visualization of code or data structures.",
+      "imageUrl": "https://images.unsplash.com/photo-1550439062-609e1531270e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMGNvZGV8ZW58MHx8fHwxNzU5Mzc3MDM3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "abstract code"
     },
     {
       "id": "tech-project-2",
-      "description": "Code on a dark themed editor",
-      "imageUrl": "https://images.unsplash.com/photo-1566837945700-30057527ade0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjb2RlJTIwZWRpdG9yfGVufDB8fHx8MTc1OTE1MTk0MXww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "code editor"
+      "description": "An open book with letters floating off the page.",
+      "imageUrl": "https://images.unsplash.com/photo-1491841550275-5b462bf97579?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxib29rJTIwbGV0dGVyc3xlbnwwfHx8fDE3NTkzNzcwMzd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "book letters"
     },
     {
       "id": "tech-project-3",
-      "description": "Mobile application interface",
-      "imageUrl": "https://images.unsplash.com/photo-1601972599720-36938d4ecd31?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxtb2JpbGUlMjBhcHB8ZW58MHx8fHwxNzU5MTYwNTYzfDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "mobile app"
+      "description": "A person writing in a minimal notebook.",
+      "imageUrl": "https://images.unsplash.com/photo-1517842645767-c6f9ee5922ad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxtaW5pbWFsJTIwbm90ZXxlbnwwfHx8fDE3NTkzNzcwMzd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "minimal notes"
+    },
+    {
+      "id": "request-website-promo",
+      "description": "Code on a dark themed editor",
+      "imageUrl": "https://images.unsplash.com/photo-1566837945700-30057527ade0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjb2RlJTIwZWRpdG9yfGVufDB8fHx8MTc1OTE1MTk0MXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "code editor"
     },
     {
       "id": "singing-album-art-1",

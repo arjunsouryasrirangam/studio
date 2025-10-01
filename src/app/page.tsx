@@ -39,7 +39,7 @@ const aboutSections = [
 ];
 
 export default function Home() {
-  const bioProjectImage = PlaceHolderImages.find((img) => img.id === 'tech-project-2');
+  const bioProjectImage = PlaceHolderImages.find((img) => img.id === 'request-website-promo');
 
   return (
     <div className="flex flex-col">
