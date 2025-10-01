@@ -37,6 +37,18 @@
       "imageHint": "singer stage"
     },
     {
+      "id": "singing-video-thumb-1",
+      "description": "Thumbnail for a Hindustani classical performance video.",
+      "imageUrl": "https://images.unsplash.com/photo-1676968775718-5a7c2e0f128c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjbGFzc2ljYWwlMjBzaW5nZXJ8ZW58MHx8fHwxNzU5MzI0ODkyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "classical singer"
+    },
+    {
+      "id": "singing-video-thumb-2",
+      "description": "Thumbnail for a vocal competition highlight video.",
+      "imageUrl": "https://images.unsplash.com/photo-1665025010598-08f0cf4fb966?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8c2luZ2VyJTIwY29tcGV0aXRpb258ZW58MHx8fHwxNzU5MzI0ODkyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "singer competition"
+    },
+    {
       "id": "piano-performance",
       "description": "Hands playing a grand piano",
       "imageUrl": "https://images.unsplash.com/photo-1636036880855-ce91baf69933?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cGlhbm8lMjBoYW5kc3xlbnwwfHx8fDE3NTkxMzI5MzZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
