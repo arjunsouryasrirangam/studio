@@ -3,7 +3,8 @@ import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight, Code, Music, Piano, Waves, Dna, Contact, Images } from 'lucide-react';
+import { ArrowRight, Code, Music, Briefcase, Contact, User } from 'lucide-react';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
 // Custom icon for Badminton
 function ShuttlecockIcon(props: React.SVGProps<SVGSVGElement>) {
@@ -14,53 +15,34 @@ function ShuttlecockIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-const features = [
-  {
-    title: 'Tech Portfolio',
-    description: 'Explore my coding projects and technical skills.',
-    icon: <Code className="h-8 w-8 text-primary" />,
-    href: '/tech',
-  },
-  {
-    title: 'Singing',
-    description: 'Listen to my vocal performances and repertoire.',
-    icon: <Music className="h-8 w-8 text-primary" />,
-    href: '/singing',
-  },
-  {
-    title: 'Piano',
-    description: 'Experience my journey with the classical piano.',
-    icon: <Piano className="h-8 w-8 text-primary" />,
-    href: '/piano',
-  },
-  {
-    title: 'Swimming',
-    description: 'Dive into my swimming achievements and journey.',
-    icon: <Waves className="h-8 w-8 text-primary" />,
-    href: '/swimming',
-  },
-  {
-    title: 'Badminton',
-    description: 'See my highlights and accomplishments on the court.',
-    icon: <ShuttlecockIcon className="h-8 w-8 text-primary" />,
-    href: '/badminton',
-  },
-  {
-    title: 'Gallery',
-    description: 'A visual journey through photos and moments.',
-    icon: <Images className="h-8 w-8 text-primary" />,
-    href: '/gallery',
-  },
-  {
-    title: 'AI-Powered Bio',
-    description: 'Generate a custom biography for any occasion.',
-    icon: <Dna className="h-8 w-8 text-primary" />,
-    href: '/ai-bio',
-  },
+const aboutSections = [
+    {
+        icon: <Music className="h-6 w-6 text-primary" />,
+        title: "Musician",
+        text: "With over 6 years of singing experience and 4 years playing the piano, Arjun's musical journey started at a young age. He finds joy in expressing himself through music and continues to hone his skills."
+    },
+    {
+        icon: <Code className="h-6 w-6 text-primary" />,
+        title: "Coder",
+        text: "Arjun has been coding for 3 years and enjoys the process of building and creating. He uses his skills to bring ideas to life, from simple projects to more complex applications."
+    },
+    {
+        icon: <ShuttlecockIcon className="h-6 w-6 text-primary" />,
+        title: "Athlete",
+        text: "A dedicated badminton player for 1 year, Arjun is an enthusiastic athlete who thrives on the court. He enjoys the fast-paced nature of the sport and the challenge of friendly competition."
+    },
+    {
+        icon: <Briefcase className="h-6 w-6 text-primary" />,
+        title: "Future Entrepreneur",
+        text: "At just 10 years old, Arjun is already looking to the future with big ambitions. He dreams of creating his own hotel group, inspired by brands like Marriott Bonvoy and Mandarin Oriental, along with starting his own airline. He is passionate about building businesses and creating new experiences."
+    }
 ];
 
 export default function Home() {
   const heroImage = PlaceHolderImages.find((img) => img.id === 'hero');
+  const carouselImages = PlaceHolderImages.filter(img => 
+    ['singing-album-art-2', 'tech-project-2', 'badminton-action', 'piano-performance', 'swimming-action'].includes(img.id)
+  );
 
   return (
     <div className="flex flex-col">
@@ -101,32 +83,70 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features Grid */}
+      {/* About Me & Carousel Section */}
       <section className="py-16 md:py-24 bg-secondary">
         <div className="container mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold font-headline">A Man of Many Talents</h2>
+            <h2 className="text-3xl md:text-4xl font-bold font-headline flex items-center justify-center gap-3"><User /> About Me</h2>
             <p className="mt-2 text-lg text-muted-foreground">Discover the different facets of my work and passion.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature) => (
-              <Link href={feature.href} key={feature.title} className="group">
-                <Card className="h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-2 bg-background/50 hover:bg-background">
-                  <CardHeader className="flex flex-row items-center gap-4 pb-2">
-                    {feature.icon}
-                    <CardTitle className="font-headline text-2xl">{feature.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">{feature.description}</p>
-                    <div className="mt-4 flex items-center text-primary font-semibold text-sm">
-                      Explore More
-                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <Carousel
+              opts={{
+                loop: true,
+              }}
+              className="w-full max-w-md mx-auto"
+            >
+              <CarouselContent>
+                {carouselImages.map((image) => (
+                  <CarouselItem key={image.id}>
+                    <div className="p-1">
+                      <Card className="overflow-hidden">
+                        <CardContent className="p-0">
+                          <div className="aspect-w-4 aspect-h-3 relative">
+                            <Image
+                              src={image.imageUrl}
+                              alt={image.description}
+                              fill
+                              className="object-cover"
+                              data-ai-hint={image.imageHint}
+                            />
+                          </div>
+                        </CardContent>
+                      </Card>
                     </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="left-[-50px] hidden sm:flex" />
+              <CarouselNext className="right-[-50px] hidden sm:flex" />
+            </Carousel>
+
+            <div className="space-y-6">
+                {aboutSections.map((section) => (
+                    <div key={section.title} className="flex items-start gap-4">
+                        <div className="bg-primary/10 p-3 rounded-full mt-1">
+                            {section.icon}
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-bold font-headline">{section.title}</h3>
+                            <p className="text-muted-foreground">{section.text}</p>
+                        </div>
+                    </div>
+                ))}
+            </div>
           </div>
+        </div>
+      </section>
+
+      {/* Explore More Section */}
+      <section className="py-16 md:py-24">
+        <div className="container mx-auto text-center">
+             <h2 className="text-3xl md:text-4xl font-bold font-headline">Explore My Portfolio</h2>
+            <p className="mt-2 text-lg text-muted-foreground max-w-2xl mx-auto">Dive deeper into my projects, performances, and accomplishments across different fields.</p>
+            <Button asChild size="lg" className="mt-8">
+                <Link href="/gallery">View Full Gallery <ArrowRight className="ml-2" /></Link>
+            </Button>
         </div>
       </section>
     </div>
