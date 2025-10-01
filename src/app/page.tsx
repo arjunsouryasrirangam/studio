@@ -2,14 +2,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight, Code, Music, Briefcase, Contact, User } from 'lucide-react';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { ArrowRight, Code, Music, Briefcase, Bot, User, Sparkles } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 // Custom icon for Badminton
 function ShuttlecockIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="m6 9 6 6 6-6" /><path d="m6 9 6 6 6-6" /><path d="M12 15V21" /><path d="M8 9.5 4 6" /><path d="m16 9.5 4-3.5" /><path d="M12 9.5V6" /><path d="M10 4h4" /><path d="M8 2h8" />
     </svg>
   );
@@ -39,59 +39,54 @@ const aboutSections = [
 ];
 
 export default function Home() {
-  const heroImage = PlaceHolderImages.find((img) => img.id === 'hero');
-  const carouselImages = PlaceHolderImages.filter(img => 
-    ['singing-album-art-2', 'tech-project-2', 'badminton-action', 'piano-performance', 'swimming-action'].includes(img.id)
-  );
+  const bioProjectImage = PlaceHolderImages.find((img) => img.id === 'tech-project-2');
 
   return (
     <div className="flex flex-col">
-       {/* About Me & Carousel Section */}
+       {/* About Me Section inspired by nareshmadhur.com */}
        <section className="container mx-auto py-20 md:py-32">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <Carousel
-              opts={{
-                loop: true,
-              }}
-              className="w-full max-w-md mx-auto"
-            >
-              <CarouselContent>
-                {carouselImages.map((image) => (
-                  <CarouselItem key={image.id}>
-                    <div className="p-1">
-                      <Card className="overflow-hidden">
-                        <CardContent className="p-0">
-                          <div className="aspect-w-4 aspect-h-3 relative">
-                            <Image
-                              src={image.imageUrl}
-                              alt={image.description}
-                              fill
-                              className="object-cover"
-                              data-ai-hint={image.imageHint}
-                            />
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious className="left-[-50px] hidden sm:flex" />
-              <CarouselNext className="right-[-50px] hidden sm:flex" />
-            </Carousel>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+            {/* Left Column */}
+            <div className="space-y-8">
+                <h1 className="text-4xl md:text-5xl font-bold font-headline">
+                    Arjun Sourya Srirangam: Tech, Music, and Sports
+                </h1>
+                
+                <Button asChild size="lg" className="bg-primary/10 border border-primary/30 text-primary hover:bg-primary/20">
+                    <Link href="/ai-bio">
+                        <Sparkles className="mr-2 h-5 w-5"/>
+                        Ask my AI Assistant!
+                    </Link>
+                </Button>
 
-            <div className="space-y-6">
+                {bioProjectImage && (
+                    <Card className="relative overflow-hidden group">
+                        <Image 
+                            src={bioProjectImage.imageUrl}
+                            alt={bioProjectImage.description}
+                            fill
+                            className="object-cover transition-transform duration-300 group-hover:scale-105"
+                            data-ai-hint={bioProjectImage.imageHint}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
+                        <div className="relative flex flex-col h-full justify-end p-6 min-h-[400px]">
+                            <h3 className="text-3xl font-bold font-headline text-white">AI Bio Generator</h3>
+                            <p className="text-white/80 mt-2">Generate a custom biography for Arjun tailored to any audience or purpose.</p>
+                             <Button asChild className="mt-4 w-fit">
+                                <Link href="/ai-bio">Explore AI <ArrowRight className="ml-2"/></Link>
+                            </Button>
+                        </div>
+                    </Card>
+                )}
+            </div>
+
+            {/* Right Column */}
+            <div className="space-y-8">
                  <h2 className="text-3xl md:text-4xl font-bold font-headline flex items-center gap-3"><User /> About Me</h2>
-                 <p className="text-lg text-muted-foreground">Discover the different facets of my work and passion.</p>
                 {aboutSections.map((section) => (
-                    <div key={section.title} className="flex items-start gap-4">
-                        <div className="bg-primary/10 p-3 rounded-full mt-1">
-                            {section.icon}
-                        </div>
-                        <div>
-                            <h3 className="text-xl font-bold font-headline">{section.title}</h3>
-                            <p className="text-muted-foreground">{section.text}</p>
-                        </div>
+                    <div key={section.title}>
+                        <h3 className="text-xl font-bold font-headline">{section.title}</h3>
+                        <p className="text-muted-foreground mt-2">{section.text}</p>
                     </div>
                 ))}
             </div>
@@ -99,7 +94,7 @@ export default function Home() {
       </section>
 
       {/* Explore More Section */}
-      <section className="py-16 md:py-24">
+      <section className="py-16 md:py-24 bg-card/50">
         <div className="container mx-auto text-center">
              <h2 className="text-3xl md:text-4xl font-bold font-headline">Explore My Portfolio</h2>
             <p className="mt-2 text-lg text-muted-foreground max-w-2xl mx-auto">Dive deeper into my projects, performances, and accomplishments across different fields.</p>
