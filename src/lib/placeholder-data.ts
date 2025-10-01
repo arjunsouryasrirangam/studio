@@ -15,7 +15,7 @@ export const techProjects = [
     description: 'The very AI tool used on this site! It leverages Genkit and Google AI to create contextual biographies.',
     tags: ['Genkit', 'Google AI', 'Next.js'],
     image: 'tech-project-2',
-    link: '/ai-bio',
+    link: '/request-website',
   },
   {
     title: 'Mobile App Gamma',
@@ -46,16 +46,16 @@ export const pianoRepertoire = [
 
 export const swimmingAchievements = [
   {
-    event: 'National Junior Championship',
-    year: 2023,
-    result: 'Gold Medal, 100m Freestyle',
-    description: 'Set a new personal best and championship record.'
+    event: 'Dutch National Swimming Diplomas',
+    year: 'Ongoing',
+    result: 'A, B, C Diplomas',
+    description: 'Completed the foundational swimming diplomas in the Netherlands.'
   },
   {
-    event: 'State Aquatics Meet',
-    year: 2022,
-    result: 'Silver Medal, 200m Butterfly',
-    description: 'Overcame a tough field in a thrilling final race.'
+    event: 'Zwemvaardigheid',
+    year: 'Ongoing',
+    result: 'Level 1',
+    description: 'Achieved the first level of advanced swimming skills (Zwemvaardigheid).'
   }
 ];
 
