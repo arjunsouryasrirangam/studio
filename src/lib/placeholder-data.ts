@@ -26,17 +26,7 @@ export const techProjects = [
   },
 ];
 
-export const singingRepertoire = [
-  { title: 'Bohemian Rhapsody', artist: 'Queen', genre: 'Rock' },
-  { title: 'Hallelujah', artist: 'Leonard Cohen', genre: 'Folk' },
-  { title: 'My Way', artist: 'Frank Sinatra', genre: 'Jazz' },
-  { title: 'Someone Like You', artist: 'Adele', genre: 'Pop' },
-];
-
-export const audioSamples = [
-  { title: 'Acoustic Dreams', imageId: 'singing-album-art-1' },
-  { title: 'Live at the Hall', imageId: 'singing-album-art-2' },
-];
+export const favoriteRagas = ['Raag Kafi', 'Raag Bhupali', 'Raag Bhimpalasi', 'Raag Yaman Kalyan'];
 
 export const pianoRepertoire = [
     { title: 'Clair de Lune', composer: 'Claude Debussy', era: 'Impressionist' },
