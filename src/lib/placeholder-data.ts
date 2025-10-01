@@ -1,28 +1,29 @@
+
 export const techSkills = [
   'React', 'Next.js', 'TypeScript', 'Node.js', 'Python', 'GraphQL', 'Docker', 'Kubernetes', 'GCP', 'Firebase'
 ];
 
 export const techProjects = [
   {
-    title: 'Project Alpha',
-    description: 'A full-stack web application for project management, built with Next.js, TypeScript, and a GraphQL backend.',
-    tags: ['Next.js', 'GraphQL', 'Prisma'],
+    title: 'ProCodeView',
+    description: 'A developer-focused tool for visualizing and understanding code structure in a clean, intuitive interface.',
+    tags: ['Next.js', 'Code Visualization', 'Developer Tools'],
     image: 'tech-project-1',
-    link: '#',
+    link: 'https://procodeview.vercel.app/',
   },
   {
-    title: 'AI Bio Generator',
-    description: 'The very AI tool used on this site! It leverages Genkit and Google AI to create contextual biographies.',
-    tags: ['Genkit', 'Google AI', 'Next.js'],
+    title: 'Word of the Day',
+    description: 'A daily vocabulary-building app that introduces a new word each day with definitions and examples.',
+    tags: ['Next.js', 'API', 'Vercel'],
     image: 'tech-project-2',
-    link: '/request-website',
+    link: 'https://wotdbyarjun.vercel.app/',
   },
   {
-    title: 'Mobile App Gamma',
-    description: 'A cross-platform mobile app for social networking, developed with React Native and Firebase.',
-    tags: ['React Native', 'Firebase', 'iOS/Android'],
+    title: 'Distraction Free Notes',
+    description: 'A minimalist note-taking application designed to help you focus on what matters most: your ideas.',
+    tags: ['React', 'Minimalist UI', 'Productivity'],
     image: 'tech-project-3',
-    link: '#',
+    link: 'https://distractionfreenotes.vercel.app/',
   },
 ];
 
