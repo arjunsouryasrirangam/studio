@@ -46,51 +46,9 @@ export default function Home() {
 
   return (
     <div className="flex flex-col">
-      {/* Hero Section */}
-      <section className="container mx-auto py-20 md:py-32">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div className="max-w-xl">
-                <h1 className="text-4xl md:text-6xl font-bold tracking-tight font-headline text-foreground">
-                    Arjun Sourya Srirangam
-                </h1>
-                <p className="mt-4 text-lg md:text-xl text-muted-foreground">
-                    A passionate individual exploring the intersections of technology, music, and sports. Welcome to my personal portfolio.
-                </p>
-                <div className="mt-8 flex gap-4">
-                <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                    <Link href="/contact">Get in Touch <Contact className="ml-2" /></Link>
-                </Button>
-                <Button asChild variant="outline" size="lg">
-                    <Link href="/tech">View Tech Projects <Code className="ml-2" /></Link>
-                </Button>
-                </div>
-            </div>
-            <div className="flex justify-center">
-                 {heroImage && (
-                    <div className="relative w-80 h-80 md:w-96 md:h-96">
-                        <Image
-                            src={heroImage.imageUrl}
-                            alt={heroImage.description}
-                            fill
-                            className="object-cover rounded-full shadow-2xl"
-                            priority
-                            data-ai-hint={heroImage.imageHint}
-                        />
-                        <div className="absolute inset-0 rounded-full border-4 border-primary/50 animate-pulse"></div>
-                    </div>
-                )}
-            </div>
-        </div>
-      </section>
-
-      {/* About Me & Carousel Section */}
-      <section className="py-16 md:py-24 bg-secondary">
-        <div className="container mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold font-headline flex items-center justify-center gap-3"><User /> About Me</h2>
-            <p className="mt-2 text-lg text-muted-foreground">Discover the different facets of my work and passion.</p>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+       {/* About Me & Carousel Section */}
+       <section className="container mx-auto py-20 md:py-32">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <Carousel
               opts={{
                 loop: true,
@@ -123,6 +81,8 @@ export default function Home() {
             </Carousel>
 
             <div className="space-y-6">
+                 <h2 className="text-3xl md:text-4xl font-bold font-headline flex items-center gap-3"><User /> About Me</h2>
+                 <p className="text-lg text-muted-foreground">Discover the different facets of my work and passion.</p>
                 {aboutSections.map((section) => (
                     <div key={section.title} className="flex items-start gap-4">
                         <div className="bg-primary/10 p-3 rounded-full mt-1">
@@ -136,6 +96,44 @@ export default function Home() {
                 ))}
             </div>
           </div>
+      </section>
+
+      {/* Hero Section */}
+      <section className="py-16 md:py-24 bg-secondary">
+        <div className="container mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                 <div className="flex justify-center md:order-last">
+                    {heroImage && (
+                        <div className="relative w-80 h-80 md:w-96 md:h-96">
+                            <Image
+                                src={heroImage.imageUrl}
+                                alt={heroImage.description}
+                                fill
+                                className="object-cover rounded-full shadow-2xl"
+                                priority
+                                data-ai-hint={heroImage.imageHint}
+                            />
+                            <div className="absolute inset-0 rounded-full border-4 border-primary/50 animate-pulse"></div>
+                        </div>
+                    )}
+                </div>
+                <div className="max-w-xl">
+                    <h1 className="text-4xl md:text-6xl font-bold tracking-tight font-headline text-foreground">
+                        Arjun Sourya Srirangam
+                    </h1>
+                    <p className="mt-4 text-lg md:text-xl text-muted-foreground">
+                        A passionate individual exploring the intersections of technology, music, and sports. Welcome to my personal portfolio.
+                    </p>
+                    <div className="mt-8 flex gap-4">
+                    <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
+                        <Link href="/contact">Get in Touch <Contact className="ml-2" /></Link>
+                    </Button>
+                    <Button asChild variant="outline" size="lg">
+                        <Link href="/tech">View Tech Projects <Code className="ml-2" /></Link>
+                    </Button>
+                    </div>
+                </div>
+            </div>
         </div>
       </section>
 

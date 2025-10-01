@@ -40,11 +40,15 @@ const NavLink = ({ href, children, className }: { href: string; children: React.
   const isActive = pathname === href;
   return (
     <Link href={href} className={cn(
-      "font-medium text-sm transition-colors hover:text-primary",
+      "relative group font-medium text-sm",
       isActive ? "text-primary font-bold" : "text-foreground/80 hover:text-foreground",
       className
     )}>
-      {children}
+      <span>{children}</span>
+       <span className={cn(
+        "absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300",
+        isActive ? "w-full" : "w-0 group-hover:w-full"
+      )}></span>
     </Link>
   );
 };
