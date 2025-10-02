@@ -1,6 +1,5 @@
 import { PageHeader, PageSection } from '@/components/layout/page-layout';
-import { badmintonAchievements } from '@/lib/placeholder-data';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Medal, Trophy, Users, MapPin, Link as LinkIcon } from 'lucide-react';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -25,6 +24,33 @@ export default function BadmintonPage() {
         title="Badminton Highlights"
         description="Agility, strategy, and power on the court. A showcase of my passion for the game of badminton."
       />
+      <PageSection className="bg-card">
+         <div className="max-w-3xl mx-auto">
+            <h2 className="text-3xl font-bold font-headline mb-6 text-center flex items-center justify-center gap-3"><Users />Coaching & Club</h2>
+            <Card>
+                <CardHeader>
+                    <CardTitle className='font-headline'>My Teachers</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <p className="text-muted-foreground">Theo Sir, Hans Sir and Jolanda Ma'am</p>
+                     <div>
+                        <p className="font-semibold text-foreground flex items-center gap-2">Head of BV Door Eendracht Omhoog:</p>
+                         <p className='text-muted-foreground flex items-center gap-2 mt-2'><MapPin className='h-4 w-4'/>Sportparkweg 30, 2632 EC Nootdorp</p>
+                         <Button asChild variant="link" className='p-0 h-auto -translate-x-1'>
+                            <Link href="https://bvdeo.nl" target="_blank" rel="noopener noreferrer">
+                                <LinkIcon className='h-4 w-4 mr-2'/>
+                                bvdeo.nl
+                            </Link>
+                        </Button>
+                    </div>
+                     <div>
+                        <p className="font-semibold text-foreground flex items-center gap-2 mt-4"><Trophy className="h-4 w-4" />Accomplishments:</p>
+                        <p className="text-muted-foreground mt-1">While I haven't competed for official prizes yet, my biggest achievement is the progress I've made and my upcoming promotion to the next group!</p>
+                    </div>
+                </CardContent>
+            </Card>
+        </div>
+      </PageSection>
        <PageSection>
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
             <div className="lg:col-span-3">
@@ -60,33 +86,6 @@ export default function BadmintonPage() {
         </div>
       </PageSection>
 
-      <PageSection className="bg-card">
-         <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold font-headline mb-6 text-center flex items-center justify-center gap-3"><Users />Coaching & Club</h2>
-            <Card>
-                <CardHeader>
-                    <CardTitle className='font-headline'>My Teachers</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    <p className="text-muted-foreground">Theo Sir, Hans Sir and Jolanda Ma'am</p>
-                     <div>
-                        <p className="font-semibold text-foreground flex items-center gap-2">Head of BV Door Eendracht Omhoog:</p>
-                         <p className='text-muted-foreground flex items-center gap-2 mt-2'><MapPin className='h-4 w-4'/>Sportparkweg 30, 2632 EC Nootdorp</p>
-                         <Button asChild variant="link" className='p-0 h-auto -translate-x-1'>
-                            <Link href="https://bvdeo.nl" target="_blank" rel="noopener noreferrer">
-                                <LinkIcon className='h-4 w-4 mr-2'/>
-                                bvdeo.nl
-                            </Link>
-                        </Button>
-                    </div>
-                     <div>
-                        <p className="font-semibold text-foreground flex items-center gap-2 mt-4"><Trophy className="h-4 w-4" />Accomplishments:</p>
-                        <p className="text-muted-foreground mt-1">While I haven't competed for official prizes yet, my biggest achievement is the progress I've made and my upcoming promotion to the next group!</p>
-                    </div>
-                </CardContent>
-            </Card>
-        </div>
-      </PageSection>
     </div>
   );
 }
