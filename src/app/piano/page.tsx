@@ -38,7 +38,7 @@ export default function PianoPage() {
                     <CardTitle className='font-headline'>Pianist</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4 text-muted-foreground">
-                    <p>I am a pianist and have been learning for 4 years.</p>
+                    <p>My journey with the piano has been one of perseverance. Over the past four years, I've navigated the challenges of switching schools multiple times. Through it all, my mother's unwavering motivation has been my anchor, encouraging me to stick with my passion. It's a journey that has taught me as much about resilience as it has about music.</p>
                     <div>
                         <p className="font-semibold text-foreground flex items-center gap-2"><User className='h-4 w-4' />My Teacher:</p>
                         <p>Respected Aimilianos Starvinos Sir</p>
