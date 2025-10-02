@@ -1,9 +1,11 @@
 import { PageHeader, PageSection } from '@/components/layout/page-layout';
 import { badmintonAchievements } from '@/lib/placeholder-data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Medal, Trophy } from 'lucide-react';
+import { Medal, Trophy, Users, MapPin, Link as LinkIcon } from 'lucide-react';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 function ShuttlecockIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -24,7 +26,7 @@ export default function BadmintonPage() {
         description="Agility, strategy, and power on the court. A showcase of my passion for the game of badminton."
       />
        <PageSection>
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
             <div className="lg:col-span-3">
                 {actionImage && (
                     <div className="aspect-video relative overflow-hidden rounded-lg shadow-lg">
@@ -38,40 +40,13 @@ export default function BadmintonPage() {
                     </div>
                 )}
             </div>
-            <div className="lg:col-span-2">
-                <h2 className="text-3xl font-bold font-headline mb-4 flex items-center gap-2"><ShuttlecockIcon className="h-6 w-6"/> On the Court</h2>
+            <div className="lg:col-span-2 space-y-6">
+                <h2 className="text-3xl font-bold font-headline flex items-center gap-2"><ShuttlecockIcon className="h-6 w-6"/> My Badminton Journey</h2>
                 <p className="text-muted-foreground leading-relaxed">
-                    Badminton is a high-speed chess match that tests both physical and mental limits. I thrive on the quick reflexes, strategic plays, and the intense focus required in every rally. This sport has taught me the value of perseverance and precision under pressure.
+                    I've been learning badminton for a year and a half, and it was my idea to start playing. My father has been a great supporter, always encouraging me and giving me tips to improve. I'm working hard and am close to being promoted to the next group. I enjoy the fast-paced nature of the sport and the challenge of friendly competition.
                 </p>
-            </div>
-        </div>
-      </PageSection>
-
-      <PageSection className="bg-card">
-        <h2 className="text-3xl font-bold text-center mb-10 font-headline flex items-center justify-center gap-3">
-          <Trophy /> Accomplishments
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {badmintonAchievements.map((achievement) => (
-                <Card key={achievement.event}>
-                    <CardHeader>
-                        <div className="flex items-start justify-between">
-                            <div>
-                                <CardTitle className="font-headline">{achievement.event}</CardTitle>
-                                <CardDescription>{achievement.year}</CardDescription>
-                            </div>
-                            <Medal className="h-8 w-8 text-yellow-500" />
-                        </div>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-lg font-semibold text-primary">{achievement.result}</p>
-                        <p className="text-muted-foreground mt-2">{achievement.description}</p>
-                    </CardContent>
-                </Card>
-            ))}
-             <div className="md:col-span-2">
-                {highlightImage && (
-                    <div className="aspect-video relative overflow-hidden rounded-lg shadow-lg mt-8">
+                 {highlightImage && (
+                    <div className="aspect-video relative overflow-hidden rounded-lg shadow-lg">
                         <Image
                             src={highlightImage.imageUrl}
                             alt={highlightImage.description}
@@ -82,6 +57,34 @@ export default function BadmintonPage() {
                     </div>
                 )}
             </div>
+        </div>
+      </PageSection>
+
+      <PageSection className="bg-card">
+         <div className="max-w-3xl mx-auto">
+            <h2 className="text-3xl font-bold font-headline mb-6 text-center flex items-center justify-center gap-3"><Users />Coaching & Club</h2>
+            <Card>
+                <CardHeader>
+                    <CardTitle className='font-headline'>My Teachers</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <p className="text-muted-foreground">Theo Sir, Hans Sir and Jolanda Ma'am</p>
+                     <div>
+                        <p className="font-semibold text-foreground flex items-center gap-2">Head of BV Door Eendracht Omhoog:</p>
+                         <p className='text-muted-foreground flex items-center gap-2 mt-2'><MapPin className='h-4 w-4'/>Sportparkweg 30, 2632 EC Nootdorp</p>
+                         <Button asChild variant="link" className='p-0 h-auto -translate-x-1'>
+                            <Link href="https://bvdeo.nl" target="_blank" rel="noopener noreferrer">
+                                <LinkIcon className='h-4 w-4 mr-2'/>
+                                bvdeo.nl
+                            </Link>
+                        </Button>
+                    </div>
+                     <div>
+                        <p className="font-semibold text-foreground flex items-center gap-2 mt-4"><Trophy className="h-4 w-4" />Accomplishments:</p>
+                        <p className="text-muted-foreground mt-1">While I haven't competed for official prizes yet, my biggest achievement is the progress I've made and my upcoming promotion to the next group!</p>
+                    </div>
+                </CardContent>
+            </Card>
         </div>
       </PageSection>
     </div>
