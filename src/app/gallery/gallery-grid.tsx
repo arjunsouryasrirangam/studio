@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { PlaceHolderImages, type ImagePlaceholder } from '@/lib/placeholder-images';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 export function GalleryGrid() {
   const [selectedImage, setSelectedImage] = useState<ImagePlaceholder | null>(null);
@@ -49,8 +49,10 @@ export function GalleryGrid() {
                     />
                  </div>
                  <div className="flex flex-col justify-center p-8 bg-background">
-                    <h2 className="text-2xl font-bold font-headline mb-4">Image Details</h2>
-                    <p className="text-muted-foreground mb-4 flex-grow">{selectedImage.description}</p>
+                    <DialogHeader>
+                      <DialogTitle className="text-2xl font-bold font-headline mb-4">Image Details</DialogTitle>
+                      <DialogDescription className="text-muted-foreground mb-4 flex-grow">{selectedImage.description}</DialogDescription>
+                    </DialogHeader>
                     <div>
                       <h3 className="text-sm font-semibold mb-2">AI Image Hint</h3>
                       <p className="font-mono text-xs bg-muted px-2 py-1 rounded-md inline-block">{selectedImage.imageHint}</p>
