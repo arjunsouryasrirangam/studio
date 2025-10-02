@@ -44,8 +44,11 @@ export default function PianoPage() {
                         <p>Respected Aimilianos Starvinos Sir</p>
                     </div>
                      <div>
-                        <p className="font-semibold text-foreground flex items-center gap-2"><School className='h-4 w-4'/>School:</p>
-                        <p>Home Music Teachers NL</p>
+                        <p className="font-semibold text-foreground flex items-center gap-2"><School className='h-4 w-4'/>Head of Home Music Teachers NL:</p>
+                        <p>Caan van Necklaan 129, 2281 BD Rijswijk</p>
+                         <Button asChild variant="link" className='p-0 h-auto'>
+                            <Link href="https://home-music-teachers.nl" target="_blank" rel="noopener noreferrer">home-music-teachers.nl</Link>
+                        </Button>
                     </div>
                 </CardContent>
             </Card>
