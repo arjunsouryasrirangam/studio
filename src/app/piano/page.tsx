@@ -2,9 +2,24 @@ import { PageHeader, PageSection } from '@/components/layout/page-layout';
 import { pianoRepertoire } from '@/lib/placeholder-data';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Piano, Video } from 'lucide-react';
+import { Piano, Video, School, Youtube, User } from 'lucide-react';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+
+const videoPlaceholders = [
+    {
+        imageId: 'piano-video-thumb-1',
+        title: 'Classical Piano Piece',
+        description: 'A performance from a recent recital.'
+    },
+    {
+        imageId: 'piano-video-thumb-2',
+        title: 'Contemporary Piano Cover',
+        description: 'A modern arrangement of a popular song.'
+    }
+]
 
 export default function PianoPage() {
     const videoThumb = PlaceHolderImages.find(p => p.id === 'piano-video-thumb');
@@ -16,31 +31,25 @@ export default function PianoPage() {
         description="The timeless elegance of the piano. Explore my journey through classical and contemporary pieces."
       />
        <PageSection>
-        <h2 className="text-3xl font-bold text-center mb-10 font-headline flex items-center justify-center gap-3">
-          <Video /> Featured Performance
-        </h2>
-        <Card className="max-w-4xl mx-auto group overflow-hidden">
-            {videoThumb && (
-                <div className="relative aspect-video">
-                    <Image
-                        src={videoThumb.imageUrl}
-                        alt={videoThumb.description}
-                        fill
-                        className="object-cover transition-transform duration-300 group-hover:scale-105"
-                        data-ai-hint={videoThumb.imageHint}
-                    />
-                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                        <Video className="h-16 w-16 text-white/80 transition-all group-hover:text-white group-hover:scale-110" />
+        <div className="max-w-3xl mx-auto">
+            <h2 className="text-3xl font-bold font-headline mb-4 flex items-center gap-2"><Piano/> Piano Journey</h2>
+            <Card>
+                <CardHeader>
+                    <CardTitle className='font-headline'>Pianist</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4 text-muted-foreground">
+                    <p>I am a pianist and have been learning for 4 years.</p>
+                    <div>
+                        <p className="font-semibold text-foreground flex items-center gap-2"><User className='h-4 w-4' />My Teacher:</p>
+                        <p>Respected Aimilianos Starvinos Sir</p>
                     </div>
-                </div>
-            )}
-            <CardHeader>
-                <CardTitle className="font-headline">Live Concert Excerpt</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <p className="text-muted-foreground">A performance from the annual music gala, featuring Chopin's Nocturne in E-flat Major.</p>
-            </CardContent>
-        </Card>
+                     <div>
+                        <p className="font-semibold text-foreground flex items-center gap-2"><School className='h-4 w-4'/>School:</p>
+                        <p>Home Music Teachers NL</p>
+                    </div>
+                </CardContent>
+            </Card>
+        </div>
       </PageSection>
       <PageSection className="bg-card">
         <h2 className="text-3xl font-bold text-center mb-10 font-headline flex items-center justify-center gap-3">
@@ -66,6 +75,42 @@ export default function PianoPage() {
                 </TableBody>
             </Table>
         </Card>
+      </PageSection>
+      <PageSection>
+            <h2 className="text-3xl font-bold text-center mb-10 font-headline flex items-center justify-center gap-3">
+            <Youtube /> Performances
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                {videoPlaceholders.map((video) => {
+                    const image = PlaceHolderImages.find(p => p.id === video.imageId);
+                    return (
+                         <Card key={video.imageId} className="group overflow-hidden">
+                            {image && (
+                                <Link href="#" className='block'>
+                                    <div className="relative aspect-video">
+                                        <Image
+                                            src={image.imageUrl}
+                                            alt={image.description}
+                                            fill
+                                            className="object-cover transition-transform duration-300 group-hover:scale-105"
+                                            data-ai-hint={image.imageHint}
+                                        />
+                                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                                            <Video className="h-16 w-16 text-white/80 transition-all group-hover:text-white group-hover:scale-110" />
+                                        </div>
+                                    </div>
+                                </Link>
+                            )}
+                            <CardHeader>
+                                <CardTitle className="font-headline">{video.title}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-muted-foreground">{video.description}</p>
+                            </CardContent>
+                        </Card>
+                    )
+                })}
+            </div>
       </PageSection>
     </div>
   );
