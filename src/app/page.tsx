@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { ArrowRight, Code, Music, Briefcase, User, PencilRuler, Piano, Waves, Images } from 'lucide-react';
 import React from 'react';
 import Autoplay from "embla-carousel-autoplay";
@@ -19,6 +19,11 @@ function ShuttlecockIcon(props: React.SVGProps<SVGSVGElement>) {
 }
 
 const aboutSections = [
+    {
+        icon: <User className="h-8 w-8 text-primary" />,
+        title: "About Me",
+        text: "I'm a 10-year-old with a passion for building things. Whether it's with code, music, or on the badminton court, I love the process of creating and improving. This portfolio is a showcase of my journey so far."
+    },
     {
         icon: <Music className="h-6 w-6 text-primary" />,
         title: "Musician",
@@ -93,18 +98,24 @@ const carouselSlides = [
 ]
 
 export default function Home() {
-  const plugin = React.useRef(
-    Autoplay({ delay: 5000, stopOnInteraction: true })
-  )
+    const plugin = React.useRef(
+      Autoplay({ delay: 5000, stopOnInteraction: true })
+    );
+    const heroImage = PlaceHolderImages.find((img) => img.id === 'hero');
 
   return (
     <div className="flex flex-col">
        <section className="container mx-auto py-20 md:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
             <div className="space-y-8">
-                <h1 className="text-4xl md:text-5xl font-bold font-headline">
-                    Arjun Sourya Srirangam: Tech, Music, and Sports
-                </h1>
+                 <div className="space-y-6">
+                    <h1 className="text-4xl md:text-5xl font-bold font-headline">
+                        Arjun Sourya Srirangam
+                    </h1>
+                     <p className="text-lg text-muted-foreground">
+                        A passionate creator exploring the worlds of technology, music, and sports.
+                    </p>
+                </div>
                 
                 <Carousel
                   plugins={[plugin.current]}
@@ -131,6 +142,7 @@ export default function Home() {
                                 <p className="text-white/80 mt-2">{slide.description}</p>
                                 <Button asChild className="mt-4 w-fit">
                                     <Link href={slide.href}>{slide.icon}{slide.buttonText} <ArrowRight className="ml-2"/></Link>
+
                                 </Button>
                             </div>
                         </Card>
@@ -140,14 +152,20 @@ export default function Home() {
                 </Carousel>
             </div>
 
-            <div className="space-y-8">
-                 <h2 className="text-3xl md:text-4xl font-bold font-headline flex items-center gap-3"><User /> About Me</h2>
-                {aboutSections.map((section) => (
-                    <div key={section.title}>
-                        <h3 className="text-xl font-bold font-headline">{section.title}</h3>
-                        <p className="text-muted-foreground mt-2">{section.text}</p>
-                    </div>
-                ))}
+            <div className="space-y-8 lg:mt-12">
+                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    {aboutSections.slice(1).map((section) => (
+                        <Card key={section.title}>
+                            <CardContent className="p-6 text-center flex flex-col items-center">
+                                <div className="p-3 bg-primary/10 rounded-full mb-4">
+                                     {section.icon}
+                                </div>
+                                <h3 className="text-xl font-bold font-headline mb-2">{section.title}</h3>
+                                <p className="text-muted-foreground text-sm">{section.text}</p>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </div>
             </div>
           </div>
       </section>
