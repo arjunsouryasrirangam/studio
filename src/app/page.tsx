@@ -1,12 +1,15 @@
+'use client'
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { ArrowRight, Code, Music, Briefcase, Bot, User, Sparkles, PencilRuler } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { ArrowRight, Code, Music, Briefcase, User, PencilRuler, Piano, Waves, Images } from 'lucide-react';
+import React from 'react';
+import Autoplay from "embla-carousel-autoplay";
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 
-// Custom icon for Badminton
 function ShuttlecockIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -38,49 +41,105 @@ const aboutSections = [
     }
 ];
 
+const carouselSlides = [
+    {
+        href: '/request-website',
+        title: 'Request a Website!',
+        description: 'Request Arjun to make a website for you!',
+        buttonText: 'Get a Quote',
+        icon: <PencilRuler className="mr-2 h-5 w-5"/>,
+        image: PlaceHolderImages.find((img) => img.id === 'request-website-promo')
+    },
+    {
+        href: '/singing',
+        title: 'Singing',
+        description: 'Explore my journey as a Hindustani classical vocalist.',
+        buttonText: 'Listen In',
+        icon: <Music className="mr-2 h-5 w-5"/>,
+        image: PlaceHolderImages.find((img) => img.id === 'singing-album-art-2')
+    },
+    {
+        href: '/piano',
+        title: 'Piano',
+        description: 'Discover my passion for the piano, from classical to contemporary.',
+        buttonText: 'See Performances',
+        icon: <Piano className="mr-2 h-5 w-5"/>,
+        image: PlaceHolderImages.find((img) => img.id === 'piano-video-thumb-1')
+    },
+     {
+        href: '/tech',
+        title: 'Tech Projects',
+        description: 'Check out my latest creations in the world of code.',
+        buttonText: 'View Projects',
+        icon: <Code className="mr-2 h-5 w-5"/>,
+        image: PlaceHolderImages.find((img) => img.id === 'tech-project-1')
+    },
+    {
+        href: '/badminton',
+        title: 'Badminton',
+        description: 'Follow my journey on the badminton court.',
+        buttonText: 'See Highlights',
+        icon: <ShuttlecockIcon className="h-5 w-5 mr-2"/>,
+        image: PlaceHolderImages.find((img) => img.id === 'badminton-action')
+    },
+    {
+        href: '/gallery',
+        title: 'Full Gallery',
+        description: 'A visual collection of moments and milestones.',
+        buttonText: 'Explore Gallery',
+        icon: <Images className="mr-2 h-5 w-5"/>,
+        image: PlaceHolderImages.find((img) => img.id === 'swimming-action')
+    }
+]
+
 export default function Home() {
-  const bioProjectImage = PlaceHolderImages.find((img) => img.id === 'request-website-promo');
+  const plugin = React.useRef(
+    Autoplay({ delay: 5000, stopOnInteraction: true })
+  )
 
   return (
     <div className="flex flex-col">
-       {/* About Me Section inspired by nareshmadhur.com */}
        <section className="container mx-auto py-20 md:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            {/* Left Column */}
             <div className="space-y-8">
                 <h1 className="text-4xl md:text-5xl font-bold font-headline">
                     Arjun Sourya Srirangam: Tech, Music, and Sports
                 </h1>
                 
-                <Button asChild size="lg" className="bg-primary/10 border border-primary/30 text-primary hover:bg-primary/20">
-                    <Link href="/request-website">
-                        <PencilRuler className="mr-2 h-5 w-5"/>
-                        Request a Website!
-                    </Link>
-                </Button>
-
-                {bioProjectImage && (
-                    <Card className="relative overflow-hidden group">
-                        <Image 
-                            src={bioProjectImage.imageUrl}
-                            alt={bioProjectImage.description}
-                            fill
-                            className="object-cover transition-transform duration-300 group-hover:scale-105"
-                            data-ai-hint={bioProjectImage.imageHint}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
-                        <div className="relative flex flex-col h-full justify-end p-6 min-h-[400px]">
-                            <h3 className="text-3xl font-bold font-headline text-white">Request a Website!</h3>
-                            <p className="text-white/80 mt-2">Request Arjun to make a website for you!</p>
-                             <Button asChild className="mt-4 w-fit">
-                                <Link href="/request-website">Get a Quote <ArrowRight className="ml-2"/></Link>
-                            </Button>
-                        </div>
-                    </Card>
-                )}
+                <Carousel
+                  plugins={[plugin.current]}
+                  className="w-full"
+                  onMouseEnter={plugin.current.stop}
+                  onMouseLeave={plugin.current.reset}
+                >
+                  <CarouselContent>
+                    {carouselSlides.map((slide) => (
+                      <CarouselItem key={slide.href}>
+                         <Card className="relative overflow-hidden group">
+                            {slide.image && (
+                                <Image 
+                                    src={slide.image.imageUrl}
+                                    alt={slide.image.description}
+                                    fill
+                                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                                    data-ai-hint={slide.image.imageHint}
+                                />
+                            )}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
+                            <div className="relative flex flex-col h-full justify-end p-6 min-h-[400px]">
+                                <h3 className="text-3xl font-bold font-headline text-white">{slide.title}</h3>
+                                <p className="text-white/80 mt-2">{slide.description}</p>
+                                <Button asChild className="mt-4 w-fit">
+                                    <Link href={slide.href}>{slide.icon}{slide.buttonText} <ArrowRight className="ml-2"/></Link>
+                                </Button>
+                            </div>
+                        </Card>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                </Carousel>
             </div>
 
-            {/* Right Column */}
             <div className="space-y-8">
                  <h2 className="text-3xl md:text-4xl font-bold font-headline flex items-center gap-3"><User /> About Me</h2>
                 {aboutSections.map((section) => (
@@ -93,7 +152,6 @@ export default function Home() {
           </div>
       </section>
 
-      {/* Explore More Section */}
       <section className="py-16 md:py-24 bg-card/50">
         <div className="container mx-auto text-center">
              <h2 className="text-3xl md:text-4xl font-bold font-headline">Explore My Portfolio</h2>
