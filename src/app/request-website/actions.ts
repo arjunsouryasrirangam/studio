@@ -1,5 +1,8 @@
 'use server';
 
+import { getSdks } from '@/firebase';
+import { initializeApp } from 'firebase/app';
+import { addDoc, collection } from 'firebase/firestore';
 import * as z from 'zod';
 
 const formSchema = z.object({
@@ -11,14 +14,18 @@ const formSchema = z.object({
 });
 
 export async function handleWebsiteRequest(values: z.infer<typeof formSchema>) {
-  // Here you would typically send an email, save to a database, etc.
-  // For this example, we'll just log it and return a success message.
-  console.log('Received website request:', values);
+  try {
+    const { firestore } = getSdks(initializeApp());
+    const requestsCollection = collection(firestore, 'website_requests');
+    
+    await addDoc(requestsCollection, {
+      ...values,
+      submissionDate: new Date(),
+    });
 
-  // Simulate network delay
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  
-  // You could add email notification logic here.
-
-  return { success: true, message: 'Your request has been submitted successfully! Arjun will get back to you shortly.' };
+    return { success: true, message: 'Your request has been submitted successfully! Arjun will get back to you shortly.' };
+  } catch (error) {
+    console.error('Error saving website request:', error);
+    return { success: false, message: 'There was a problem submitting your request.' };
+  }
 }

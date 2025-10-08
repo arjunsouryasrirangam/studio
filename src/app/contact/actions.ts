@@ -1,5 +1,8 @@
 'use server';
 
+import { getSdks } from '@/firebase';
+import { initializeApp } from 'firebase/app';
+import { addDoc, collection } from 'firebase/firestore';
 import * as z from 'zod';
 
 const formSchema = z.object({
@@ -9,17 +12,18 @@ const formSchema = z.object({
 });
 
 export async function handleContactForm(values: z.infer<typeof formSchema>) {
-  // Here you would typically send an email, save to a database, etc.
-  // For this example, we'll just log it and return a success message.
-  console.log('Received contact form submission:', values);
+  try {
+    const { firestore } = getSdks(initializeApp());
+    const submissionsCollection = collection(firestore, 'contact_form_submissions');
+    
+    await addDoc(submissionsCollection, {
+      ...values,
+      submissionDate: new Date(),
+    });
 
-  // Simulate network delay
-  await new Promise(resolve => setTimeout(resolve, 1000));
-
-  // Simulate potential server-side error
-  if (values.name.toLowerCase() === 'error') {
-     return { success: false, message: 'Server simulation: Name "error" is not allowed.' };
+    return { success: true };
+  } catch (error) {
+    console.error('Error saving contact form submission:', error);
+    return { success: false, message: 'There was a problem saving your message.' };
   }
-
-  return { success: true };
 }

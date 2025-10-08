@@ -249,10 +249,6 @@
       "type": "object",
       "description": "Represents a submission received from the contact form.",
       "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the ContactFormSubmission entity."
-        },
         "name": {
           "type": "string",
           "description": "The name of the submitter."
@@ -273,10 +269,50 @@
         }
       },
       "required": [
-        "id",
         "name",
         "email",
         "message",
+        "submissionDate"
+      ]
+    },
+    "WebsiteRequest": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "WebsiteRequest",
+      "type": "object",
+      "description": "Represents a request for a website build.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the person requesting the website."
+        },
+        "email": {
+          "type": "string",
+          "description": "The email address of the requester.",
+          "format": "email"
+        },
+        "company": {
+          "type": "string",
+          "description": "The company name, if applicable."
+        },
+        "websiteType": {
+          "type": "string",
+          "description": "The type of website requested."
+        },
+        "description": {
+          "type": "string",
+          "description": "A detailed description of the website requirements."
+        },
+        "submissionDate": {
+          "type": "string",
+          "description": "The date and time when the request was submitted.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "name",
+        "email",
+        "websiteType",
+        "description",
         "submissionDate"
       ]
     }
@@ -296,7 +332,7 @@
           "schema": {
             "$ref": "#/backend/entities/UserProfile"
           },
-          "description": "Stores user profile information.  The 'userId' parameter corresponds to the Firebase Auth UID. All portfolio content is stored under a single user id.",
+          "description": "Stores user profile information. The 'userId' parameter corresponds to the Firebase Auth UID. All portfolio content is stored under a single user id.",
           "params": [
             {
               "name": "userId",
@@ -412,7 +448,7 @@
           "schema": {
             "$ref": "#/backend/entities/ContactFormSubmission"
           },
-          "description": "Stores contact form submissions. Accessible globally.  Security based on rate limiting and bot detection handled by Firebase App Check.",
+          "description": "Stores contact form submissions. Accessible globally. Security based on rate limiting and bot detection handled by Firebase App Check.",
           "params": [
             {
               "name": "contactFormSubmissionId",
@@ -420,8 +456,24 @@
             }
           ]
         }
+      },
+       {
+        "path": "/website_requests/{websiteRequestId}",
+        "definition": {
+          "entityName": "WebsiteRequest",
+          "schema": {
+            "$ref": "#/backend/entities/WebsiteRequest"
+          },
+          "description": "Stores website build requests. Accessible globally. Security based on rate limiting and bot detection handled by Firebase App Check.",
+          "params": [
+            {
+              "name": "websiteRequestId",
+              "description": "The unique ID of the website request."
+            }
+          ]
+        }
       }
     ],
-    "reasoning": "The Firestore structure is designed to organize and secure data for Arjun's portfolio application, \"Arjun's Echoes\". It uses a hierarchical structure where user-specific data is nested under the `/users/{userId}` path, ensuring clear ownership and simplified security rules. All of Arjun's portfolio content will be stored under a single user id. This design emphasizes Authorization Independence by avoiding `get()` calls in security rules.  Each subcollection includes the `userProfileId` field, which will be the same for all data since all content is owned by Arjun. This design decision prioritizes security, scalability, and debuggability. The `contact_form_submissions` collection is globally accessible, as its security is based on rate limiting and bot detection handled by Firebase App Check. The design ensures that listing operations (QAPs) are secure by using structural segregation: each collection contains only documents with similar access control requirements. The structure explicitly models the relationships between entities (e.g., UserProfile 1:N TechProject) through hierarchical paths, facilitating straightforward security rules based on user ownership. The data model avoids dynamic keys and relies on explicit state modeling where applicable, using naming conventions to improve data clarity and predictability."
+    "reasoning": "The Firestore structure is designed to organize and secure data for Arjun's portfolio application, \"Arjun's Echoes\". It uses a hierarchical structure where user-specific data is nested under the `/users/{userId}` path, ensuring clear ownership and simplified security rules. All of Arjun's portfolio content will be stored under a single user id. This design emphasizes Authorization Independence by avoiding `get()` calls in security rules.  Each subcollection includes the `userProfileId` field, which will be the same for all data since all content is owned by Arjun. This design decision prioritizes security, scalability, and debuggability. The `contact_form_submissions` and `website_requests` collections are globally accessible, as their security is based on rate limiting and bot detection handled by Firebase App Check. The design ensures that listing operations (QAPs) are secure by using structural segregation: each collection contains only documents with similar access control requirements. The structure explicitly models the relationships between entities (e.g., UserProfile 1:N TechProject) through hierarchical paths, facilitating straightforward security rules based on user ownership. The data model avoids dynamic keys and relies on explicit state modeling where applicable, using naming conventions to improve data clarity and predictability."
   }
 }
