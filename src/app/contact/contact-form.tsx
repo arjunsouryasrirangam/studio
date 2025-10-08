@@ -10,7 +10,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
-import { handleContactForm } from './actions';
+import { addDocumentNonBlocking, useFirestore } from '@/firebase';
+import { collection } from 'firebase/firestore';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -21,6 +22,8 @@ const formSchema = z.object({
 export function ContactForm() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const firestore = useFirestore();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,22 +34,31 @@ export function ContactForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsSubmitting(true);
-    const result = await handleContactForm(values);
-    setIsSubmitting(false);
+    if (!firestore) return;
 
-    if (result.success) {
+    setIsSubmitting(true);
+    try {
+      const submissionsRef = collection(firestore, 'contact_form_submissions');
+      await addDocumentNonBlocking(submissionsRef, {
+        ...values,
+        submissionDate: new Date(),
+      });
+
       toast({
         title: 'Message Sent!',
         description: "Thanks for reaching out. I'll get back to you soon.",
       });
       form.reset();
-    } else {
+    } catch (error) {
+      console.error('Error saving contact form submission:', error);
+      const message = error instanceof Error ? error.message : 'There was a problem sending your message.';
       toast({
         variant: 'destructive',
         title: 'Uh oh! Something went wrong.',
-        description: result.message || 'There was a problem sending your message.',
+        description: message,
       });
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -92,7 +104,7 @@ export function ContactForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={isSubmitting} className="w-full">
+        <Button type="submit" disabled={isSubmitting || !firestore} className="w-full">
           {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {isSubmitting ? 'Sending...' : 'Send Message'}
         </Button>

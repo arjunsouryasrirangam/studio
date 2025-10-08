@@ -12,7 +12,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useState } from 'react';
 import { Loader2, Send } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { handleWebsiteRequest } from './actions';
+import { addDocumentNonBlocking, useFirestore } from '@/firebase';
+import { collection } from 'firebase/firestore';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -27,6 +28,7 @@ const websiteTypes = ['Personal Portfolio', 'Business/Corporate', 'E-commerce St
 export function WebsiteRequestForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const firestore = useFirestore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -40,27 +42,26 @@ export function WebsiteRequestForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!firestore) return;
     setIsSubmitting(true);
     try {
-      const result = await handleWebsiteRequest(values);
-      if (result.success) {
-        toast({
-          title: 'Request Sent!',
-          description: result.message,
-        });
-        form.reset();
-      } else {
-        toast({
-          variant: 'destructive',
-          title: 'Uh oh! Something went wrong.',
-          description: result.message || 'There was a problem submitting your request.',
-        });
-      }
+      const requestsRef = collection(firestore, 'website_requests');
+      await addDocumentNonBlocking(requestsRef, {
+        ...values,
+        submissionDate: new Date(),
+      });
+
+      toast({
+        title: 'Request Sent!',
+        description: 'Your request has been submitted successfully! Arjun will get back to you shortly.',
+      });
+      form.reset();
     } catch (e) {
+      const message = e instanceof Error ? e.message : 'An unexpected error occurred. Please try again.';
       toast({
         variant: 'destructive',
         title: 'Submission Failed',
-        description: 'An unexpected error occurred. Please try again.',
+        description: message,
       });
       console.error(e);
     } finally {
@@ -160,7 +161,7 @@ export function WebsiteRequestForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={isSubmitting} className="w-full">
+            <Button type="submit" disabled={isSubmitting || !firestore} className="w-full">
               {isSubmitting ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : (
