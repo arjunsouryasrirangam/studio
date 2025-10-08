@@ -1,10 +1,7 @@
 'use server';
 
-import { getSdks, addDocumentNonBlocking } from '@/firebase';
-import { initializeApp } from 'firebase/app';
-import { collection } from 'firebase/firestore';
+import { getFirebaseAdmin } from '@/firebase/admin';
 import * as z from 'zod';
-import { firebaseConfig } from '@/firebase/config';
 
 const formSchema = z.object({
   name: z.string(),
@@ -14,10 +11,9 @@ const formSchema = z.object({
 
 export async function handleContactForm(values: z.infer<typeof formSchema>) {
   try {
-    const { firestore } = getSdks(initializeApp(firebaseConfig));
-    const submissionsCollection = collection(firestore, 'contact_form_submissions');
+    const { firestore } = getFirebaseAdmin();
     
-    addDocumentNonBlocking(submissionsCollection, {
+    await firestore.collection('contact_form_submissions').add({
       ...values,
       submissionDate: new Date(),
     });
