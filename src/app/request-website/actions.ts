@@ -1,10 +1,10 @@
 'use server';
 
-import { getSdks } from '@/firebase';
+import { getSdks, addDocumentNonBlocking } from '@/firebase';
 import { initializeApp } from 'firebase/app';
-import { addDoc, collection } from 'firebase/firestore';
+import { collection } from 'firebase/firestore';
 import * as z from 'zod';
-import { addDocumentNonBlocking } from '@/firebase';
+import { firebaseConfig } from '@/firebase/config';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -16,7 +16,7 @@ const formSchema = z.object({
 
 export async function handleWebsiteRequest(values: z.infer<typeof formSchema>) {
   try {
-    const { firestore } = getSdks(initializeApp());
+    const { firestore } = getSdks(initializeApp(firebaseConfig));
     const requestsCollection = collection(firestore, 'website_requests');
     
     addDocumentNonBlocking(requestsCollection, {
