@@ -4,6 +4,7 @@ import { getSdks } from '@/firebase';
 import { initializeApp } from 'firebase/app';
 import { addDoc, collection } from 'firebase/firestore';
 import * as z from 'zod';
+import { addDocumentNonBlocking } from '@/firebase';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -18,7 +19,7 @@ export async function handleWebsiteRequest(values: z.infer<typeof formSchema>) {
     const { firestore } = getSdks(initializeApp());
     const requestsCollection = collection(firestore, 'website_requests');
     
-    await addDoc(requestsCollection, {
+    addDocumentNonBlocking(requestsCollection, {
       ...values,
       submissionDate: new Date(),
     });
@@ -26,6 +27,7 @@ export async function handleWebsiteRequest(values: z.infer<typeof formSchema>) {
     return { success: true, message: 'Your request has been submitted successfully! Arjun will get back to you shortly.' };
   } catch (error) {
     console.error('Error saving website request:', error);
-    return { success: false, message: 'There was a problem submitting your request.' };
+    const message = error instanceof Error ? error.message : 'There was a problem submitting your request.';
+    return { success: false, message };
   }
 }

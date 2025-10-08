@@ -4,6 +4,7 @@ import { getSdks } from '@/firebase';
 import { initializeApp } from 'firebase/app';
 import { addDoc, collection } from 'firebase/firestore';
 import * as z from 'zod';
+import { addDocumentNonBlocking } from '@/firebase';
 
 const formSchema = z.object({
   name: z.string(),
@@ -16,7 +17,7 @@ export async function handleContactForm(values: z.infer<typeof formSchema>) {
     const { firestore } = getSdks(initializeApp());
     const submissionsCollection = collection(firestore, 'contact_form_submissions');
     
-    await addDoc(submissionsCollection, {
+    addDocumentNonBlocking(submissionsCollection, {
       ...values,
       submissionDate: new Date(),
     });
@@ -24,6 +25,7 @@ export async function handleContactForm(values: z.infer<typeof formSchema>) {
     return { success: true };
   } catch (error) {
     console.error('Error saving contact form submission:', error);
-    return { success: false, message: 'There was a problem saving your message.' };
+    const message = error instanceof Error ? error.message : 'There was a problem sending your message.';
+    return { success: false, message };
   }
 }
