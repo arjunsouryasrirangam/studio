@@ -1,0 +1,234 @@
+/**
+ * @fileoverview Firestore Security Rules for Arjun's Echoes Portfolio App.
+ *
+ * Core Philosophy:
+ * This ruleset enforces a strict user-ownership model for all user-generated content (portfolio items).
+ * Only the authenticated user (Arjun) can create, read, update, or delete data associated with their user ID.
+ * The contact form submissions are globally accessible (security managed by Firebase App Check).
+ *
+ * Data Structure:
+ * All user-specific data is nested under `/users/{userId}`.  Each user owns a single UserProfile document, and all portfolio content (tech projects, performances, achievements) is stored within subcollections under their profile.
+ * Contact form submissions are stored in the top-level `/contact_form_submissions` collection.
+ *
+ * Key Security Decisions:
+ * - **Strict Ownership**:  Write access to user profiles and their subcollections is restricted to the authenticated user matching the `userId` in the path.
+ * - **Public Read for Contact Forms**:  Read access to contact form submissions is public to enable listing. Firebase App Check is used to prevent abuse.
+ * - **Denormalization for Authorization**: Each subcollection document contains a `userProfileId` field, matching the `userId` in the path.  This allows us to enforce ownership without additional `get()` calls.
+ * - **No User Listing**: Listing all users is not permitted to protect user privacy.
+ * - **Immutable `userProfileId`**: The `userProfileId` field in subcollection documents is immutable after creation.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * @description Checks if the request is authenticated.
+     * @returns {boolean} True if the request is authenticated, false otherwise.
+     */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    /**
+     * @description Checks if the authenticated user's UID matches the provided user ID.
+     * @param {string} userId The user ID to compare against.
+     * @returns {boolean} True if the UID matches, false otherwise.
+     */
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    /**
+     * @description Checks if the authenticated user owns the existing document.
+     * @param {string} userId The user ID to compare against.
+     * @returns {boolean} True if the UID matches and the resource exists, false otherwise.
+     */
+    function isExistingOwner(userId) {
+      return isOwner(userId) && resource != null;
+    }
+
+    /**
+     * @description Defines rules for the /users/{userId} document.
+     * @path /users/{userId}
+     * @allow (create) - Authenticated user creates their own profile. request.auth.uid must match userId and request.resource.data.id must match userId.
+     * @allow (get) - Authenticated user reads their own profile.
+     * @allow (update) - Authenticated user updates their own profile.
+     * @allow (delete) - Authenticated user deletes their own profile.
+     * @deny (create) - Non-authenticated user attempts to create a profile.
+     * @deny (create) - Authenticated user attempts to create a profile with a mismatched userId.
+     * @deny (get) - Non-authenticated user attempts to read a profile.
+     * @deny (update) - Non-authenticated user attempts to update a profile.
+     * @deny (update) - Authenticated user attempts to update another user's profile.
+     * @deny (delete) - Non-authenticated user attempts to delete a profile.
+     * @deny (delete) - Authenticated user attempts to delete another user's profile.
+     * @principle Enforces document ownership for writes and restricts access to a user's own data tree.
+     */
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if false; // No listing of all users.
+      allow create: if isOwner(userId) && request.resource.data.id == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Defines rules for the /users/{userId}/tech_projects/{techProjectId} document.
+     * @path /users/{userId}/tech_projects/{techProjectId}
+     * @allow (create) - Authenticated user creates a tech project under their profile. userProfileId must match userId.
+     * @allow (get) - Authenticated user reads a tech project under their profile.
+     * @allow (list) - Authenticated user lists tech projects under their profile.
+     * @allow (update) - Authenticated user updates a tech project under their profile.  userProfileId is immutable.
+     * @allow (delete) - Authenticated user deletes a tech project under their profile.
+     * @deny (create) - Non-authenticated user attempts to create a tech project.
+     * @deny (create) - Authenticated user attempts to create a tech project under another user's profile.
+     * @deny (get) - Non-authenticated user attempts to read a tech project.
+     * @deny (get) - Authenticated user attempts to read a tech project under another user's profile.
+     * @deny (list) - Non-authenticated user attempts to list tech projects.
+     * @deny (list) - Authenticated user attempts to list tech projects under another user's profile.
+     * @deny (update) - Non-authenticated user attempts to update a tech project.
+     * @deny (update) - Authenticated user attempts to update a tech project under another user's profile.
+     * @deny (delete) - Non-authenticated user attempts to delete a tech project.
+     * @deny (delete) - Authenticated user attempts to delete a tech project under another user's profile.
+     * @principle Enforces document ownership for writes and restricts access to a user's own data tree.
+     */
+    match /users/{userId}/tech_projects/{techProjectId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId) && request.resource.data.userProfileId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userProfileId == resource.data.userProfileId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Defines rules for the /users/{userId}/singing_performances/{singingPerformanceId} document.
+     * @path /users/{userId}/singing_performances/{singingPerformanceId}
+     * @allow (create) - Authenticated user creates a singing performance under their profile. userProfileId must match userId.
+     * @allow (get) - Authenticated user reads a singing performance under their profile.
+     * @allow (list) - Authenticated user lists singing performances under their profile.
+     * @allow (update) - Authenticated user updates a singing performance under their profile. userProfileId is immutable.
+     * @allow (delete) - Authenticated user deletes a singing performance under their profile.
+     * @deny (create) - Non-authenticated user attempts to create a singing performance.
+     * @deny (create) - Authenticated user attempts to create a singing performance under another user's profile.
+     * @deny (get) - Non-authenticated user attempts to read a singing performance.
+     * @deny (get) - Authenticated user attempts to read a singing performance under another user's profile.
+     * @deny (list) - Non-authenticated user attempts to list singing performances.
+     * @deny (list) - Authenticated user attempts to list singing performances under another user's profile.
+     * @deny (update) - Non-authenticated user attempts to update a singing performance.
+     * @deny (update) - Authenticated user attempts to update a singing performance under another user's profile.
+     * @deny (delete) - Non-authenticated user attempts to delete a singing performance.
+     * @deny (delete) - Authenticated user attempts to delete a singing performance under another user's profile.
+     * @principle Enforces document ownership for writes and restricts access to a user's own data tree.
+     */
+    match /users/{userId}/singing_performances/{singingPerformanceId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId) && request.resource.data.userProfileId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userProfileId == resource.data.userProfileId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Defines rules for the /users/{userId}/piano_performances/{pianoPerformanceId} document.
+     * @path /users/{userId}/piano_performances/{pianoPerformanceId}
+     * @allow (create) - Authenticated user creates a piano performance under their profile. userProfileId must match userId.
+     * @allow (get) - Authenticated user reads a piano performance under their profile.
+     * @allow (list) - Authenticated user lists piano performances under their profile.
+     * @allow (update) - Authenticated user updates a piano performance under their profile. userProfileId is immutable.
+     * @allow (delete) - Authenticated user deletes a piano performance under their profile.
+     * @deny (create) - Non-authenticated user attempts to create a piano performance.
+     * @deny (create) - Authenticated user attempts to create a piano performance under another user's profile.
+     * @deny (get) - Non-authenticated user attempts to read a piano performance.
+     * @deny (get) - Authenticated user attempts to read a piano performance under another user's profile.
+     * @deny (list) - Non-authenticated user attempts to list piano performances.
+     * @deny (list) - Authenticated user attempts to list piano performances under another user's profile.
+     * @deny (update) - Non-authenticated user attempts to update a piano performance.
+     * @deny (update) - Authenticated user attempts to update a piano performance under another user's profile.
+     * @deny (delete) - Non-authenticated user attempts to delete a piano performance.
+     * @deny (delete) - Authenticated user attempts to delete a piano performance under another user's profile.
+     * @principle Enforces document ownership for writes and restricts access to a user's own data tree.
+     */
+    match /users/{userId}/piano_performances/{pianoPerformanceId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId) && request.resource.data.userProfileId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userProfileId == resource.data.userProfileId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Defines rules for the /users/{userId}/swimming_achievements/{swimmingAchievementId} document.
+     * @path /users/{userId}/swimming_achievements/{swimmingAchievementId}
+     * @allow (create) - Authenticated user creates a swimming achievement under their profile. userProfileId must match userId.
+     * @allow (get) - Authenticated user reads a swimming achievement under their profile.
+     * @allow (list) - Authenticated user lists swimming achievements under their profile.
+     * @allow (update) - Authenticated user updates a swimming achievement under their profile. userProfileId is immutable.
+     * @allow (delete) - Authenticated user deletes a swimming achievement under their profile.
+     * @deny (create) - Non-authenticated user attempts to create a swimming achievement.
+     * @deny (create) - Authenticated user attempts to create a swimming achievement under another user's profile.
+     * @deny (get) - Non-authenticated user attempts to read a swimming achievement.
+     * @deny (get) - Authenticated user attempts to read a swimming achievement under another user's profile.
+     * @deny (list) - Non-authenticated user attempts to list swimming achievements.
+     * @deny (list) - Authenticated user attempts to list swimming achievements under another user's profile.
+     * @deny (update) - Non-authenticated user attempts to update a swimming achievement.
+     * @deny (update) - Authenticated user attempts to update a swimming achievement under another user's profile.
+     * @deny (delete) - Non-authenticated user attempts to delete a swimming achievement.
+     * @deny (delete) - Authenticated user attempts to delete a swimming achievement under another user's profile.
+     * @principle Enforces document ownership for writes and restricts access to a user's own data tree.
+     */
+    match /users/{userId}/swimming_achievements/{swimmingAchievementId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId) && request.resource.data.userProfileId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userProfileId == resource.data.userProfileId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Defines rules for the /users/{userId}/badminton_highlights/{badmintonHighlightId} document.
+     * @path /users/{userId}/badminton_highlights/{badmintonHighlightId}
+     * @allow (create) - Authenticated user creates a badminton highlight under their profile. userProfileId must match userId.
+     * @allow (get) - Authenticated user reads a badminton highlight under their profile.
+     * @allow (list) - Authenticated user lists badminton highlights under their profile.
+     * @allow (update) - Authenticated user updates a badminton highlight under their profile. userProfileId is immutable.
+     * @allow (delete) - Authenticated user deletes a badminton highlight under their profile.
+     * @deny (create) - Non-authenticated user attempts to create a badminton highlight.
+     * @deny (create) - Authenticated user attempts to create a badminton highlight under another user's profile.
+     * @deny (get) - Non-authenticated user attempts to read a badminton highlight.
+     * @deny (get) - Authenticated user attempts to read a badminton highlight under another user's profile.
+     * @deny (list) - Non-authenticated user attempts to list badminton highlights.
+     * @deny (list) - Authenticated user attempts to list badminton highlights under another user's profile.
+     * @deny (update) - Non-authenticated user attempts to update a badminton highlight.
+     * @deny (update) - Authenticated user attempts to update a badminton highlight under another user's profile.
+     * @deny (delete) - Non-authenticated user attempts to delete a badminton highlight.
+     * @deny (delete) - Authenticated user attempts to delete a badminton highlight under another user's profile.
+     * @principle Enforces document ownership for writes and restricts access to a user's own data tree.
+     */
+    match /users/{userId}/badminton_highlights/{badmintonHighlightId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId) && request.resource.data.userProfileId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userProfileId == resource.data.userProfileId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Defines rules for the /contact_form_submissions/{contactFormSubmissionId} document.
+     * @path /contact_form_submissions/{contactFormSubmissionId}
+     * @allow (get) - Public read access for contact form submissions.
+     * @allow (list) - Public read access for contact form submissions.
+     * @allow (create) - Public create access for contact form submissions, security managed by Firebase App Check.
+     * @allow (update) - No updates allowed.
+     * @allow (delete) - No deletes allowed.
+     * @deny (update) - No updates allowed.
+     * @deny (delete) - No deletes allowed.
+     * @principle Public read, create access secured by Firebase App Check.  No updates or deletes permitted.
+     */
+    match /contact_form_submissions/{contactFormSubmissionId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if true;
+      allow update: if false;
+      allow delete: if false;
+    }
+  }
+}

@@ -1,0 +1,427 @@
+{
+  "entities": {
+    "UserProfile": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserProfile",
+      "type": "object",
+      "description": "Represents a user profile with personal and contact information.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the UserProfile entity."
+        },
+        "fullName": {
+          "type": "string",
+          "description": "The full name of the user."
+        },
+        "email": {
+          "type": "string",
+          "description": "The email address of the user.",
+          "format": "email"
+        },
+        "bio": {
+          "type": "string",
+          "description": "A brief biography of the user."
+        },
+        "profileImageUrl": {
+          "type": "string",
+          "description": "URL to the user's profile image.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "fullName",
+        "email"
+      ]
+    },
+    "TechProject": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "TechProject",
+      "type": "object",
+      "description": "Represents a technology project showcased by the user.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the TechProject entity."
+        },
+        "userProfileId": {
+          "type": "string",
+          "description": "Reference to UserProfile. (Relationship: UserProfile 1:N TechProject)"
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the tech project."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the tech project."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL to an image representing the project.",
+          "format": "uri"
+        },
+        "projectUrl": {
+          "type": "string",
+          "description": "URL to the live project or its repository.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "userProfileId",
+        "title",
+        "description"
+      ]
+    },
+    "SingingPerformance": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "SingingPerformance",
+      "type": "object",
+      "description": "Represents a singing performance showcased by the user.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the SingingPerformance entity."
+        },
+        "userProfileId": {
+          "type": "string",
+          "description": "Reference to UserProfile. (Relationship: UserProfile 1:N SingingPerformance)"
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the singing performance."
+        },
+        "audioUrl": {
+          "type": "string",
+          "description": "URL to the audio sample of the performance.",
+          "format": "uri"
+        },
+        "videoUrl": {
+          "type": "string",
+          "description": "URL to the video of the performance.",
+          "format": "uri"
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the singing performance."
+        }
+      },
+      "required": [
+        "id",
+        "userProfileId",
+        "title"
+      ]
+    },
+    "PianoPerformance": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "PianoPerformance",
+      "type": "object",
+      "description": "Represents a piano performance showcased by the user.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the PianoPerformance entity."
+        },
+        "userProfileId": {
+          "type": "string",
+          "description": "Reference to UserProfile. (Relationship: UserProfile 1:N PianoPerformance)"
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the piano performance."
+        },
+        "audioUrl": {
+          "type": "string",
+          "description": "URL to the audio sample of the performance.",
+          "format": "uri"
+        },
+        "videoUrl": {
+          "type": "string",
+          "description": "URL to the video of the performance.",
+          "format": "uri"
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the piano performance."
+        }
+      },
+      "required": [
+        "id",
+        "userProfileId",
+        "title"
+      ]
+    },
+    "SwimmingAchievement": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "SwimmingAchievement",
+      "type": "object",
+      "description": "Represents a swimming achievement of the user.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the SwimmingAchievement entity."
+        },
+        "userProfileId": {
+          "type": "string",
+          "description": "Reference to UserProfile. (Relationship: UserProfile 1:N SwimmingAchievement)"
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the swimming achievement."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the swimming achievement."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL to an image representing the achievement.",
+          "format": "uri"
+        },
+        "videoUrl": {
+          "type": "string",
+          "description": "URL to a video showcasing the achievement.",
+          "format": "uri"
+        },
+        "dateAchieved": {
+          "type": "string",
+          "description": "The date when the achievement was attained.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userProfileId",
+        "title",
+        "dateAchieved"
+      ]
+    },
+    "BadmintonHighlight": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "BadmintonHighlight",
+      "type": "object",
+      "description": "Represents a badminton highlight of the user.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the BadmintonHighlight entity."
+        },
+        "userProfileId": {
+          "type": "string",
+          "description": "Reference to UserProfile. (Relationship: UserProfile 1:N BadmintonHighlight)"
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the badminton highlight."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the badminton highlight."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL to an image representing the highlight.",
+          "format": "uri"
+        },
+        "videoUrl": {
+          "type": "string",
+          "description": "URL to a video showcasing the highlight.",
+          "format": "uri"
+        },
+        "datePlayed": {
+          "type": "string",
+          "description": "The date when the badminton match was played.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userProfileId",
+        "title",
+        "datePlayed"
+      ]
+    },
+    "ContactFormSubmission": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ContactFormSubmission",
+      "type": "object",
+      "description": "Represents a submission received from the contact form.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the ContactFormSubmission entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the submitter."
+        },
+        "email": {
+          "type": "string",
+          "description": "The email address of the submitter.",
+          "format": "email"
+        },
+        "message": {
+          "type": "string",
+          "description": "The message submitted through the contact form."
+        },
+        "submissionDate": {
+          "type": "string",
+          "description": "The date and time when the form was submitted.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "email",
+        "message",
+        "submissionDate"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "UserProfile",
+          "schema": {
+            "$ref": "#/backend/entities/UserProfile"
+          },
+          "description": "Stores user profile information.  The 'userId' parameter corresponds to the Firebase Auth UID. All portfolio content is stored under a single user id.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The Firebase Auth UID of the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/tech_projects/{techProjectId}",
+        "definition": {
+          "entityName": "TechProject",
+          "schema": {
+            "$ref": "#/backend/entities/TechProject"
+          },
+          "description": "Stores technology projects associated with a user. Includes 'userProfileId' which must match the 'userId' path parameter.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The Firebase Auth UID of the user (owner)."
+            },
+            {
+              "name": "techProjectId",
+              "description": "The unique ID of the tech project."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/singing_performances/{singingPerformanceId}",
+        "definition": {
+          "entityName": "SingingPerformance",
+          "schema": {
+            "$ref": "#/backend/entities/SingingPerformance"
+          },
+          "description": "Stores singing performances associated with a user. Includes 'userProfileId' which must match the 'userId' path parameter.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The Firebase Auth UID of the user (owner)."
+            },
+            {
+              "name": "singingPerformanceId",
+              "description": "The unique ID of the singing performance."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/piano_performances/{pianoPerformanceId}",
+        "definition": {
+          "entityName": "PianoPerformance",
+          "schema": {
+            "$ref": "#/backend/entities/PianoPerformance"
+          },
+          "description": "Stores piano performances associated with a user. Includes 'userProfileId' which must match the 'userId' path parameter.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The Firebase Auth UID of the user (owner)."
+            },
+            {
+              "name": "pianoPerformanceId",
+              "description": "The unique ID of the piano performance."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/swimming_achievements/{swimmingAchievementId}",
+        "definition": {
+          "entityName": "SwimmingAchievement",
+          "schema": {
+            "$ref": "#/backend/entities/SwimmingAchievement"
+          },
+          "description": "Stores swimming achievements associated with a user. Includes 'userProfileId' which must match the 'userId' path parameter.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The Firebase Auth UID of the user (owner)."
+            },
+            {
+              "name": "swimmingAchievementId",
+              "description": "The unique ID of the swimming achievement."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/badminton_highlights/{badmintonHighlightId}",
+        "definition": {
+          "entityName": "BadmintonHighlight",
+          "schema": {
+            "$ref": "#/backend/entities/BadmintonHighlight"
+          },
+          "description": "Stores badminton highlights associated with a user. Includes 'userProfileId' which must match the 'userId' path parameter.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The Firebase Auth UID of the user (owner)."
+            },
+            {
+              "name": "badmintonHighlightId",
+              "description": "The unique ID of the badminton highlight."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/contact_form_submissions/{contactFormSubmissionId}",
+        "definition": {
+          "entityName": "ContactFormSubmission",
+          "schema": {
+            "$ref": "#/backend/entities/ContactFormSubmission"
+          },
+          "description": "Stores contact form submissions. Accessible globally.  Security based on rate limiting and bot detection handled by Firebase App Check.",
+          "params": [
+            {
+              "name": "contactFormSubmissionId",
+              "description": "The unique ID of the contact form submission."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to organize and secure data for Arjun's portfolio application, \"Arjun's Echoes\". It uses a hierarchical structure where user-specific data is nested under the `/users/{userId}` path, ensuring clear ownership and simplified security rules. All of Arjun's portfolio content will be stored under a single user id. This design emphasizes Authorization Independence by avoiding `get()` calls in security rules.  Each subcollection includes the `userProfileId` field, which will be the same for all data since all content is owned by Arjun. This design decision prioritizes security, scalability, and debuggability. The `contact_form_submissions` collection is globally accessible, as its security is based on rate limiting and bot detection handled by Firebase App Check. The design ensures that listing operations (QAPs) are secure by using structural segregation: each collection contains only documents with similar access control requirements. The structure explicitly models the relationships between entities (e.g., UserProfile 1:N TechProject) through hierarchical paths, facilitating straightforward security rules based on user ownership. The data model avoids dynamic keys and relies on explicit state modeling where applicable, using naming conventions to improve data clarity and predictability."
+  }
+}
