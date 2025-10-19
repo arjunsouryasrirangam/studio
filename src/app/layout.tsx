@@ -5,6 +5,7 @@ import Footer from '@/components/layout/footer';
 import './globals.css';
 import { Inter, Space_Grotesk } from 'next/font/google';
 import { FirebaseClientProvider } from '@/firebase';
+import { AiAssistant } from '@/components/ai-assistant/ai-assistant';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -41,6 +42,7 @@ export default function RootLayout({
             <Footer />
           </div>
           <Toaster />
+          <AiAssistant />
         </FirebaseClientProvider>
       </body>
     </html>
