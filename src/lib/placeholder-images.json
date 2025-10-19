@@ -15,13 +15,13 @@
     {
       "id": "tech-project-2",
       "description": "An open book with letters floating off the page.",
-      "imageUrl": "https://images.unsplash.com/photo-1491841550275-5b462bf97579?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxib29rJTIwbGV0dGVyc3xlbnwwfHx8fDE3NTkzNzcwMzd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://img.jagranjosh.com/images/2024/November/20112024/word-of-the-day-for-nov-21.jpg",
       "imageHint": "book letters"
     },
     {
       "id": "tech-project-3",
       "description": "A person writing in a minimal notebook.",
-      "imageUrl": "https://images.unsplash.com/photo-1517842645767-c6f9ee5922ad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxtaW5pbWFsJTIwbm90ZXxlbnwwfHx8fDE3NTkzNzcwMzd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.pexels.com/photos/1766604/pexels-photo-1766604.jpeg?cs=srgb&dl=pexels-judit-peter-281675-1766604.jpg&fm=jpg",
       "imageHint": "minimal notes"
     },
     {
@@ -75,7 +75,7 @@
     {
       "id": "swimming-achievement",
       "description": "Arjun holding a swimming medal",
-      "imageUrl": "https://images.unsplash.com/photo-1644151699511-d3c5a98af19c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzd2ltbWVyJTIwbWVkYWx8ZW58MHx8fHwxNzU5MDY1ODQ5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1644151699511-d3c5a98af19c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzd2ltbWVyJTIwbWVkYWx8ZW58MHx8fHwxNzU5MDY1ODQ5fDA&ixlibrb-4.1.0&q=80&w=1080",
       "imageHint": "swimmer medal"
     },
     {
@@ -87,7 +87,7 @@
     {
       "id": "badminton-highlight",
       "description": "A video thumbnail of a badminton match",
-      "imageUrl": "https://images.unsplash.com/photo-1733141732172-3abba91f4db2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxiYWRtaW50b24lMjBtYXRjaHxlbnwwfHx8fDE3NTkxNzQyMjJ8MA&ixlibrb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1733141732172-3abba91f4db2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxiYWRtaW50b24lMjBtYXRjaHxlbnwwfHx8fDE3NTkxNzQyMjJ8MA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "badminton match"
     }
   ]
