@@ -121,7 +121,7 @@ const contributionData = [
 
 export default function Home() {
     const plugin = React.useRef(
-      Autoplay({ delay: 5000, stopOnInteraction: true })
+      Autoplay({ delay: 2500, stopOnInteraction: true })
     );
 
   return (
