@@ -1,6 +1,6 @@
 import Logo from '@/components/logo';
 import Link from 'next/link';
-import { Github, Linkedin, Twitter } from 'lucide-react';
+import { Youtube, Instagram, Mail } from 'lucide-react';
 import { Button } from '../ui/button';
 
 export default function Footer() {
@@ -18,13 +18,13 @@ export default function Footer() {
           </div>
           <div className="flex gap-2">
             <Button variant="ghost" size="icon" asChild>
-                <Link href="#"><Github /></Link>
+                <Link href="https://youtube.com/@melodicdev/" target="_blank" rel="noopener noreferrer"><Youtube /></Link>
             </Button>
             <Button variant="ghost" size="icon" asChild>
-                <Link href="#"><Linkedin /></Link>
+                <Link href="https://instagram.com/melodicdev_/" target="_blank" rel="noopener noreferrer"><Instagram /></Link>
             </Button>
             <Button variant="ghost" size="icon" asChild>
-                <Link href="#"><Twitter /></Link>
+                <Link href="mailto:melodicdev@programmer.net"><Mail /></Link>
             </Button>
           </div>
           <div className="text-center text-sm text-muted-foreground">
