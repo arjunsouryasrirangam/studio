@@ -31,6 +31,7 @@ export default function TechPage() {
                     </div>
                      <div>
                         <p className="font-semibold text-foreground flex items-center gap-2"><School className='h-4 w-4'/>Head of JetLearn B.V.:</p>
+                        <p>Oud-Ehrenstein 5, 1082 AH, 1105 AW Amsterdam</p>
                          <Button asChild variant="link" className='p-0 h-auto -translate-x-1'>
                             <Link href="https://jet-learn.com" target="_blank" rel="noopener noreferrer">
                                 <LinkIcon className='h-4 w-4 mr-2'/>
