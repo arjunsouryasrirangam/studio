@@ -58,6 +58,21 @@
   }
 }
 
+@layer utilities {
+  @keyframes progress-animation {
+    from {
+      width: 0%;
+    }
+    to {
+      width: 100%;
+    }
+  }
+  .animate-progress {
+    animation: progress-animation linear;
+  }
+}
+
+
 .font-headline {
   font-family: 'Space Grotesk', sans-serif;
 }

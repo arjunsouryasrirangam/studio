@@ -15,7 +15,7 @@ import { Progress } from '@/components/ui/progress';
 
 function ShuttlecockIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="m6 9 6 6 6-6" /><path d="m6 9 6 6 6-6" /><path d="M12 15V21" /><path d="M8 9.5 4 6" /><path d="m16 9.5 4-3.5" /><path d="M12 9.5V6" /><path d="M10 4h4" /><path d="M8 2h8" />
     </svg>
   );
@@ -126,7 +126,6 @@ export default function Home() {
       Autoplay({ delay: 2500, stopOnInteraction: true })
     );
     const [api, setApi] = useState<CarouselApi>()
-    const [progress, setProgress] = useState(0)
     const [current, setCurrent] = useState(0)
 
     const onSelect = useCallback((api: CarouselApi) => {
@@ -136,14 +135,22 @@ export default function Home() {
 
     const onAutoplay = useCallback((api: CarouselApi) => {
         if (!api) return;
-        const autoplay = api.plugins().autoplay;
-        if (!autoplay) return;
-        const progress = autoplay.rootNode().parentElement;
-        if(progress) {
-             (progress as HTMLElement).style.animation = 'none';
-             requestAnimationFrame(() => (progress as HTMLElement).style.animation = '');
+        const rootNode = api.rootNode();
+        if(!rootNode) return;
+        
+        // Find the specific progress bar for the current slide
+        const currentProgress = rootNode.querySelector(`[data-slide-index="${api.selectedScrollSnap()}"] > div`);
+        
+        if (currentProgress) {
+            // This is a trick to restart a CSS animation
+            (currentProgress as HTMLElement).style.animation = 'none';
+            // This needs a tiny delay to work consistently
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    (currentProgress as HTMLElement).style.animation = '';
+                });
+            });
         }
-
     }, []);
 
     useEffect(() => {
@@ -155,10 +162,13 @@ export default function Home() {
         onAutoplay(api);
         api.on("select", onSelect);
         api.on("autoplay:play", onAutoplay);
+        api.on("reInit", onAutoplay);
+
 
         return () => {
             api.off("select", onSelect)
             api.off("autoplay:play", onAutoplay)
+            api.off("reInit", onAutoplay);
         }
     }, [api, onSelect, onAutoplay])
 
@@ -188,12 +198,17 @@ export default function Home() {
                 >
                     <div className="flex gap-2.5 mb-4">
                         {carouselSlides.map((_, index) => (
-                            <div key={index} className="flex-1 h-1 bg-muted/50 rounded-full overflow-hidden">
+                            <div key={index} data-slide-index={index} className="flex-1 h-1 bg-muted/50 rounded-full overflow-hidden">
                                 <div
                                     className={cn(
                                         "h-full bg-primary rounded-full",
-                                        index === current ? "w-full transition-all duration-[2500ms] ease-linear" : "w-0"
+                                        index === current ? "w-full animate-progress" : "w-0"
                                     )}
+                                    style={{
+                                        animationName: index === current ? 'progress-animation' : 'none',
+                                        animationDuration: '2500ms',
+                                        animationTimingFunction: 'linear'
+                                    }}
                                 />
                             </div>
                         ))}
