@@ -1,29 +1,13 @@
+
 import { PageHeader, PageSection } from '@/components/layout/page-layout';
 import { pianoRepertoire } from '@/lib/placeholder-data';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Piano, Video, School, Youtube, User } from 'lucide-react';
-import Image from 'next/image';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Piano, School, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
-const videoPlaceholders = [
-    {
-        imageId: 'piano-video-thumb-1',
-        title: 'Classical Piano Piece',
-        description: 'A performance from a recent recital.'
-    },
-    {
-        imageId: 'piano-video-thumb-2',
-        title: 'Contemporary Piano Cover',
-        description: 'A modern arrangement of a popular song.'
-    }
-]
-
 export default function PianoPage() {
-    const videoThumb = PlaceHolderImages.find(p => p.id === 'piano-video-thumb');
-
   return (
     <div>
       <PageHeader
@@ -78,42 +62,6 @@ export default function PianoPage() {
                 </TableBody>
             </Table>
         </Card>
-      </PageSection>
-      <PageSection>
-            <h2 className="text-3xl font-bold text-center mb-10 font-headline flex items-center justify-center gap-3">
-            <Youtube /> Performances
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                {videoPlaceholders.map((video) => {
-                    const image = PlaceHolderImages.find(p => p.id === video.imageId);
-                    return (
-                         <Card key={video.imageId} className="group overflow-hidden">
-                            {image && (
-                                <Link href="#" className='block'>
-                                    <div className="relative aspect-video">
-                                        <Image
-                                            src={image.imageUrl}
-                                            alt={image.description}
-                                            fill
-                                            className="object-cover transition-transform duration-300 group-hover:scale-105"
-                                            data-ai-hint={image.imageHint}
-                                        />
-                                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                                            <Video className="h-16 w-16 text-white/80 transition-all group-hover:text-white group-hover:scale-110" />
-                                        </div>
-                                    </div>
-                                </Link>
-                            )}
-                            <CardHeader>
-                                <CardTitle className="font-headline">{video.title}</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-muted-foreground">{video.description}</p>
-                            </CardContent>
-                        </Card>
-                    )
-                })}
-            </div>
       </PageSection>
     </div>
   );
