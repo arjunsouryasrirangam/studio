@@ -40,6 +40,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'fv5-3.files.fm',
+        port: '',
+        pathname: '/**',
+      }
     ],
   },
 };
