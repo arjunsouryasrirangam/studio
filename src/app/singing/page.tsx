@@ -1,6 +1,7 @@
 
 
 
+
 import { PageHeader, PageSection } from '@/components/layout/page-layout';
 import { favoriteRagas } from '@/lib/placeholder-data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,7 +13,7 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Image from 'next/image';
 
 const latestPerformance = {
-    imageId: 'singing-performance-2',
+    imageId: 'singing-performance-1',
     title: 'Diwali 2025 Maitri Foundation EU',
     description: 'A recent vocal performance video.',
     link: 'https://youtube.com/shorts/yN6K45jDejo?feature=share'
