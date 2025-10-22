@@ -6,10 +6,12 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowRight, Code, Music, Briefcase, User, PencilRuler, Piano, Waves, Images, GitCommit, Calendar, Zap, Timer } from 'lucide-react';
-import React from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Autoplay from "embla-carousel-autoplay";
-import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@/components/ui/carousel';
 import { cn } from '@/lib/utils';
+import { Progress } from '@/components/ui/progress';
+
 
 function ShuttlecockIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -120,9 +122,45 @@ const contributionData = [
 ];
 
 export default function Home() {
-    const plugin = React.useRef(
+    const plugin = useRef(
       Autoplay({ delay: 2500, stopOnInteraction: true })
     );
+    const [api, setApi] = useState<CarouselApi>()
+    const [progress, setProgress] = useState(0)
+    const [current, setCurrent] = useState(0)
+
+    const onSelect = useCallback((api: CarouselApi) => {
+        if (!api) return;
+        setCurrent(api.selectedScrollSnap());
+    }, []);
+
+    const onAutoplay = useCallback((api: CarouselApi) => {
+        if (!api) return;
+        const autoplay = api.plugins().autoplay;
+        if (!autoplay) return;
+        const progress = autoplay.rootNode().parentElement;
+        if(progress) {
+             (progress as HTMLElement).style.animation = 'none';
+             requestAnimationFrame(() => (progress as HTMLElement).style.animation = '');
+        }
+
+    }, []);
+
+    useEffect(() => {
+        if (!api) {
+            return
+        }
+
+        onSelect(api);
+        onAutoplay(api);
+        api.on("select", onSelect);
+        api.on("autoplay:play", onAutoplay);
+
+        return () => {
+            api.off("select", onSelect)
+            api.off("autoplay:play", onAutoplay)
+        }
+    }, [api, onSelect, onAutoplay])
 
   return (
     <div className="flex flex-col">
@@ -139,11 +177,27 @@ export default function Home() {
                 </div>
                 
                 <Carousel
+                  setApi={setApi}
                   plugins={[plugin.current]}
                   className="w-full"
+                  opts={{
+                    loop: true,
+                  }}
                   onMouseEnter={plugin.current.stop}
-                  onMouseLeave={plugin.current.reset}
+                  onMouseLeave={plugin.current.play}
                 >
+                    <div className="flex gap-2.5 mb-4">
+                        {carouselSlides.map((_, index) => (
+                            <div key={index} className="flex-1 h-1 bg-muted/50 rounded-full overflow-hidden">
+                                <div
+                                    className={cn(
+                                        "h-full bg-primary rounded-full",
+                                        index === current ? "w-full transition-all duration-[2500ms] ease-linear" : "w-0"
+                                    )}
+                                />
+                            </div>
+                        ))}
+                    </div>
                   <CarouselContent>
                     {carouselSlides.map((slide) => (
                       <CarouselItem key={slide.href}>
@@ -247,3 +301,5 @@ export default function Home() {
     </div>
   );
 }
+
+    
