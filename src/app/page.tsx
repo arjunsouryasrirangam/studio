@@ -62,7 +62,7 @@ const carouselSlides = [
         description: 'Explore my journey as a Hindustani classical vocalist.',
         buttonText: 'Listen In',
         icon: <Music className="mr-2 h-5 w-5"/>,
-        image: PlaceHolderImages.find((img) => img.id === 'singing-album-art-2')
+        image: PlaceHolderImages.find((img) => img.id === 'singing-performance-4')
     },
     {
         href: '/piano',
