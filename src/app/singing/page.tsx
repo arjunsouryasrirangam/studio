@@ -1,3 +1,4 @@
+
 import { PageHeader, PageSection } from '@/components/layout/page-layout';
 import { favoriteRagas } from '@/lib/placeholder-data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,13 +12,15 @@ import Image from 'next/image';
 const videoPlaceholders = [
     {
         imageId: 'singing-video-thumb-1',
-        title: 'Raag Bhupali Performance',
-        description: 'A classical performance from the Sangeeti School of Music annual event.'
+        title: 'Vocal Performance',
+        description: 'A recent vocal performance video.',
+        link: 'https://youtube.com/shorts/yN6K45jDejo?feature=share'
     },
     {
         imageId: 'singing-video-thumb-2',
         title: 'Competition Highlights',
-        description: 'A compilation of prize-winning moments from various vocal competitions.'
+        description: 'A compilation of prize-winning moments from various vocal competitions.',
+        link: '#'
     }
 ]
 
@@ -83,7 +86,7 @@ export default function SingingPage() {
                     return (
                          <Card key={video.imageId} className="group overflow-hidden">
                             {image && (
-                                <Link href="#" className='block'>
+                                <Link href={video.link} className='block' target="_blank" rel="noopener noreferrer">
                                     <div className="relative aspect-video">
                                         <Image
                                             src={image.imageUrl}
