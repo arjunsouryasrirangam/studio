@@ -45,6 +45,12 @@ const nextConfig: NextConfig = {
         hostname: 'fv5-3.files.fm',
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.imgur.com',
+        port: '',
+        pathname: '/**',
       }
     ],
   },
