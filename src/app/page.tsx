@@ -1,4 +1,5 @@
 
+
 'use client'
 
 import Image from 'next/image';
@@ -6,7 +7,7 @@ import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowRight, Code, Music, Briefcase, User, PencilRuler, Piano, Waves, Images, GitCommit, Calendar, Zap, Timer } from 'lucide-react';
+import { ArrowRight, Code, Music, Briefcase, User, PencilRuler, Piano, Waves, Images, GitCommit, Calendar, Zap, Timer, Contact } from 'lucide-react';
 import React from 'react';
 import Autoplay from "embla-carousel-autoplay";
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@/components/ui/carousel';
@@ -54,7 +55,7 @@ const carouselSlides = [
     {
         href: '/request-website',
         title: 'Request a Website!',
-        description: 'Request Arjun to make a website for you!',
+        description: "Have a vision for a website? Let's bring it to life together. Simply fill out the request form with your project details, and I will personally review it. I'll get back to you within 48 hours to discuss the next steps and how we can collaborate to build a custom website that meets your needs.",
         buttonText: 'Get a Quote',
         icon: <PencilRuler className="mr-2 h-5 w-5"/>,
         image: PlaceHolderImages.find((img) => img.id === 'request-website-promo')
@@ -62,7 +63,7 @@ const carouselSlides = [
     {
         href: '/singing',
         title: 'Singing',
-        description: 'Explore my journey as a Hindustani classical vocalist.',
+        description: 'Discover my journey as a Hindustani classical vocalist. Under the guidance of my respected teacher, Prajna Bhattacharya Ma\'am, I have completed multiple levels of certification and won multiple awards. I am currently studying for P3 Bhushan at the Sangeeti School of Music, a path that has rewarded me with prizes at various competitions and taught me deep discipline.',
         buttonText: 'Listen In',
         icon: <Music className="mr-2 h-5 w-5"/>,
         image: PlaceHolderImages.find((img) => img.id === 'singing-performance-4'),
@@ -71,7 +72,7 @@ const carouselSlides = [
     {
         href: '/piano',
         title: 'Piano',
-        description: 'Discover my passion for the piano, from classical to contemporary.',
+        description: 'My journey with the piano has been one of perseverance and passion. For the past four years, I\'ve honed my skills under my respected teacher, Aimilianos Starvinos Sir, from Home Music Teachers NL. My repertoire includes timeless pieces from composers like Debussy and Chopin. This discipline has taught me as much about resilience as it has about music.',
         buttonText: 'Explore My Journey',
         icon: <Piano className="mr-2 h-5 w-5"/>,
         image: PlaceHolderImages.find((img) => img.id === 'piano-main')
@@ -79,7 +80,7 @@ const carouselSlides = [
      {
         href: '/tech',
         title: 'Tech Projects',
-        description: 'Check out my latest creations in the world of code.',
+        description: 'With six years of programming experience under my teacher Mrs. Diksha at JetLearn B.V., I love turning complex problems into elegant software solutions. My projects range from developer tools that visualize code to fun, interactive web apps. I build with modern technologies like Next.js, TypeScript, and Firebase. Explore my work to see how I bring ideas to life through code.',
         buttonText: 'View Projects',
         icon: <Code className="mr-2 h-5 w-5"/>,
         image: PlaceHolderImages.find((img) => img.id === 'tech-project-1')
@@ -87,7 +88,7 @@ const carouselSlides = [
     {
         href: '/swimming',
         title: 'Swimming',
-        description: 'Follow my journey as a competitive swimmer.',
+        description: 'Swimming is more than just a sport to me—it\'s a practice in discipline and focus. I have completed my foundational A, B, and C diplomas and have achieved the first level of advanced skills (Zwemvaardigheid). Each lap in the pool is a lesson in resilience and the pursuit of continuous improvement. Follow my journey as I make waves in the competitive swimming world.',
         buttonText: 'See Achievements',
         icon: <Waves className="h-5 w-5 mr-2"/>,
         image: PlaceHolderImages.find((img) => img.id === 'swimming-achievement')
@@ -95,7 +96,7 @@ const carouselSlides = [
     {
         href: '/badminton',
         title: 'Badminton',
-        description: 'Follow my journey on the badminton court.',
+        description: 'For the last year and a half, badminton has been a thrilling part of my life. Coached by Theo Sir, Hans Sir, and Jolanda Ma\'am at BV Door Eendracht Omhoog, I\'ve developed a love for the sport\'s fast pace and strategy. While I haven\'t competed for official prizes yet, I am working hard and am close to being promoted to the next group.',
         buttonText: 'See Highlights',
         icon: <ShuttlecockIcon className="h-5 w-5 mr-2"/>,
         image: PlaceHolderImages.find((img) => img.id === 'badminton-action')
@@ -103,7 +104,7 @@ const carouselSlides = [
     {
         href: '/gallery',
         title: 'Full Gallery',
-        description: 'A visual collection of moments and milestones.',
+        description: 'Step into a visual diary of my journey across technology, music, and sports. The gallery is a curated collection of moments, milestones, and memories that have shaped my path. From the stage to the swimming pool, explore the experiences that define my passions. It\'s a colorful glimpse into the world of a young creator.',
         buttonText: 'Explore Gallery',
         icon: <Images className="mr-2 h-5 w-5"/>,
         image: PlaceHolderImages.find((img) => img.id === 'gallery-promo')
@@ -147,31 +148,21 @@ export default function Home() {
           return;
         }
     
-        const syncCarousels = (master: CarouselApi, follower: CarouselApi) => {
-          return () => {
-            const masterIndex = master.selectedScrollSnap();
-            if (follower.selectedScrollSnap() !== masterIndex) {
-              follower.scrollTo(masterIndex);
-            }
-            setCurrent(masterIndex);
-          };
+        const syncCarousels = () => {
+          const masterIndex = mainApi.selectedScrollSnap();
+          if (textApi.selectedScrollSnap() !== masterIndex) {
+            textApi.scrollTo(masterIndex);
+          }
+          setCurrent(masterIndex);
+        };
+    
+        mainApi.on('select', syncCarousels);
+        mainApi.on('reInit', syncCarousels);
+    
+        const onAutoplayProgress = (api: CarouselApi, progress: number) => {
+            setProgress(progress * 100);
         };
 
-        const onMainSelect = syncCarousels(mainApi, textApi);
-        const onTextSelect = syncCarousels(textApi, mainApi);
-
-        mainApi.on('select', onMainSelect);
-        textApi.on('select', onTextSelect);
-
-        const onProgress = (api: CarouselApi, progress: number) => {
-          setProgress(progress);
-        };
-
-        const onAutoplayProgress = (api: CarouselApi, evt: any) => {
-            // Embla's autoplay progress event returns a value between 0 and 1.
-            setProgress(evt * 100);
-        };
-        
         mainApi.on('autoplay:progress', onAutoplayProgress);
         
         // When the carousel settles on a new slide, reset the progress.
@@ -179,8 +170,8 @@ export default function Home() {
         mainApi.on('settle', onSettle);
 
         return () => {
-          mainApi.off('select', onMainSelect);
-          textApi.off('select', onTextSelect);
+          mainApi.off('select', syncCarousels);
+          mainApi.off('reInit', syncCarousels);
           mainApi.off('autoplay:progress', onAutoplayProgress);
           mainApi.off('settle', onSettle);
         };
@@ -212,8 +203,8 @@ export default function Home() {
                       onMouseLeave={plugin.current.play}
                     >
                       <CarouselContent>
-                        {carouselSlides.map((slide) => (
-                          <CarouselItem key={slide.href}>
+                        {carouselSlides.map((slide, index) => (
+                          <CarouselItem key={index}>
                              <Card className="relative overflow-hidden group text-left h-[450px]">
                                 {slide.image && (
                                     <Image 
@@ -225,7 +216,7 @@ export default function Home() {
                                           slide.objectPosition
                                         )}
                                         data-ai-hint={slide.image.imageHint}
-                                        priority
+                                        priority={index === 0}
                                     />
                                 )}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
@@ -248,18 +239,18 @@ export default function Home() {
                         setApi={setTextApi}
                         orientation="vertical"
                         className="w-full h-full"
-                        opts={{ loop: true, dragFree: false }}
+                        opts={{ loop: true, dragFree: true }}
                      >
                         <CarouselContent className="h-[450px]">
-                            {carouselSlides.map((slide) => (
-                                <CarouselItem key={slide.title} className="basis-full">
+                            {carouselSlides.map((slide, index) => (
+                                <CarouselItem key={index} className="basis-full">
                                     <Card className="h-full">
                                         <CardContent className="p-6 text-left flex flex-col justify-center h-full">
                                             <div className="p-3 bg-primary/10 rounded-full mb-4 w-fit">
                                                 {slide.icon}
                                             </div>
                                             <h3 className="text-xl font-bold font-headline mb-2">{slide.title}</h3>
-                                            <p className="text-muted-foreground text-sm">{slide.description}</p>
+                                            <p className="text-muted-foreground text-sm line-clamp-[10]">{slide.description}</p>
                                         </CardContent>
                                     </Card>
                                 </CarouselItem>
