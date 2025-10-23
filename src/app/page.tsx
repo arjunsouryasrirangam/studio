@@ -6,7 +6,7 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowRight, Code, Music, Briefcase, User, PencilRuler, Piano, Waves, Images, GitCommit, Calendar, Zap, Timer } from 'lucide-react';
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, from 'react';
 import Autoplay from "embla-carousel-autoplay";
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@/components/ui/carousel';
 import { cn } from '@/lib/utils';
@@ -70,7 +70,7 @@ const carouselSlides = [
         href: '/piano',
         title: 'Piano',
         description: 'Discover my passion for the piano, from classical to contemporary.',
-        buttonText: 'See Performances',
+        buttonText: 'Explore My Journey',
         icon: <Piano className="mr-2 h-5 w-5"/>,
         image: PlaceHolderImages.find((img) => img.id === 'piano-video-thumb-1')
     },
@@ -81,6 +81,14 @@ const carouselSlides = [
         buttonText: 'View Projects',
         icon: <Code className="mr-2 h-5 w-5"/>,
         image: PlaceHolderImages.find((img) => img.id === 'tech-project-1')
+    },
+    {
+        href: '/swimming',
+        title: 'Swimming',
+        description: 'Follow my journey as a competitive swimmer.',
+        buttonText: 'See Achievements',
+        icon: <Waves className="h-5 w-5 mr-2"/>,
+        image: PlaceHolderImages.find((img) => img.id === 'swimming-achievement')
     },
     {
         href: '/badminton',
@@ -122,55 +130,44 @@ const contributionData = [
 ];
 
 export default function Home() {
-    const plugin = useRef(
+    const plugin = React.useRef(
       Autoplay({ delay: 2500, stopOnInteraction: true })
     );
-    const [api, setApi] = useState<CarouselApi>()
-    const [current, setCurrent] = useState(0)
+    const [api, setApi] = React.useState<CarouselApi>()
+    const [current, setCurrent] = React.useState(0)
+    const [progress, setProgress] = React.useState(0);
 
-    const onSelect = useCallback((api: CarouselApi) => {
+    const onSelect = React.useCallback((api: CarouselApi) => {
         if (!api) return;
         setCurrent(api.selectedScrollSnap());
     }, []);
 
-    const onAutoplay = useCallback((api: CarouselApi) => {
-        if (!api) return;
-        const rootNode = api.rootNode();
-        if(!rootNode) return;
-        
-        // Find the specific progress bar for the current slide
-        const currentProgress = rootNode.querySelector(`[data-slide-index="${api.selectedScrollSnap()}"] > div`);
-        
-        if (currentProgress) {
-            // This is a trick to restart a CSS animation
-            (currentProgress as HTMLElement).style.animation = 'none';
-            // This needs a tiny delay to work consistently
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    (currentProgress as HTMLElement).style.animation = '';
-                });
-            });
-        }
-    }, []);
-
-    useEffect(() => {
+     React.useEffect(() => {
         if (!api) {
             return
         }
 
         onSelect(api);
-        onAutoplay(api);
         api.on("select", onSelect);
+        api.on("reInit", onSelect);
+        
+        const onAutoplay = () => {
+            const a = api.plugins().autoplay;
+            if (!a) return;
+            setProgress(a.scrollProgress());
+        }
+
         api.on("autoplay:play", onAutoplay);
-        api.on("reInit", onAutoplay);
+        api.on('scroll', onAutoplay);
 
 
         return () => {
             api.off("select", onSelect)
             api.off("autoplay:play", onAutoplay)
-            api.off("reInit", onAutoplay);
+            api.off("scroll", onAutoplay)
+            api.off("reInit", onSelect);
         }
-    }, [api, onSelect, onAutoplay])
+    }, [api, onSelect])
 
   return (
     <div className="flex flex-col">
@@ -199,16 +196,12 @@ export default function Home() {
                     <div className="flex gap-2.5 mb-4">
                         {carouselSlides.map((_, index) => (
                             <div key={index} data-slide-index={index} className="flex-1 h-1 bg-muted/50 rounded-full overflow-hidden">
-                                <div
+                                <Progress
+                                    value={index === current ? progress * 100 : (index < current ? 100 : 0)}
                                     className={cn(
-                                        "h-full bg-primary rounded-full",
-                                        index === current ? "w-full animate-progress" : "w-0"
+                                        "h-full bg-primary transition-all duration-100",
+                                        index !== current && 'transition-none'
                                     )}
-                                    style={{
-                                        animationName: index === current ? 'progress-animation' : 'none',
-                                        animationDuration: '2500ms',
-                                        animationTimingFunction: 'linear'
-                                    }}
                                 />
                             </div>
                         ))}
@@ -316,5 +309,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
