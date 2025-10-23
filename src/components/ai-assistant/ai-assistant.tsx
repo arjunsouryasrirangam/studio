@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
@@ -10,6 +11,7 @@ import { searchSite } from '@/ai/flows/site-search-flow';
 import { Avatar, AvatarFallback } from '../ui/avatar';
 import Logo from '../logo';
 import { cn } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
 
 type Message = {
   text: string;
@@ -22,6 +24,7 @@ export function AiAssistant() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   useEffect(() => {
     if (isOpen) {
@@ -43,7 +46,16 @@ export function AiAssistant() {
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || isLoading) return;
+    const trimmedInput = input.trim();
+    if (!trimmedInput || isLoading) return;
+
+    // Check for the admin secret command
+    if (trimmedInput === 'admin:sarjunsourya.40315@') {
+      router.push('/admin');
+      setInput('');
+      setIsOpen(false);
+      return;
+    }
 
     const userMessage: Message = { text: input, sender: 'user' };
     setMessages((prev) => [...prev, userMessage]);
