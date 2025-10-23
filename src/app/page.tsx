@@ -141,67 +141,69 @@ export default function Home() {
     const [progress, setProgress] = React.useState(0);
 
 
-    React.useEffect(() => {
-        if (!mainApi) return;
-
-        // --- Progress Bar Logic ---
-        const onProgress = (api: CarouselApi, progress: number) => {
-          setProgress(progress * 100);
-        };
+    const onSelect = React.useCallback((api: CarouselApi) => {
+        if (!api) return;
+        const newIndex = api.selectedScrollSnap();
+        setCurrent(newIndex);
         
-        // --- Slide Selection Logic ---
-        const onSelect = (api: CarouselApi) => {
-          if (!api) return;
-          const newIndex = api.selectedScrollSnap();
-          setCurrent(newIndex);
-          setProgress(0); // Reset progress on manual select
-          
-          // Sync text carousel
-          if (textApi && textApi.selectedScrollSnap() !== newIndex) {
-            textApi.scrollTo(newIndex);
-          }
-        };
-
-        mainApi.on("select", onSelect);
-        mainApi.on("reInit", onSelect);
-
-        // Listen for autoplay progress
-        const autoplayPlugin = mainApi.plugins().autoplay;
-        if (autoplayPlugin) {
-          // The plugin is an event emitter. We listen for the 'progress' event.
-          (autoplayPlugin as any).on('autoplay:progress', onProgress);
-        }
-
-        return () => {
-            mainApi.off("select", onSelect);
-            mainApi.off("reInit", onSelect);
-            if (autoplayPlugin) {
-              (autoplayPlugin as any).off('autoplay:progress', onProgress);
+        // Sync carousels
+        if (mainApi && textApi) {
+            if (mainApi.selectedScrollSnap() !== newIndex) {
+                mainApi.scrollTo(newIndex);
+            }
+            if (textApi.selectedScrollSnap() !== newIndex) {
+                textApi.scrollTo(newIndex);
             }
         }
     }, [mainApi, textApi]);
 
 
     React.useEffect(() => {
-        if (!mainApi || !textApi) return;
-    
-        // Sync from text to main
-        const handleTextSelect = (api: CarouselApi) => {
-           const selectedSnap = api.selectedScrollSnap();
-          if (mainApi.selectedScrollSnap() !== selectedSnap) {
-            mainApi.scrollTo(selectedSnap);
-          }
-           setCurrent(selectedSnap);
+        if (!mainApi) return;
+
+        const onProgress = (api: CarouselApi, progress: number) => {
+          setProgress(progress);
         };
-    
-        textApi.on('select', handleTextSelect);
-        textApi.on('reInit', handleTextSelect);
+
+        const onSettle = (api: CarouselApi) => {
+            setProgress(0);
+        }
+
+        mainApi.on("select", onSelect);
+        mainApi.on("reInit", onSelect);
+        mainApi.on("settle", onSettle);
+
+        const autoplayPluginInstance = plugin.current;
+        if (autoplayPluginInstance) {
+          autoplayPluginInstance.on('autoplay:progress', (evt: any) => {
+              setProgress(evt.progress * 100);
+          });
+        }
+        
+        return () => {
+            mainApi.off("select", onSelect);
+            mainApi.off("reInit", onSelect);
+            mainApi.off("settle", onSettle);
+            if (autoplayPluginInstance) {
+               autoplayPluginInstance.off('autoplay:progress', (evt: any) => {
+                  setProgress(evt.progress * 100);
+              });
+            }
+        }
+    }, [mainApi, onSelect]);
+
+
+    React.useEffect(() => {
+        if (!textApi) return;
+        
+        textApi.on('select', onSelect);
+        textApi.on('reInit', onSelect);
 
         return () => {
-          textApi.off('select', handleTextSelect);
-          textApi.off('reInit', handleTextSelect);
+          textApi.off('select', onSelect);
+          textApi.off('reInit', onSelect);
         };
-      }, [mainApi, textApi]);
+      }, [textApi, onSelect]);
 
 
   return (
@@ -246,9 +248,9 @@ export default function Home() {
                                     />
                                 )}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
-                                <div className="absolute bottom-0 left-0 p-6">
-                                     <h3 className="text-3xl font-bold font-headline text-white">{slide.title}</h3>
-                                     <p className="text-white/80 mt-2 max-w-md">{slide.description}</p>
+                                <div className="absolute bottom-0 left-0 p-6 md:p-8">
+                                     <h3 className="text-2xl md:text-3xl font-bold font-headline text-white">{slide.title}</h3>
+                                     <p className="text-white/80 mt-2 max-w-md hidden md:block">{slide.description}</p>
                                      <Button asChild className="mt-6">
                                         <Link href={slide.href}>{slide.icon}{slide.buttonText} <ArrowRight className="ml-2"/></Link>
                                     </Button>
@@ -265,18 +267,18 @@ export default function Home() {
                         setApi={setTextApi}
                         orientation="vertical"
                         className="w-full h-full"
-                        opts={{ loop: true, dragFree: true }}
+                        opts={{ loop: true, dragFree: false }}
                      >
                         <CarouselContent className="h-[450px]">
-                            {aboutSections.slice(1).map((section) => (
-                                <CarouselItem key={section.title} className="basis-full">
+                            {carouselSlides.map((slide) => (
+                                <CarouselItem key={slide.title} className="basis-full">
                                     <Card className="h-full">
-                                        <CardContent className="p-6 text-center flex flex-col items-center justify-center h-full">
-                                            <div className="p-3 bg-primary/10 rounded-full mb-4">
-                                                {section.icon}
+                                        <CardContent className="p-6 text-left flex flex-col justify-center h-full">
+                                            <div className="p-3 bg-primary/10 rounded-full mb-4 w-fit">
+                                                {slide.icon}
                                             </div>
-                                            <h3 className="text-xl font-bold font-headline mb-2">{section.title}</h3>
-                                            <p className="text-muted-foreground text-sm">{section.text}</p>
+                                            <h3 className="text-xl font-bold font-headline mb-2">{slide.title}</h3>
+                                            <p className="text-muted-foreground text-sm">{slide.description}</p>
                                         </CardContent>
                                     </Card>
                                 </CarouselItem>
@@ -288,12 +290,12 @@ export default function Home() {
 
             <div className="flex gap-2.5 mt-4">
                 {carouselSlides.map((_, index) => (
-                    <div key={index} data-slide-index={index} className="flex-1 h-1 bg-muted/50 rounded-full overflow-hidden">
+                    <div key={index} data-slide-index={index} className="flex-1 h-1 bg-muted/50 rounded-full overflow-hidden cursor-pointer" onClick={() => mainApi?.scrollTo(index)}>
                         <Progress
                             value={index === current ? progress : (index < current ? 100 : 0)}
                             className={cn(
                                 "h-full bg-primary",
-                                 index === current ? 'transition-all duration-[50ms] ease-linear' : 'transition-none'
+                                 index === current ? 'transition-all duration-[50ms] ease-linear' : ''
                             )}
                         />
                     </div>
