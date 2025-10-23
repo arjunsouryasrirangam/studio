@@ -1,5 +1,3 @@
-
-
 'use client'
 
 import Image from 'next/image';
@@ -142,36 +140,36 @@ export default function Home() {
     const [current, setCurrent] = React.useState(0);
     const [progress, setProgress] = React.useState(0);
 
-    const onSelect = React.useCallback((api: CarouselApi) => {
-        if (!api) return;
-        setCurrent(api.selectedScrollSnap());
-    }, []);
 
     React.useEffect(() => {
         if (!mainApi) return;
 
-        onSelect(mainApi);
+        const updateProgress = () => {
+            const autoplay = mainApi.plugins().autoplay;
+            if (!autoplay) return;
+            // The type casting is a workaround for a known issue in embla-carousel-autoplay types
+            const scrollProgress = (autoplay as any).scrollProgress(); 
+            setProgress(scrollProgress * 100);
+        };
+        
+        const onSelect = (api: CarouselApi) => {
+            if (!api) return;
+            setCurrent(api.selectedScrollSnap());
+        };
+
         mainApi.on("select", onSelect);
         mainApi.on("reInit", onSelect);
 
-        const updateProgress = () => {
-            const autoplay = mainApi.plugins().autoplay;
-            if (autoplay && typeof (autoplay as any).scrollProgress === 'function') {
-                const scrollProgress = (autoplay as any).scrollProgress();
-                setProgress(scrollProgress * 100);
-            }
-        };
-
-        mainApi.on("scroll", updateProgress);
-        mainApi.on("autoplay:play", updateProgress);
+        // Use a timer to poll for progress
+        const interval = setInterval(updateProgress, 50);
 
         return () => {
             mainApi.off("select", onSelect);
-            mainApi.off("scroll", updateProgress);
             mainApi.off("reInit", onSelect);
-            mainApi.off("autoplay:play", updateProgress);
+            clearInterval(interval);
         }
-    }, [mainApi, onSelect]);
+    }, [mainApi]);
+
 
     React.useEffect(() => {
         if (!mainApi || !textApi) {
@@ -179,17 +177,19 @@ export default function Home() {
         }
     
         const handleMainSelect = () => {
-          if (textApi.selectedScrollSnap() !== mainApi.selectedScrollSnap()) {
-            textApi.scrollTo(mainApi.selectedScrollSnap());
+          const selectedSnap = mainApi.selectedScrollSnap();
+          if (textApi.selectedScrollSnap() !== selectedSnap) {
+            textApi.scrollTo(selectedSnap);
           }
-           onSelect(mainApi);
+          setCurrent(selectedSnap);
         };
     
         const handleTextSelect = () => {
-          if (mainApi.selectedScrollSnap() !== textApi.selectedScrollSnap()) {
-            mainApi.scrollTo(textApi.selectedScrollSnap());
+           const selectedSnap = textApi.selectedScrollSnap();
+          if (mainApi.selectedScrollSnap() !== selectedSnap) {
+            mainApi.scrollTo(selectedSnap);
           }
-          onSelect(textApi);
+           setCurrent(selectedSnap);
         };
     
         mainApi.on('select', handleMainSelect);
@@ -199,7 +199,7 @@ export default function Home() {
           mainApi.off('select', handleMainSelect);
           textApi.off('select', handleTextSelect);
         };
-      }, [mainApi, textApi, onSelect]);
+      }, [mainApi, textApi]);
 
 
   return (
@@ -365,5 +365,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
