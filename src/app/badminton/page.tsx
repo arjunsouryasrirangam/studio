@@ -24,17 +24,23 @@ export default function BadmintonPage() {
         title="Badminton Highlights"
         description="Agility, strategy, and power on the court. A showcase of my passion for the game of badminton."
       />
-      <PageSection className="bg-card">
+      <PageSection>
          <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold font-headline mb-6 text-center flex items-center justify-center gap-3"><Users />Coaching & Club</h2>
+            <h2 className="text-3xl font-bold font-headline mb-6 text-center flex items-center justify-center gap-3"><ShuttlecockIcon /> My Badminton Journey</h2>
             <Card>
                 <CardHeader>
-                    <CardTitle className='font-headline'>My Teachers</CardTitle>
+                    <CardTitle className='font-headline'>Coaching & Club</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <p className="text-muted-foreground">Theo Sir, Hans Sir and Jolanda Ma'am</p>
+                    <p className="text-muted-foreground">
+                        I've been learning badminton for a year and a half, and it was my idea to start playing. My father has been a great supporter, always encouraging me and giving me tips to improve. I'm working hard and am close to being promoted to the next group. I enjoy the fast-paced nature of the sport and the challenge of friendly competition.
+                    </p>
+                    <div>
+                        <p className="font-semibold text-foreground flex items-center gap-2 mt-4">My Teachers:</p>
+                        <p className="text-muted-foreground">Theo Sir, Hans Sir and Jolanda Ma'am</p>
+                    </div>
                      <div>
-                        <p className="font-semibold text-foreground flex items-center gap-2">Head of BV Door Eendracht Omhoog:</p>
+                        <p className="font-semibold text-foreground flex items-center gap-2 mt-4">Head of BV Door Eendracht Omhoog:</p>
                          <p className='text-muted-foreground flex items-center gap-2 mt-2'><MapPin className='h-4 w-4'/>Sportparkweg 30, 2632 EC Nootdorp</p>
                          <Button asChild variant="link" className='p-0 h-auto -translate-x-1'>
                             <Link href="https://bvdeo.nl" target="_blank" rel="noopener noreferrer">
@@ -51,38 +57,31 @@ export default function BadmintonPage() {
             </Card>
         </div>
       </PageSection>
-       <PageSection>
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
-            <div className="lg:col-span-3">
-                {actionImage && (
-                    <div className="aspect-video relative overflow-hidden rounded-lg shadow-lg">
-                        <Image
-                            src={actionImage.imageUrl}
-                            alt={actionImage.description}
-                            fill
-                            className="object-cover"
-                            data-ai-hint={actionImage.imageHint}
-                        />
-                    </div>
-                )}
-            </div>
-            <div className="lg:col-span-2 space-y-6">
-                <h2 className="text-3xl font-bold font-headline flex items-center gap-2"><ShuttlecockIcon className="h-6 w-6"/> My Badminton Journey</h2>
-                <p className="text-muted-foreground leading-relaxed">
-                    I've been learning badminton for a year and a half, and it was my idea to start playing. My father has been a great supporter, always encouraging me and giving me tips to improve. I'm working hard and am close to being promoted to the next group. I enjoy the fast-paced nature of the sport and the challenge of friendly competition.
-                </p>
-                 {highlightImage && (
-                    <div className="aspect-video relative overflow-hidden rounded-lg shadow-lg">
-                        <Image
-                            src={highlightImage.imageUrl}
-                            alt={highlightImage.description}
-                            fill
-                            className="object-cover"
-                            data-ai-hint={highlightImage.imageHint}
-                        />
-                    </div>
-                )}
-            </div>
+       <PageSection className='bg-card'>
+        <h2 className="text-3xl font-bold text-center mb-10 font-headline">Action Shots</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {actionImage && (
+                <div className="aspect-video relative overflow-hidden rounded-lg shadow-lg">
+                    <Image
+                        src={actionImage.imageUrl}
+                        alt={actionImage.description}
+                        fill
+                        className="object-cover"
+                        data-ai-hint={actionImage.imageHint}
+                    />
+                </div>
+            )}
+             {highlightImage && (
+                <div className="aspect-video relative overflow-hidden rounded-lg shadow-lg">
+                    <Image
+                        src={highlightImage.imageUrl}
+                        alt={highlightImage.description}
+                        fill
+                        className="object-cover"
+                        data-ai-hint={highlightImage.imageHint}
+                    />
+                </div>
+            )}
         </div>
       </PageSection>
 
