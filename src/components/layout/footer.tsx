@@ -1,3 +1,4 @@
+
 import Logo from '@/components/logo';
 import Link from 'next/link';
 import { Youtube, Instagram, Mail } from 'lucide-react';
@@ -18,10 +19,10 @@ export default function Footer() {
           </div>
           <div className="flex gap-2">
             <Button variant="ghost" size="icon" asChild>
-                <Link href="https://youtube.com/@melodicdev/" target="_blank" rel="noopener noreferrer"><Youtube /></Link>
+                <Link href="https://youtube.com/@sarjunsourya/" target="_blank" rel="noopener noreferrer"><Youtube /></Link>
             </Button>
             <Button variant="ghost" size="icon" asChild>
-                <Link href="https://instagram.com/melodicdev_/" target="_blank" rel="noopener noreferrer"><Instagram /></Link>
+                <Link href="https://instagram.com/sarjunsourya/" target="_blank" rel="noopener noreferrer"><Instagram /></Link>
             </Button>
             <Button variant="ghost" size="icon" asChild>
                 <Link href="mailto:melodicdev@programmer.net"><Mail /></Link>
