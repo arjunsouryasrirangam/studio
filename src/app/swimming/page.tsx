@@ -23,7 +23,7 @@ export default function SwimmingPage() {
                             src={actionImage.imageUrl}
                             alt={actionImage.description}
                             fill
-                            className="object-cover transform -scale-x-100"
+                            className="object-cover"
                             data-ai-hint={actionImage.imageHint}
                         />
                     </div>
