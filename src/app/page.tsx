@@ -66,7 +66,8 @@ const carouselSlides = [
         description: 'Explore my journey as a Hindustani classical vocalist.',
         buttonText: 'Listen In',
         icon: <Music className="mr-2 h-5 w-5"/>,
-        image: PlaceHolderImages.find((img) => img.id === 'singing-performance-4')
+        image: PlaceHolderImages.find((img) => img.id === 'singing-performance-4'),
+        objectPosition: 'object-top',
     },
     {
         href: '/piano',
@@ -220,7 +221,10 @@ export default function Home() {
                                     src={slide.image.imageUrl}
                                     alt={slide.image.description}
                                     fill
-                                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                                    className={cn(
+                                      "object-cover transition-transform duration-300 group-hover:scale-105",
+                                      (slide as any).objectPosition
+                                    )}
                                     data-ai-hint={slide.image.imageHint}
                                 />
                             )}
@@ -316,3 +320,6 @@ export default function Home() {
 
     
 
+
+
+    
