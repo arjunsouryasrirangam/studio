@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function SwimmingPage() {
-    const actionImage = PlaceHolderImages.find(p => p.id === 'swimming-action');
+    const actionImage = PlaceHolderImages.find(p => p.id === 'swimming-action-2');
     const achievementImage = PlaceHolderImages.find(p => p.id === 'swimming-achievement');
   return (
     <div>
@@ -23,7 +23,7 @@ export default function SwimmingPage() {
                             src={actionImage.imageUrl}
                             alt={actionImage.description}
                             fill
-                            className="object-cover"
+                            className="object-cover -scale-x-100"
                             data-ai-hint={actionImage.imageHint}
                         />
                     </div>
