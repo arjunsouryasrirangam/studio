@@ -1,3 +1,4 @@
+
 import { PageHeader, PageSection } from '@/components/layout/page-layout';
 import { swimmingAchievements } from '@/lib/placeholder-data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -23,7 +24,7 @@ export default function SwimmingPage() {
                             src={actionImage.imageUrl}
                             alt={actionImage.description}
                             fill
-                            className="object-cover -scale-x-100"
+                            className="object-cover"
                             data-ai-hint={actionImage.imageHint}
                         />
                     </div>
