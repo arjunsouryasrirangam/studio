@@ -1,12 +1,20 @@
+
 'use client';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, Code, Music, Piano, Waves, Dna, Contact, Home, Images, PencilRuler } from 'lucide-react';
+import { Menu, Code, Music, Piano, Waves, Home, Images, PencilRuler, Contact } from 'lucide-react';
 import Logo from '@/components/logo';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
 
 function ShuttlecockIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -53,27 +61,56 @@ const NavLink = ({ href, children, className }: { href: string; children: React.
   );
 };
 
+const mainNavLinks = navLinks.filter(link => !['/request-website', '/contact'].includes(link.href));
+const rightNavLinks = navLinks.filter(link => ['/request-website', '/contact'].includes(link.href));
+
 
 export default function Header() {
   const pathname = usePathname();
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
-        <div className="mr-4 hidden md:flex">
+        {/* Left Side: Logo */}
+        <div className="flex items-center">
           <Link href="/" className="mr-6 flex items-center space-x-2">
             <Logo className="h-8 w-auto" />
             <span className="hidden font-bold sm:inline-block font-headline">Arjun Sourya Srirangam</span>
           </Link>
-          <nav className="flex items-center space-x-6 text-sm">
-            {navLinks.slice(1, 5).map((link) => (
-              <NavLink key={link.href} href={link.href}>{link.label}</NavLink>
-            ))}
-          </nav>
         </div>
-        
-        <div className="flex flex-1 items-center justify-end gap-4">
-            <nav className="hidden md:flex items-center space-x-6 text-sm">
-                 {navLinks.slice(5).map((link) => (
+
+        {/* Center: Main Nav Icons (Desktop) */}
+        <div className="hidden md:flex flex-1 justify-center">
+           <TooltipProvider>
+            <nav className="flex items-center space-x-2 rounded-full border bg-secondary/50 p-1">
+              {mainNavLinks.map((link) => (
+                <Tooltip key={link.href} delayDuration={0}>
+                  <TooltipTrigger asChild>
+                     <Button
+                      asChild
+                      variant={pathname === link.href ? "secondary" : "ghost"}
+                      size="icon"
+                      className="rounded-full"
+                    >
+                      <Link href={link.href}>
+                        {link.icon}
+                        <span className="sr-only">{link.label}</span>
+                      </Link>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" className="flex items-center gap-4">
+                    {link.label}
+                  </TooltipContent>
+                </Tooltip>
+              ))}
+            </nav>
+          </TooltipProvider>
+        </div>
+
+
+        {/* Right Side: Links and Mobile Menu Trigger */}
+        <div className="flex flex-1 items-center justify-end gap-2">
+            <nav className="hidden md:flex items-center space-x-4 text-sm">
+                 {rightNavLinks.map((link) => (
                     <NavLink key={link.href} href={link.href}>{link.label}</NavLink>
                 ))}
             </nav>
@@ -86,25 +123,26 @@ export default function Header() {
                 </SheetTrigger>
                 <SheetContent side="left" className="w-[300px] p-0">
                 <div className="flex flex-col h-full">
-                    <div className="p-6">
+                    <div className="p-6 border-b">
                         <Link href="/" className="flex items-center space-x-2">
                         <Logo className="h-8 w-auto" />
                         <span className="font-bold font-headline">Arjun Sourya Srirangam</span>
                         </Link>
                     </div>
-                    <nav className="flex-1 flex flex-col space-y-2 p-6">
+                    <nav className="flex-1 flex flex-col space-y-1 p-4">
                     {navLinks.map((link) => (
-                        <Link
-                        key={link.href}
-                        href={link.href}
-                        className={cn(
-                            'flex items-center space-x-3 rounded-md p-3 transition-colors hover:bg-secondary',
-                            pathname === link.href ? 'bg-secondary text-primary font-semibold' : 'text-foreground/80 hover:text-foreground'
-                        )}
-                        >
-                        {link.icon}
-                        <span className="font-medium">{link.label}</span>
-                        </Link>
+                        <SheetClose asChild key={link.href}>
+                            <Link
+                            href={link.href}
+                            className={cn(
+                                'flex items-center space-x-3 rounded-md p-3 transition-colors hover:bg-secondary',
+                                pathname === link.href ? 'bg-secondary text-primary font-semibold' : 'text-foreground/80 hover:text-foreground'
+                            )}
+                            >
+                            {link.icon}
+                            <span className="font-medium">{link.label}</span>
+                            </Link>
+                        </SheetClose>
                     ))}
                     </nav>
                 </div>
