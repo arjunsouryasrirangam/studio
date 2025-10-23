@@ -11,7 +11,7 @@ export default function PianoPage() {
   return (
     <div>
       <PageHeader
-        title="Piano Performances"
+        title="Piano Journey"
         description="The timeless elegance of the piano. Explore my journey through classical and contemporary pieces."
       />
        <PageSection>
