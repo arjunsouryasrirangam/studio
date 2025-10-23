@@ -12,7 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useState, useEffect } from 'react';
 import { Loader2, LogIn } from 'lucide-react';
 import { useAuth, useUser } from '@/firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, type FirebaseError } from 'firebase/auth';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 const formSchema = z.object({
@@ -54,7 +54,25 @@ export default function LoginPage() {
       // Redirect handled by useEffect
     } catch (error) {
       console.error('Sign in error:', error);
-      const message = error instanceof Error ? error.message : 'An unknown error occurred.';
+      const firebaseError = error as FirebaseError;
+      let message = 'An unknown error occurred.';
+      // Provide more specific error messages
+      switch (firebaseError.code) {
+          case 'auth/user-not-found':
+          case 'auth/wrong-password':
+          case 'auth/invalid-credential':
+              message = 'Invalid email or password. Please try again.';
+              break;
+          case 'auth/invalid-email':
+              message = 'The email address you entered is not valid.';
+              break;
+          case 'auth/too-many-requests':
+              message = 'Too many failed login attempts. Please try again later.';
+              break;
+          default:
+              message = firebaseError.message;
+              break;
+      }
       toast({
         variant: 'destructive',
         title: 'Authentication Failed',
@@ -124,3 +142,5 @@ export default function LoginPage() {
     </div>
   );
 }
+
+    
