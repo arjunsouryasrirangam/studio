@@ -144,60 +144,62 @@ export default function Home() {
     React.useEffect(() => {
         if (!mainApi) return;
 
-        const updateProgress = () => {
-            const autoplay = mainApi.plugins().autoplay;
-            if (!autoplay) return;
-            // The type casting is a workaround for a known issue in embla-carousel-autoplay types
-            const scrollProgress = (autoplay as any).scrollProgress(); 
-            setProgress(scrollProgress * 100);
+        // --- Progress Bar Logic ---
+        const onProgress = (api: CarouselApi, progress: number) => {
+          setProgress(progress * 100);
         };
         
+        // --- Slide Selection Logic ---
         const onSelect = (api: CarouselApi) => {
-            if (!api) return;
-            setCurrent(api.selectedScrollSnap());
+          if (!api) return;
+          const newIndex = api.selectedScrollSnap();
+          setCurrent(newIndex);
+          setProgress(0); // Reset progress on manual select
+          
+          // Sync text carousel
+          if (textApi && textApi.selectedScrollSnap() !== newIndex) {
+            textApi.scrollTo(newIndex);
+          }
         };
 
         mainApi.on("select", onSelect);
         mainApi.on("reInit", onSelect);
 
-        // Use a timer to poll for progress
-        const interval = setInterval(updateProgress, 50);
+        // Listen for autoplay progress
+        const autoplayPlugin = mainApi.plugins().autoplay;
+        if (autoplayPlugin) {
+          // The plugin is an event emitter. We listen for the 'progress' event.
+          (autoplayPlugin as any).on('autoplay:progress', onProgress);
+        }
 
         return () => {
             mainApi.off("select", onSelect);
             mainApi.off("reInit", onSelect);
-            clearInterval(interval);
+            if (autoplayPlugin) {
+              (autoplayPlugin as any).off('autoplay:progress', onProgress);
+            }
         }
-    }, [mainApi]);
+    }, [mainApi, textApi]);
 
 
     React.useEffect(() => {
-        if (!mainApi || !textApi) {
-          return;
-        }
+        if (!mainApi || !textApi) return;
     
-        const handleMainSelect = () => {
-          const selectedSnap = mainApi.selectedScrollSnap();
-          if (textApi.selectedScrollSnap() !== selectedSnap) {
-            textApi.scrollTo(selectedSnap);
-          }
-          setCurrent(selectedSnap);
-        };
-    
-        const handleTextSelect = () => {
-           const selectedSnap = textApi.selectedScrollSnap();
+        // Sync from text to main
+        const handleTextSelect = (api: CarouselApi) => {
+           const selectedSnap = api.selectedScrollSnap();
           if (mainApi.selectedScrollSnap() !== selectedSnap) {
             mainApi.scrollTo(selectedSnap);
           }
            setCurrent(selectedSnap);
         };
     
-        mainApi.on('select', handleMainSelect);
         textApi.on('select', handleTextSelect);
-    
+        textApi.on('reInit', handleTextSelect);
+
         return () => {
-          mainApi.off('select', handleMainSelect);
           textApi.off('select', handleTextSelect);
+          textApi.off('reInit', handleTextSelect);
         };
       }, [mainApi, textApi]);
 
@@ -291,7 +293,7 @@ export default function Home() {
                             value={index === current ? progress : (index < current ? 100 : 0)}
                             className={cn(
                                 "h-full bg-primary",
-                                 index === current ? 'transition-all duration-100 ease-linear' : 'transition-none'
+                                 index === current ? 'transition-all duration-[50ms] ease-linear' : 'transition-none'
                             )}
                         />
                     </div>
@@ -365,3 +367,5 @@ export default function Home() {
     </div>
   );
 }
+
+    
