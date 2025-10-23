@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, Code, Music, Piano, Waves, Home, Images, PencilRuler, Contact } from 'lucide-react';
+import { Menu, Code, Music, Piano, Waves, Home, Images, PencilRuler, Contact, Shield } from 'lucide-react';
 import Logo from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
@@ -39,6 +39,7 @@ const navLinks = [
   { href: '/swimming', label: 'Swimming', icon: <Waves size={20} /> },
   { href: '/badminton', label: 'Badminton', icon: <ShuttlecockIcon /> },
   { href: '/gallery', label: 'Gallery', icon: <Images size={20} /> },
+  { href: '/admin', label: 'Admin', icon: <Shield size={20} /> },
   { href: '/request-website', label: 'Request Website', icon: <PencilRuler size={16} /> },
   { href: '/contact', label: 'Contact', icon: <Contact size={16} /> },
 ];
@@ -88,7 +89,7 @@ export default function Header() {
                   <TooltipTrigger asChild>
                      <Button
                       asChild
-                      variant={pathname === link.href ? "secondary" : "ghost"}
+                      variant={pathname.startsWith(link.href) && link.href !== '/' || pathname === '/' && link.href === '/' ? "secondary" : "ghost"}
                       size="icon"
                       className="rounded-full"
                     >
@@ -137,7 +138,7 @@ export default function Header() {
                             href={link.href}
                             className={cn(
                                 'flex items-center space-x-3 rounded-md p-3 transition-colors hover:bg-secondary',
-                                pathname === link.href ? 'bg-secondary text-primary font-semibold' : 'text-foreground/80 hover:text-foreground'
+                                pathname.startsWith(link.href) && link.href !== '/' || pathname === '/' && link.href === '/' ? 'bg-secondary text-primary font-semibold' : 'text-foreground/80 hover:text-foreground'
                             )}
                             >
                             {link.icon}
