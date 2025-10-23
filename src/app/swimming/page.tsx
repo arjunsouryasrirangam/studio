@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Medal, Waves, Trophy } from 'lucide-react';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { cn } from '@/lib/utils';
 
 export default function SwimmingPage() {
     const actionImage = PlaceHolderImages.find(p => p.id === 'swimming-action-2');
