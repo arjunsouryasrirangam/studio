@@ -163,7 +163,7 @@ export default function Home() {
         };
 
         mainApi.on("scroll", updateProgress);
-        mainApi.on("autoplay:play", updateProgress); // Update on play as well
+        mainApi.on("autoplay:play", updateProgress);
 
         return () => {
             mainApi.off("select", onSelect);
@@ -174,26 +174,32 @@ export default function Home() {
     }, [mainApi, onSelect]);
 
     React.useEffect(() => {
-        if (!textApi || !mainApi) return;
-
-        const syncCarousels = (draggedApi: CarouselApi, otherApi: CarouselApi) => {
-            const selected = draggedApi.selectedScrollSnap();
-            if (otherApi.selectedScrollSnap() !== selected) {
-                otherApi.scrollTo(selected);
-            }
-        };
-
-        const syncMainToText = () => syncCarousels(mainApi, textApi);
-        const syncTextToMain = () => syncCarousels(textApi, mainApi);
-
-        mainApi.on('select', syncMainToText);
-        textApi.on('select', syncTextToMain);
-
-        return () => {
-            mainApi.off('select', syncMainToText);
-            textApi.off('select', syncTextToMain);
+        if (!mainApi || !textApi) {
+          return;
         }
-    }, [mainApi, textApi]);
+    
+        const handleMainSelect = () => {
+          if (textApi.selectedScrollSnap() !== mainApi.selectedScrollSnap()) {
+            textApi.scrollTo(mainApi.selectedScrollSnap());
+          }
+           onSelect(mainApi);
+        };
+    
+        const handleTextSelect = () => {
+          if (mainApi.selectedScrollSnap() !== textApi.selectedScrollSnap()) {
+            mainApi.scrollTo(textApi.selectedScrollSnap());
+          }
+          onSelect(textApi);
+        };
+    
+        mainApi.on('select', handleMainSelect);
+        textApi.on('select', handleTextSelect);
+    
+        return () => {
+          mainApi.off('select', handleMainSelect);
+          textApi.off('select', handleTextSelect);
+        };
+      }, [mainApi, textApi, onSelect]);
 
 
   return (
@@ -359,3 +365,5 @@ export default function Home() {
     </div>
   );
 }
+
+    
