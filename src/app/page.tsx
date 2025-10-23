@@ -144,30 +144,32 @@ export default function Home() {
         setCurrent(api.selectedScrollSnap());
     }, []);
 
-     React.useEffect(() => {
+    React.useEffect(() => {
         if (!api) {
             return
         }
 
         onSelect(api);
-        api.on("select", onSelect);
-        api.on("reInit", onSelect);
-        
+
         const updateProgress = () => {
+            // This is a valid way to access the autoplay plugin instance
             const autoplay = api.plugins().autoplay;
-            if (autoplay) {
-                setProgress(autoplay.scrollProgress());
+            // The type definitions might be incorrect, so we check for existence before calling
+            if (autoplay && typeof (autoplay as any).scrollProgress === 'function') {
+                setProgress((autoplay as any).scrollProgress());
             }
         };
 
+        api.on("select", onSelect);
+        api.on("reInit", onSelect);
         api.on("scroll", updateProgress);
-        api.on("autoplay:play", updateProgress);
 
+        // Manually trigger the first progress update
+        updateProgress();
 
         return () => {
             api.off("select", onSelect)
             api.off("scroll", updateProgress);
-            api.off("autoplay:play", updateProgress);
             api.off("reInit", onSelect);
         }
     }, [api, onSelect])
@@ -313,3 +315,4 @@ export default function Home() {
   );
 
     
+
