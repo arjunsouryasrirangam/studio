@@ -1,3 +1,4 @@
+
 'use client'
 
 import Image from 'next/image';
@@ -6,7 +7,7 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowRight, Code, Music, Briefcase, User, PencilRuler, Piano, Waves, Images, GitCommit, Calendar, Zap, Timer } from 'lucide-react';
-import React, from 'react';
+import React from 'react';
 import Autoplay from "embla-carousel-autoplay";
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@/components/ui/carousel';
 import { cn } from '@/lib/utils';
@@ -88,7 +89,7 @@ const carouselSlides = [
         description: 'Follow my journey as a competitive swimmer.',
         buttonText: 'See Achievements',
         icon: <Waves className="h-5 w-5 mr-2"/>,
-        image: PlaceHolderImages.find((img) => img.id === 'swimming-achievement')
+        image: PlaceHolderImages.find((img) => img.id === 'swimming-action-2')
     },
     {
         href: '/badminton',
@@ -151,20 +152,21 @@ export default function Home() {
         api.on("select", onSelect);
         api.on("reInit", onSelect);
         
-        const onAutoplay = () => {
-            const a = api.plugins().autoplay;
-            if (!a) return;
-            setProgress(a.scrollProgress());
-        }
+        const updateProgress = () => {
+            const autoplay = api.plugins().autoplay;
+            if (autoplay) {
+                setProgress(autoplay.scrollProgress());
+            }
+        };
 
-        api.on("autoplay:play", onAutoplay);
-        api.on('scroll', onAutoplay);
+        api.on("scroll", updateProgress);
+        api.on("autoplay:play", updateProgress);
 
 
         return () => {
             api.off("select", onSelect)
-            api.off("autoplay:play", onAutoplay)
-            api.off("scroll", onAutoplay)
+            api.off("scroll", updateProgress);
+            api.off("autoplay:play", updateProgress);
             api.off("reInit", onSelect);
         }
     }, [api, onSelect])
@@ -199,8 +201,8 @@ export default function Home() {
                                 <Progress
                                     value={index === current ? progress * 100 : (index < current ? 100 : 0)}
                                     className={cn(
-                                        "h-full bg-primary transition-all duration-100",
-                                        index !== current && 'transition-none'
+                                        "h-full bg-primary transition-all duration-100 ease-linear",
+                                         index !== current && 'transition-none'
                                     )}
                                 />
                             </div>
@@ -308,4 +310,5 @@ export default function Home() {
       </section>
     </div>
   );
-}
+
+    
