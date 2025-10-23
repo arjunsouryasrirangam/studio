@@ -39,22 +39,23 @@ const navLinks = [
   { href: '/swimming', label: 'Swimming', icon: <Waves size={20} /> },
   { href: '/badminton', label: 'Badminton', icon: <ShuttlecockIcon /> },
   { href: '/gallery', label: 'Gallery', icon: <Images size={20} /> },
-  { href: '/request-website', label: 'Request Website', icon: <PencilRuler size={20} /> },
-  { href: '/contact', label: 'Contact', icon: <Contact size={20} /> },
+  { href: '/request-website', label: 'Request Website', icon: <PencilRuler size={16} /> },
+  { href: '/contact', label: 'Contact', icon: <Contact size={16} /> },
 ];
 
-const NavLink = ({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) => {
+const NavLink = ({ href, children, className, icon }: { href: string; children: React.ReactNode; className?: string, icon?: React.ReactNode }) => {
   const pathname = usePathname();
   const isActive = pathname === href;
   return (
     <Link href={href} className={cn(
-      "relative group font-medium text-sm",
+      "relative group font-medium text-sm flex items-center gap-2",
       isActive ? "text-primary font-bold" : "text-foreground/80 hover:text-foreground",
       className
     )}>
+      {icon}
       <span>{children}</span>
        <span className={cn(
-        "absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300",
+        "absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300",
         isActive ? "w-full" : "w-0 group-hover:w-full"
       )}></span>
     </Link>
@@ -71,10 +72,10 @@ export default function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
         {/* Left Side: Logo */}
-        <div className="flex items-center flex-shrink-0">
+        <div className="flex items-center flex-1 md:flex-none">
           <Link href="/" className="mr-6 flex items-center space-x-2">
             <Logo className="h-8 w-auto" />
-            <span className="hidden font-bold sm:inline-block font-headline">Arjun Sourya Srirangam</span>
+            <span className="hidden font-bold sm:inline-block font-headline text-lg">Arjun Sourya Srirangam</span>
           </Link>
         </div>
 
@@ -108,15 +109,15 @@ export default function Header() {
 
 
         {/* Right Side: Links and Mobile Menu Trigger */}
-        <div className="flex items-center justify-end flex-shrink-0">
-            <nav className="hidden md:flex items-center space-x-4 text-sm">
+        <div className="flex items-center justify-end flex-1 md:flex-none">
+            <nav className="hidden md:flex items-center space-x-6 text-sm">
                  {rightNavLinks.map((link) => (
-                    <NavLink key={link.href} href={link.href}>{link.label}</NavLink>
+                    <NavLink key={link.href} href={link.href} icon={link.icon}>{link.label}</NavLink>
                 ))}
             </nav>
             <Sheet>
                 <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden">
+                <Button variant="ghost" size="icon" className="md:hidden ml-4">
                     <Menu className="h-6 w-6" />
                     <span className="sr-only">Toggle Menu</span>
                 </Button>

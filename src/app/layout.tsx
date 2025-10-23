@@ -3,18 +3,19 @@ import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import './globals.css';
-import { Inter, Space_Grotesk } from 'next/font/google';
+import { Alegreya, Belleza } from 'next/font/google';
 import { FirebaseClientProvider } from '@/firebase';
 import { AiAssistant } from '@/components/ai-assistant/ai-assistant';
 
-const inter = Inter({
+const alegreya = Alegreya({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-alegreya',
 });
 
-const spaceGrotesk = Space_Grotesk({
+const belleza = Belleza({
   subsets: ['latin'],
-  variable: '--font-space-grotesk',
+  weight: '400',
+  variable: '--font-belleza',
 });
 
 export const metadata: Metadata = {
@@ -28,11 +29,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} dark`} suppressHydrationWarning>
+    <html lang="en" className={`${alegreya.variable} ${belleza.variable} dark`} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Alegreya:wght@400;500;700&family=Belleza&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased">
         <FirebaseClientProvider>
