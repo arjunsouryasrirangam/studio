@@ -90,6 +90,13 @@
       "imageUrl": "https://i.imgur.com/Ds9O4GO.jpeg",
       "imageHint": "award certificate",
       "category": "Singing"
+    },
+    {
+      "id": "piano-main",
+      "description": "A close-up of hands playing a grand piano.",
+      "imageUrl": "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGlhbm98ZW58MHx8MHx8fDA%3D&fm=jpg&q=60&w=3000",
+      "imageHint": "grand piano",
+      "category": "Programming"
     }
   ]
 }

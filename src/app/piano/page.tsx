@@ -1,4 +1,5 @@
 
+
 import { PageHeader, PageSection } from '@/components/layout/page-layout';
 import { pianoRepertoire } from '@/lib/placeholder-data';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,8 +7,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Piano, School, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import Image from 'next/image';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function PianoPage() {
+    const pianoImage = PlaceHolderImages.find(p => p.id === 'piano-main');
+
   return (
     <div>
       <PageHeader
@@ -15,6 +20,20 @@ export default function PianoPage() {
         description="The timeless elegance of the piano. Explore my journey through classical and contemporary pieces."
       />
        <PageSection>
+       {pianoImage && (
+            <div className="container mx-auto mb-12">
+                <div className="aspect-video md:aspect-[3/1] relative overflow-hidden rounded-lg shadow-lg">
+                    <Image
+                        src={pianoImage.imageUrl}
+                        alt={pianoImage.description}
+                        fill
+                        className="object-cover"
+                        data-ai-hint={pianoImage.imageHint}
+                        priority
+                    />
+                </div>
+            </div>
+        )}
         <div className="max-w-3xl mx-auto">
             <h2 className="text-3xl font-bold font-headline mb-4 flex items-center gap-2"><Piano/> Piano Journey</h2>
             <Card>

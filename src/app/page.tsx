@@ -75,7 +75,7 @@ const carouselSlides = [
         description: 'Discover my passion for the piano, from classical to contemporary.',
         buttonText: 'Explore My Journey',
         icon: <Piano className="mr-2 h-5 w-5"/>,
-        image: PlaceHolderImages.find((img) => img.id === 'piano-video-thumb-1')
+        image: PlaceHolderImages.find((img) => img.id === 'piano-main')
     },
      {
         href: '/tech',
