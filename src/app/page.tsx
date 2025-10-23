@@ -136,49 +136,60 @@ export default function Home() {
     const plugin = React.useRef(
       Autoplay({ delay: 2500, stopOnInteraction: true })
     );
-    const [api, setApi] = React.useState<CarouselApi>()
-    const [current, setCurrent] = React.useState(0)
+    
+    const [mainApi, setMainApi] = React.useState<CarouselApi>();
+    const [textApi, setTextApi] = React.useState<CarouselApi>();
+    const [current, setCurrent] = React.useState(0);
     const [progress, setProgress] = React.useState(0);
 
     const onSelect = React.useCallback((api: CarouselApi) => {
         if (!api) return;
         setCurrent(api.selectedScrollSnap());
-    }, []);
+        if (mainApi && textApi) {
+            if (mainApi.selectedScrollSnap() !== current) {
+                textApi.scrollTo(mainApi.selectedScrollSnap());
+            }
+        }
+    }, [mainApi, textApi, current]);
 
     React.useEffect(() => {
-        if (!api) {
-            return
-        }
+        if (!mainApi) return;
 
-        onSelect(api);
-
+        onSelect(mainApi);
+        mainApi.on("select", onSelect);
+        mainApi.on("reInit", onSelect);
+        
         const updateProgress = () => {
-            // This is a valid way to access the autoplay plugin instance
-            const autoplay = api.plugins().autoplay;
-            // The type definitions might be incorrect, so we check for existence before calling
+            const autoplay = mainApi.plugins().autoplay;
             if (autoplay && typeof (autoplay as any).scrollProgress === 'function') {
                 setProgress((autoplay as any).scrollProgress());
             }
         };
 
-        api.on("select", onSelect);
-        api.on("reInit", onSelect);
-        api.on("scroll", updateProgress);
-
-        // Manually trigger the first progress update
+        mainApi.on("scroll", updateProgress);
         updateProgress();
 
         return () => {
-            api.off("select", onSelect)
-            api.off("scroll", updateProgress);
-            api.off("reInit", onSelect);
+            mainApi.off("select", onSelect);
+            mainApi.off("scroll", updateProgress);
+            mainApi.off("reInit", onSelect);
         }
-    }, [api, onSelect])
+    }, [mainApi, onSelect]);
+
+    React.useEffect(() => {
+        if (!textApi || !mainApi) return;
+        textApi.on('select', () => {
+            if (mainApi.selectedScrollSnap() !== textApi.selectedScrollSnap()) {
+                mainApi.scrollTo(textApi.selectedScrollSnap());
+            }
+        });
+    }, [textApi, mainApi]);
+
 
   return (
     <div className="flex flex-col">
-       <section className="container mx-auto py-20 md:py-32 text-center">
-            <div className="space-y-6 mb-12">
+       <section className="container mx-auto py-20 md:py-32">
+            <div className="space-y-6 mb-12 text-center">
                 <h1 className="text-4xl md:text-5xl font-bold font-headline">
                     Arjun Sourya Srirangam
                 </h1>
@@ -187,58 +198,79 @@ export default function Home() {
                 </p>
             </div>
             
-            <Carousel
-              setApi={setApi}
-              plugins={[plugin.current]}
-              className="w-full max-w-5xl mx-auto"
-              opts={{
-                loop: true,
-              }}
-              onMouseEnter={plugin.current.stop}
-              onMouseLeave={plugin.current.play}
-            >
-                <div className="flex gap-2.5 mb-4">
-                    {carouselSlides.map((_, index) => (
-                        <div key={index} data-slide-index={index} className="flex-1 h-1 bg-muted/50 rounded-full overflow-hidden">
-                            <Progress
-                                value={index === current ? progress * 100 : (index < current ? 100 : 0)}
-                                className={cn(
-                                    "h-full bg-primary transition-all duration-100 ease-linear",
-                                     index !== current && 'transition-none'
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <div className="lg:col-span-3">
+                    <Carousel
+                      setApi={setMainApi}
+                      plugins={[plugin.current]}
+                      className="w-full"
+                      opts={{
+                        loop: true,
+                      }}
+                      onMouseEnter={plugin.current.stop}
+                      onMouseLeave={plugin.current.play}
+                    >
+                      <CarouselContent>
+                        {carouselSlides.map((slide) => (
+                          <CarouselItem key={slide.href}>
+                             <Card className="relative overflow-hidden group text-left">
+                                {slide.image && (
+                                    <Image 
+                                        src={slide.image.imageUrl}
+                                        alt={slide.image.description}
+                                        fill
+                                        className={cn(
+                                          "object-cover transition-transform duration-300 group-hover:scale-105",
+                                          slide.objectPosition
+                                        )}
+                                        data-ai-hint={slide.image.imageHint}
+                                    />
                                 )}
-                            />
-                        </div>
-                    ))}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
+                            </Card>
+                          </CarouselItem>
+                        ))}
+                      </CarouselContent>
+                    </Carousel>
                 </div>
-              <CarouselContent>
-                {carouselSlides.map((slide) => (
-                  <CarouselItem key={slide.href}>
-                     <Card className="relative overflow-hidden group text-left">
-                        {slide.image && (
-                            <Image 
-                                src={slide.image.imageUrl}
-                                alt={slide.image.description}
-                                fill
-                                className={cn(
-                                  "object-cover transition-transform duration-300 group-hover:scale-105",
-                                  (slide as any).objectPosition
-                                )}
-                                data-ai-hint={slide.image.imageHint}
-                            />
-                        )}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
-                        <div className="relative flex flex-col h-full justify-end p-6 min-h-[450px]">
-                            <h3 className="text-3xl font-bold font-headline text-white">{slide.title}</h3>
-                            <p className="text-white/80 mt-2">{slide.description}</p>
-                            <Button asChild className="mt-4 w-fit">
-                                <Link href={slide.href}>{slide.icon}{slide.buttonText} <ArrowRight className="ml-2"/></Link>
-                            </Button>
-                        </div>
-                    </Card>
-                  </CarouselItem>
+
+                <div className="lg:col-span-1 flex flex-col justify-between">
+                     <Carousel 
+                        setApi={setTextApi}
+                        orientation="vertical"
+                        className="w-full h-full"
+                        opts={{ loop: true, dragFree: true }}
+                     >
+                        <CarouselContent className="h-[450px]">
+                            {carouselSlides.map((slide) => (
+                                <CarouselItem key={slide.href} className="flex-shrink-0 basis-full">
+                                    <div className="relative flex flex-col h-full justify-center p-6">
+                                        <h3 className="text-3xl font-bold font-headline">{slide.title}</h3>
+                                        <p className="text-muted-foreground mt-2">{slide.description}</p>
+                                        <Button asChild className="mt-6 w-fit">
+                                            <Link href={slide.href}>{slide.icon}{slide.buttonText} <ArrowRight className="ml-2"/></Link>
+                                        </Button>
+                                    </div>
+                                </CarouselItem>
+                            ))}
+                        </CarouselContent>
+                    </Carousel>
+                </div>
+            </div>
+
+            <div className="flex gap-2.5 mt-4">
+                {carouselSlides.map((_, index) => (
+                    <div key={index} data-slide-index={index} className="flex-1 h-1 bg-muted/50 rounded-full overflow-hidden">
+                        <Progress
+                            value={index === current ? progress * 100 : (index < current ? 100 : 0)}
+                            className={cn(
+                                "h-full bg-primary transition-all duration-100 ease-linear",
+                                 index !== current && 'transition-none'
+                            )}
+                        />
+                    </div>
                 ))}
-              </CarouselContent>
-            </Carousel>
+            </div>
       </section>
 
       <section className="py-16 md:py-24 bg-background">
