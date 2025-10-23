@@ -91,7 +91,7 @@ const carouselSlides = [
         description: 'Follow my journey as a competitive swimmer.',
         buttonText: 'See Achievements',
         icon: <Waves className="h-5 w-5 mr-2"/>,
-        image: PlaceHolderImages.find((img) => img.id === 'swimming-action-2')
+        image: PlaceHolderImages.find((img) => img.id === 'swimming-achievement')
     },
     {
         href: '/badminton',
@@ -107,7 +107,7 @@ const carouselSlides = [
         description: 'A visual collection of moments and milestones.',
         buttonText: 'Explore Gallery',
         icon: <Images className="mr-2 h-5 w-5"/>,
-        image: PlaceHolderImages.find((img) => img.id === 'swimming-action')
+        image: PlaceHolderImages.find((img) => img.id === 'gallery-promo')
     }
 ]
 
