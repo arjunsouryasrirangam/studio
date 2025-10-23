@@ -32,22 +32,22 @@ const aboutSections = [
     {
         icon: <Music className="h-6 w-6 text-primary" />,
         title: "Musician",
-        text: "With over 6 years of singing experience and 4 years playing the piano, Arjun's musical journey started at a young age. He finds joy in expressing himself through music and continues to hone his skills."
+        text: "With over 6 years of singing experience and 4 years playing the piano, my musical journey started at a young age. I find joy in expressing myself through music and continue to hone my skills."
     },
     {
         icon: <Code className="h-6 w-6 text-primary" />,
         title: "Coder",
-        text: "Arjun has been coding for 3 years and enjoys the process of building and creating. He uses his skills to bring ideas to life, from simple projects to more complex applications."
+        text: "I have been coding for 3 years and enjoy the process of building and creating. I use my skills to bring ideas to life, from simple projects to more complex applications."
     },
     {
         icon: <ShuttlecockIcon className="h-6 w-6 text-primary" />,
         title: "Athlete",
-        text: "A dedicated badminton player for 1 year, Arjun is an enthusiastic athlete who thrives on the court. He enjoys the fast-paced nature of the sport and the challenge of friendly competition."
+        text: "A dedicated badminton player for 1.5 years, I am an enthusiastic athlete who thrives on the court. I enjoy the fast-paced nature of the sport and the challenge of friendly competition."
     },
     {
         icon: <Briefcase className="h-6 w-6 text-primary" />,
         title: "Future Entrepreneur",
-        text: "At just 10 years old, Arjun is already looking to the future with big ambitions. He dreams of creating his own hotel group, inspired by brands like Marriott Bonvoy and Mandarin Oriental, along with starting his own airline. He is passionate about building businesses and creating new experiences."
+        text: "At just 10, I am already looking to the future with big ambitions. I dream of creating my own hotel group and airline, inspired by brands like Marriott and Mandarin Oriental."
     }
 ];
 
@@ -134,9 +134,9 @@ const contributionData = [
 
 export default function Home() {
     const plugin = React.useRef(
-      Autoplay({ delay: 2500, stopOnInteraction: true })
+      Autoplay({ delay: 3500, stopOnInteraction: true })
     );
-    
+
     const [mainApi, setMainApi] = React.useState<CarouselApi>();
     const [textApi, setTextApi] = React.useState<CarouselApi>();
     const [current, setCurrent] = React.useState(0);
@@ -145,12 +145,7 @@ export default function Home() {
     const onSelect = React.useCallback((api: CarouselApi) => {
         if (!api) return;
         setCurrent(api.selectedScrollSnap());
-        if (mainApi && textApi) {
-            if (mainApi.selectedScrollSnap() !== current) {
-                textApi.scrollTo(mainApi.selectedScrollSnap());
-            }
-        }
-    }, [mainApi, textApi, current]);
+    }, []);
 
     React.useEffect(() => {
         if (!mainApi) return;
@@ -158,32 +153,47 @@ export default function Home() {
         onSelect(mainApi);
         mainApi.on("select", onSelect);
         mainApi.on("reInit", onSelect);
-        
+
         const updateProgress = () => {
             const autoplay = mainApi.plugins().autoplay;
             if (autoplay && typeof (autoplay as any).scrollProgress === 'function') {
-                setProgress((autoplay as any).scrollProgress());
+                const scrollProgress = (autoplay as any).scrollProgress();
+                setProgress(scrollProgress * 100);
             }
         };
 
         mainApi.on("scroll", updateProgress);
-        updateProgress();
+        mainApi.on("autoplay:play", updateProgress); // Update on play as well
 
         return () => {
             mainApi.off("select", onSelect);
             mainApi.off("scroll", updateProgress);
             mainApi.off("reInit", onSelect);
+            mainApi.off("autoplay:play", updateProgress);
         }
     }, [mainApi, onSelect]);
 
     React.useEffect(() => {
         if (!textApi || !mainApi) return;
-        textApi.on('select', () => {
-            if (mainApi.selectedScrollSnap() !== textApi.selectedScrollSnap()) {
-                mainApi.scrollTo(textApi.selectedScrollSnap());
+
+        const syncCarousels = (draggedApi: CarouselApi, otherApi: CarouselApi) => {
+            const selected = draggedApi.selectedScrollSnap();
+            if (otherApi.selectedScrollSnap() !== selected) {
+                otherApi.scrollTo(selected);
             }
-        });
-    }, [textApi, mainApi]);
+        };
+
+        const syncMainToText = () => syncCarousels(mainApi, textApi);
+        const syncTextToMain = () => syncCarousels(textApi, mainApi);
+
+        mainApi.on('select', syncMainToText);
+        textApi.on('select', syncTextToMain);
+
+        return () => {
+            mainApi.off('select', syncMainToText);
+            textApi.off('select', syncTextToMain);
+        }
+    }, [mainApi, textApi]);
 
 
   return (
@@ -213,7 +223,7 @@ export default function Home() {
                       <CarouselContent>
                         {carouselSlides.map((slide) => (
                           <CarouselItem key={slide.href}>
-                             <Card className="relative overflow-hidden group text-left">
+                             <Card className="relative overflow-hidden group text-left h-[450px]">
                                 {slide.image && (
                                     <Image 
                                         src={slide.image.imageUrl}
@@ -224,9 +234,17 @@ export default function Home() {
                                           slide.objectPosition
                                         )}
                                         data-ai-hint={slide.image.imageHint}
+                                        priority
                                     />
                                 )}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
+                                <div className="absolute bottom-0 left-0 p-6">
+                                     <h3 className="text-3xl font-bold font-headline text-white">{slide.title}</h3>
+                                     <p className="text-white/80 mt-2 max-w-md">{slide.description}</p>
+                                     <Button asChild className="mt-6">
+                                        <Link href={slide.href}>{slide.icon}{slide.buttonText} <ArrowRight className="ml-2"/></Link>
+                                    </Button>
+                                </div>
                             </Card>
                           </CarouselItem>
                         ))}
@@ -234,23 +252,25 @@ export default function Home() {
                     </Carousel>
                 </div>
 
-                <div className="lg:col-span-1 flex flex-col justify-between">
-                     <Carousel 
+                <div className="lg:col-span-1">
+                     <Carousel
                         setApi={setTextApi}
                         orientation="vertical"
                         className="w-full h-full"
                         opts={{ loop: true, dragFree: true }}
                      >
                         <CarouselContent className="h-[450px]">
-                            {carouselSlides.map((slide) => (
-                                <CarouselItem key={slide.href} className="flex-shrink-0 basis-full">
-                                    <div className="relative flex flex-col h-full justify-center p-6">
-                                        <h3 className="text-3xl font-bold font-headline">{slide.title}</h3>
-                                        <p className="text-muted-foreground mt-2">{slide.description}</p>
-                                        <Button asChild className="mt-6 w-fit">
-                                            <Link href={slide.href}>{slide.icon}{slide.buttonText} <ArrowRight className="ml-2"/></Link>
-                                        </Button>
-                                    </div>
+                            {aboutSections.slice(1).map((section) => (
+                                <CarouselItem key={section.title} className="basis-full">
+                                    <Card className="h-full">
+                                        <CardContent className="p-6 text-center flex flex-col items-center justify-center h-full">
+                                            <div className="p-3 bg-primary/10 rounded-full mb-4">
+                                                {section.icon}
+                                            </div>
+                                            <h3 className="text-xl font-bold font-headline mb-2">{section.title}</h3>
+                                            <p className="text-muted-foreground text-sm">{section.text}</p>
+                                        </CardContent>
+                                    </Card>
                                 </CarouselItem>
                             ))}
                         </CarouselContent>
@@ -262,10 +282,10 @@ export default function Home() {
                 {carouselSlides.map((_, index) => (
                     <div key={index} data-slide-index={index} className="flex-1 h-1 bg-muted/50 rounded-full overflow-hidden">
                         <Progress
-                            value={index === current ? progress * 100 : (index < current ? 100 : 0)}
+                            value={index === current ? progress : (index < current ? 100 : 0)}
                             className={cn(
-                                "h-full bg-primary transition-all duration-100 ease-linear",
-                                 index !== current && 'transition-none'
+                                "h-full bg-primary",
+                                 index === current ? 'transition-all duration-100 ease-linear' : 'transition-none'
                             )}
                         />
                     </div>
@@ -273,25 +293,17 @@ export default function Home() {
             </div>
       </section>
 
-      <section className="py-16 md:py-24 bg-background">
-          <div className="container mx-auto max-w-5xl">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                {aboutSections.slice(1).map((section) => (
-                    <Card key={section.title}>
-                        <CardContent className="p-6 text-center flex flex-col items-center">
-                            <div className="p-3 bg-primary/10 rounded-full mb-4">
-                                 {section.icon}
-                            </div>
-                            <h3 className="text-xl font-bold font-headline mb-2">{section.title}</h3>
-                            <p className="text-muted-foreground text-sm">{section.text}</p>
-                        </CardContent>
-                    </Card>
-                ))}
+      <section className="py-16 md:py-24 bg-card/95">
+           <div className="container mx-auto max-w-5xl text-center">
+             <div className="p-3 bg-primary/10 rounded-full mb-4 inline-block">
+                {aboutSections[0].icon}
             </div>
+            <h2 className="text-3xl font-bold font-headline mb-4">{aboutSections[0].title}</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">{aboutSections[0].text}</p>
         </div>
       </section>
 
-      <section className="py-16 md:py-24 bg-card/95">
+      <section className="py-16 md:py-24 bg-background">
         <div className="container mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12">
             <div className="lg:col-span-1 space-y-6">
                  <h2 className="text-3xl font-bold font-headline flex items-center gap-3">
@@ -346,11 +358,4 @@ export default function Home() {
       </section>
     </div>
   );
-
-    
-
-
-
-    
-
 }
