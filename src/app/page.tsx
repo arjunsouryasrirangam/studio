@@ -1,3 +1,4 @@
+
 'use client'
 
 import Image from 'next/image';
@@ -141,69 +142,49 @@ export default function Home() {
     const [progress, setProgress] = React.useState(0);
 
 
-    const onSelect = React.useCallback((api: CarouselApi) => {
-        if (!api) return;
-        const newIndex = api.selectedScrollSnap();
-        setCurrent(newIndex);
-        
-        // Sync carousels
-        if (mainApi && textApi) {
-            if (mainApi.selectedScrollSnap() !== newIndex) {
-                mainApi.scrollTo(newIndex);
-            }
-            if (textApi.selectedScrollSnap() !== newIndex) {
-                textApi.scrollTo(newIndex);
-            }
+     React.useEffect(() => {
+        if (!mainApi || !textApi) {
+          return;
         }
-    }, [mainApi, textApi]);
+    
+        const syncCarousels = (master: CarouselApi, follower: CarouselApi) => {
+          return () => {
+            const masterIndex = master.selectedScrollSnap();
+            if (follower.selectedScrollSnap() !== masterIndex) {
+              follower.scrollTo(masterIndex);
+            }
+            setCurrent(masterIndex);
+          };
+        };
 
+        const onMainSelect = syncCarousels(mainApi, textApi);
+        const onTextSelect = syncCarousels(textApi, mainApi);
 
-    React.useEffect(() => {
-        if (!mainApi) return;
+        mainApi.on('select', onMainSelect);
+        textApi.on('select', onTextSelect);
 
         const onProgress = (api: CarouselApi, progress: number) => {
           setProgress(progress);
         };
 
-        const onSettle = (api: CarouselApi) => {
-            setProgress(0);
-        }
-
-        mainApi.on("select", onSelect);
-        mainApi.on("reInit", onSelect);
-        mainApi.on("settle", onSettle);
-
-        const autoplayPluginInstance = plugin.current;
-        if (autoplayPluginInstance) {
-          autoplayPluginInstance.on('autoplay:progress', (evt: any) => {
-              setProgress(evt.progress * 100);
-          });
-        }
-        
-        return () => {
-            mainApi.off("select", onSelect);
-            mainApi.off("reInit", onSelect);
-            mainApi.off("settle", onSettle);
-            if (autoplayPluginInstance) {
-               autoplayPluginInstance.off('autoplay:progress', (evt: any) => {
-                  setProgress(evt.progress * 100);
-              });
-            }
-        }
-    }, [mainApi, onSelect]);
-
-
-    React.useEffect(() => {
-        if (!textApi) return;
-        
-        textApi.on('select', onSelect);
-        textApi.on('reInit', onSelect);
-
-        return () => {
-          textApi.off('select', onSelect);
-          textApi.off('reInit', onSelect);
+        const onAutoplayProgress = (api: CarouselApi, evt: any) => {
+            // Embla's autoplay progress event returns a value between 0 and 1.
+            setProgress(evt * 100);
         };
-      }, [textApi, onSelect]);
+        
+        mainApi.on('autoplay:progress', onAutoplayProgress);
+        
+        // When the carousel settles on a new slide, reset the progress.
+        const onSettle = () => setProgress(0);
+        mainApi.on('settle', onSettle);
+
+        return () => {
+          mainApi.off('select', onMainSelect);
+          textApi.off('select', onTextSelect);
+          mainApi.off('autoplay:progress', onAutoplayProgress);
+          mainApi.off('settle', onSettle);
+        };
+      }, [mainApi, textApi]);
 
 
   return (
@@ -369,5 +350,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
