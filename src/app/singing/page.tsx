@@ -2,6 +2,7 @@
 
 
 
+
 import { PageHeader, PageSection } from '@/components/layout/page-layout';
 import { favoriteRagas } from '@/lib/placeholder-data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -118,7 +119,7 @@ export default function SingingPage() {
       </PageSection>
       <PageSection  className="bg-card">
         <h2 className="text-3xl font-bold text-center mb-10 font-headline flex items-center justify-center gap-3">
-          <Camera /> Event Photos
+          <Camera /> Event Highlights
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 max-w-7xl mx-auto">
             {performanceImages.map((imageId) => {
