@@ -71,7 +71,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
         {/* Left Side: Logo */}
-        <div className="flex items-center">
+        <div className="flex items-center flex-shrink-0">
           <Link href="/" className="mr-6 flex items-center space-x-2">
             <Logo className="h-8 w-auto" />
             <span className="hidden font-bold sm:inline-block font-headline">Arjun Sourya Srirangam</span>
@@ -108,7 +108,7 @@ export default function Header() {
 
 
         {/* Right Side: Links and Mobile Menu Trigger */}
-        <div className="flex flex-1 items-center justify-end gap-2">
+        <div className="flex items-center justify-end flex-shrink-0">
             <nav className="hidden md:flex items-center space-x-4 text-sm">
                  {rightNavLinks.map((link) => (
                     <NavLink key={link.href} href={link.href}>{link.label}</NavLink>
