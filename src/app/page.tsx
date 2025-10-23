@@ -177,89 +177,86 @@ export default function Home() {
 
   return (
     <div className="flex flex-col">
-       <section className="container mx-auto py-20 md:py-32">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            <div className="space-y-8">
-                 <div className="space-y-6">
-                    <h1 className="text-4xl md:text-5xl font-bold font-headline">
-                        Arjun Sourya Srirangam
-                    </h1>
-                     <p className="text-lg text-muted-foreground">
-                        A passionate creator exploring the worlds of technology, music, and sports.
-                    </p>
-                </div>
-                
-                <Carousel
-                  setApi={setApi}
-                  plugins={[plugin.current]}
-                  className="w-full"
-                  opts={{
-                    loop: true,
-                  }}
-                  onMouseEnter={plugin.current.stop}
-                  onMouseLeave={plugin.current.play}
-                >
-                    <div className="flex gap-2.5 mb-4">
-                        {carouselSlides.map((_, index) => (
-                            <div key={index} data-slide-index={index} className="flex-1 h-1 bg-muted/50 rounded-full overflow-hidden">
-                                <Progress
-                                    value={index === current ? progress * 100 : (index < current ? 100 : 0)}
-                                    className={cn(
-                                        "h-full bg-primary transition-all duration-100 ease-linear",
-                                         index !== current && 'transition-none'
-                                    )}
-                                />
-                            </div>
-                        ))}
-                    </div>
-                  <CarouselContent>
-                    {carouselSlides.map((slide) => (
-                      <CarouselItem key={slide.href}>
-                         <Card className="relative overflow-hidden group">
-                            {slide.image && (
-                                <Image 
-                                    src={slide.image.imageUrl}
-                                    alt={slide.image.description}
-                                    fill
-                                    className={cn(
-                                      "object-cover transition-transform duration-300 group-hover:scale-105",
-                                      (slide as any).objectPosition
-                                    )}
-                                    data-ai-hint={slide.image.imageHint}
-                                />
-                            )}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
-                            <div className="relative flex flex-col h-full justify-end p-6 min-h-[400px]">
-                                <h3 className="text-3xl font-bold font-headline text-white">{slide.title}</h3>
-                                <p className="text-white/80 mt-2">{slide.description}</p>
-                                <Button asChild className="mt-4 w-fit">
-                                    <Link href={slide.href}>{slide.icon}{slide.buttonText} <ArrowRight className="ml-2"/></Link>
-
-                                </Button>
-                            </div>
-                        </Card>
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                </Carousel>
+       <section className="container mx-auto py-20 md:py-32 text-center">
+            <div className="space-y-6 mb-12">
+                <h1 className="text-4xl md:text-5xl font-bold font-headline">
+                    Arjun Sourya Srirangam
+                </h1>
+                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                    A passionate creator exploring the worlds of technology, music, and sports.
+                </p>
             </div>
-
-            <div className="space-y-8 lg:mt-12">
-                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    {aboutSections.slice(1).map((section) => (
-                        <Card key={section.title}>
-                            <CardContent className="p-6 text-center flex flex-col items-center">
-                                <div className="p-3 bg-primary/10 rounded-full mb-4">
-                                     {section.icon}
-                                </div>
-                                <h3 className="text-xl font-bold font-headline mb-2">{section.title}</h3>
-                                <p className="text-muted-foreground text-sm">{section.text}</p>
-                            </CardContent>
-                        </Card>
+            
+            <Carousel
+              setApi={setApi}
+              plugins={[plugin.current]}
+              className="w-full max-w-5xl mx-auto"
+              opts={{
+                loop: true,
+              }}
+              onMouseEnter={plugin.current.stop}
+              onMouseLeave={plugin.current.play}
+            >
+                <div className="flex gap-2.5 mb-4">
+                    {carouselSlides.map((_, index) => (
+                        <div key={index} data-slide-index={index} className="flex-1 h-1 bg-muted/50 rounded-full overflow-hidden">
+                            <Progress
+                                value={index === current ? progress * 100 : (index < current ? 100 : 0)}
+                                className={cn(
+                                    "h-full bg-primary transition-all duration-100 ease-linear",
+                                     index !== current && 'transition-none'
+                                )}
+                            />
+                        </div>
                     ))}
                 </div>
+              <CarouselContent>
+                {carouselSlides.map((slide) => (
+                  <CarouselItem key={slide.href}>
+                     <Card className="relative overflow-hidden group text-left">
+                        {slide.image && (
+                            <Image 
+                                src={slide.image.imageUrl}
+                                alt={slide.image.description}
+                                fill
+                                className={cn(
+                                  "object-cover transition-transform duration-300 group-hover:scale-105",
+                                  (slide as any).objectPosition
+                                )}
+                                data-ai-hint={slide.image.imageHint}
+                            />
+                        )}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
+                        <div className="relative flex flex-col h-full justify-end p-6 min-h-[450px]">
+                            <h3 className="text-3xl font-bold font-headline text-white">{slide.title}</h3>
+                            <p className="text-white/80 mt-2">{slide.description}</p>
+                            <Button asChild className="mt-4 w-fit">
+                                <Link href={slide.href}>{slide.icon}{slide.buttonText} <ArrowRight className="ml-2"/></Link>
+                            </Button>
+                        </div>
+                    </Card>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
+      </section>
+
+      <section className="py-16 md:py-24 bg-background">
+          <div className="container mx-auto max-w-5xl">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                {aboutSections.slice(1).map((section) => (
+                    <Card key={section.title}>
+                        <CardContent className="p-6 text-center flex flex-col items-center">
+                            <div className="p-3 bg-primary/10 rounded-full mb-4">
+                                 {section.icon}
+                            </div>
+                            <h3 className="text-xl font-bold font-headline mb-2">{section.title}</h3>
+                            <p className="text-muted-foreground text-sm">{section.text}</p>
+                        </CardContent>
+                    </Card>
+                ))}
             </div>
-          </div>
+        </div>
       </section>
 
       <section className="py-16 md:py-24 bg-card/95">
@@ -323,3 +320,5 @@ export default function Home() {
 
 
     
+
+}
