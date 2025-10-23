@@ -1,9 +1,9 @@
 
 'use client';
 
-import { PageHeader, PageSection } from '@/components/layout/page-layout';
+import { PageSection } from '@/components/layout/page-layout';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
-import { collection } from 'firebase/firestore';
+import { collection, orderBy, query } from 'firebase/firestore';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -27,19 +27,15 @@ export default function WebsiteRequestsPage() {
   const firestore = useFirestore();
   const requestsQuery = useMemoFirebase(() => {
     if (!firestore) return null;
-    return collection(firestore, 'website_requests');
+    return query(collection(firestore, 'website_requests'), orderBy('submissionDate', 'desc'));
   }, [firestore]);
 
   const { data: requests, isLoading, error } = useCollection<WebsiteRequest>(requestsQuery);
 
   return (
-    <div>
-      <PageHeader
-        title="Website Build Requests"
-        description="Here are all the proposals for new website projects."
-      />
       <PageSection>
         <div className="max-w-4xl mx-auto space-y-6">
+          <h2 className="text-3xl font-bold font-headline mb-4">Website Build Requests</h2>
           {isLoading && (
             <>
               <Skeleton className="h-48 w-full" />
@@ -90,6 +86,5 @@ export default function WebsiteRequestsPage() {
           ))}
         </div>
       </PageSection>
-    </div>
   );
 }

@@ -1,9 +1,9 @@
 
 'use client';
 
-import { PageHeader, PageSection } from '@/components/layout/page-layout';
+import { PageSection } from '@/components/layout/page-layout';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
-import { collection } from 'firebase/firestore';
+import { collection, orderBy, query } from 'firebase/firestore';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -24,19 +24,16 @@ export default function ContactSubmissionsPage() {
   const firestore = useFirestore();
   const submissionsQuery = useMemoFirebase(() => {
     if (!firestore) return null;
-    return collection(firestore, 'contact_form_submissions');
+    // Order by submission date, newest first
+    return query(collection(firestore, 'contact_form_submissions'), orderBy('submissionDate', 'desc'));
   }, [firestore]);
 
   const { data: submissions, isLoading, error } = useCollection<ContactSubmission>(submissionsQuery);
 
   return (
-    <div>
-      <PageHeader
-        title="Contact Form Submissions"
-        description="Here are all the messages received from the contact form."
-      />
       <PageSection>
         <div className="max-w-4xl mx-auto space-y-6">
+            <h2 className="text-3xl font-bold font-headline mb-4">Contact Form Submissions</h2>
           {isLoading && (
             <>
               <Skeleton className="h-40 w-full" />
@@ -83,6 +80,5 @@ export default function ContactSubmissionsPage() {
           ))}
         </div>
       </PageSection>
-    </div>
   );
 }

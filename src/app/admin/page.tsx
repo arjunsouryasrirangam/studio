@@ -1,5 +1,6 @@
 
-import { PageHeader, PageSection } from '@/components/layout/page-layout';
+
+import { PageSection } from '@/components/layout/page-layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowRight, Inbox, Mail } from 'lucide-react';
@@ -8,10 +9,6 @@ import Link from 'next/link';
 export default function AdminPage() {
   return (
     <div>
-      <PageHeader
-        title="Admin Dashboard"
-        description="View form submissions and manage website content."
-      />
       <PageSection>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <Card>
