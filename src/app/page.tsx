@@ -181,7 +181,7 @@ export default function Home() {
   return (
     <div className="flex flex-col">
        <section className="container mx-auto py-20 md:py-32">
-            <div className="space-y-6 mb-12 text-center">
+            <div className="space-y-6 mb-12 text-center animate-fade-in-up">
                 <h1 className="text-4xl md:text-5xl font-bold font-headline">
                     Arjun Sourya Srirangam
                 </h1>
@@ -190,7 +190,7 @@ export default function Home() {
                 </p>
             </div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 animate-fade-in-up animation-delay-300">
                 <div className="lg:col-span-3">
                     <Carousel
                       setApi={setMainApi}
@@ -260,7 +260,7 @@ export default function Home() {
                 </div>
             </div>
 
-            <div className="flex gap-2.5 mt-4">
+            <div className="flex gap-2.5 mt-4 animate-fade-in-up animation-delay-500">
                 {carouselSlides.map((_, index) => (
                     <div key={index} data-slide-index={index} className="flex-1 h-1 bg-muted/50 rounded-full overflow-hidden cursor-pointer" onClick={() => mainApi?.scrollTo(index)}>
                         <Progress
@@ -276,7 +276,7 @@ export default function Home() {
       </section>
 
       <section className="py-16 md:py-24 bg-card/95">
-           <div className="container mx-auto max-w-5xl text-center">
+           <div className="container mx-auto max-w-5xl text-center animate-fade-in-up">
              <div className="p-3 bg-primary/10 rounded-full mb-4 inline-block">
                 {aboutSections[0].icon}
             </div>
@@ -286,7 +286,7 @@ export default function Home() {
       </section>
 
       <section className="py-16 md:py-24 bg-background">
-        <div className="container mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div className="container mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12 animate-fade-in-up">
             <div className="lg:col-span-1 space-y-6">
                  <h2 className="text-3xl font-bold font-headline flex items-center gap-3">
                     <GitCommit className="text-primary" />

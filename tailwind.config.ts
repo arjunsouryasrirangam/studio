@@ -77,12 +77,40 @@ export default {
             height: '0',
           },
         },
+        'fade-in-up': {
+            'from': {
+                opacity: '0',
+                transform: 'translateY(10px)'
+            },
+            'to': {
+                opacity: '1',
+                transform: 'translateY(0)'
+            },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'fade-in-up': 'fade-in-up 0.6s ease-out forwards',
+      },
+       animationDelay: {
+        '300': '300ms',
+        '500': '500ms',
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [
+    require('tailwindcss-animate'),
+    function ({ addUtilities, theme }: { addUtilities: any, theme: any }) {
+      const newUtilities = {
+        '.animation-delay-300': {
+          'animation-delay': theme('animationDelay.300'),
+        },
+        '.animation-delay-500': {
+          'animation-delay': theme('animationDelay.500'),
+        },
+      }
+      addUtilities(newUtilities, ['responsive', 'hover'])
+    }
+  ],
 } satisfies Config;
