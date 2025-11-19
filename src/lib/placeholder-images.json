@@ -1,34 +1,6 @@
 {
   "placeholderImages": [
     {
-      "id": "tech-project-1",
-      "description": "Abstract visualization of code or data structures.",
-      "imageUrl": "https://images.unsplash.com/photo-1550439062-609e1531270e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMGNvZGV8ZW58MHx8fHwxNzU5Mzc3MDM3fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "abstract code",
-      "category": "Programming"
-    },
-    {
-      "id": "tech-project-2",
-      "description": "An open book with letters floating off the page.",
-      "imageUrl": "https://img.jagranjosh.com/images/2024/November/20112024/word-of-the-day-for-nov-21.jpg",
-      "imageHint": "book letters",
-      "category": "Programming"
-    },
-    {
-      "id": "tech-project-3",
-      "description": "A person writing in a minimal notebook.",
-      "imageUrl": "https://images.pexels.com/photos/1766604/pexels-photo-1766604.jpeg?cs=srgb&dl=pexels-judit-peter-281675-1766604.jpg&fm=jpg",
-      "imageHint": "minimal notes",
-      "category": "Programming"
-    },
-    {
-      "id": "request-website-promo",
-      "description": "Code on a dark themed editor",
-      "imageUrl": "https://images.unsplash.com/photo-1566837945700-30057527ade0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjb2RlJTIwZWRpdG9yfGVufDB8fHx8MTc1OTE1MTk0MXww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "code editor",
-      "category": "Programming"
-    },
-    {
       "id": "swimming-action",
       "description": "A swimmer doing freestyle stroke",
       "imageUrl": "https://images.unsplash.com/photo-1560090963-4fde545b73de?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxzd2ltbWVyJTIwcmFjZXxlbnwwfHx8fDE3NTkxNzQyMjJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
@@ -48,20 +20,6 @@
       "imageUrl": "https://images.unsplash.com/photo-1644151699511-d3c5a98af19c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzd2ltbWVyJTIwbWVkYWx8ZW58MHx8fHwxNzU5MDY1ODQ5fDA&ixlibrb-4.1.0&q=80&w=1080",
       "imageHint": "swimmer medal",
       "category": "Swimming"
-    },
-    {
-      "id": "badminton-action",
-      "description": "A badminton player hitting a smash",
-      "imageUrl": "https://images.unsplash.com/photo-1732955365687-152d8ce1f9ab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxiYWRtaW50b24lMjBzbWFzaHxlbnwwfHx8fDE3NTkxNzQyMjJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "badminton smash",
-      "category": "Badminton"
-    },
-    {
-      "id": "badminton-highlight",
-      "description": "A video thumbnail of a badminton match",
-      "imageUrl": "https://images.unsplash.com/photo-1733141732172-3abba91f4db2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxiYWRtaW50b24lMjBtYXRjaHxlbnwwfHx8fDE3NTkxNzQyMjJ8MA&ixlib.rb-4.1.0&q=80&w=1080",
-      "imageHint": "badminton match",
-      "category": "Badminton"
     },
     {
       "id": "singing-performance-1",
@@ -90,13 +48,6 @@
       "imageUrl": "https://i.imgur.com/Ds9O4GO.jpeg",
       "imageHint": "award certificate",
       "category": "Singing"
-    },
-    {
-      "id": "piano-main",
-      "description": "A close-up of hands playing a grand piano.",
-      "imageUrl": "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGlhbm98ZW58MHx8MHx8fDA%3D&fm=jpg&q=60&w=3000",
-      "imageHint": "grand piano",
-      "category": "Programming"
     },
     {
       "id": "gallery-promo",
