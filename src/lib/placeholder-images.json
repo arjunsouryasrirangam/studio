@@ -26,28 +26,28 @@
       "description": "Diwali 2025 Maitri Foundation EU",
       "imageUrl": "https://i.imgur.com/vD0YwzB.jpeg",
       "imageHint": "singer performance",
-      "category": "Singing"
+      "category": "Music"
     },
     {
       "id": "singing-performance-2",
       "description": "AllArt Shravyh Musicals Event",
       "imageUrl": "https://i.imgur.com/0Beb4Pe.jpeg",
       "imageHint": "singer microphone",
-      "category": "Singing"
+      "category": "Music"
     },
     {
       "id": "singing-performance-3",
       "description": "NLTC Dusshera Event 2025",
       "imageUrl": "https://i.imgur.com/sFLr87a.jpeg",
       "imageHint": "singer profile",
-      "category": "Singing"
+      "category": "Music"
     },
     {
       "id": "singing-performance-4",
       "description": "Sangeeti School of Indian Music Event 2024",
       "imageUrl": "https://i.imgur.com/Ds9O4GO.jpeg",
       "imageHint": "award certificate",
-      "category": "Singing"
+      "category": "Music"
     }
   ]
 }

@@ -6,7 +6,7 @@ import { PlaceHolderImages, type ImagePlaceholder } from '@/lib/placeholder-imag
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-const categories = ['Singing', 'Swimming', 'Badminton', 'Programming'];
+const categories = ['Music', 'Swimming', 'Badminton', 'Programming'];
 
 export function GalleryGrid() {
   const [selectedImage, setSelectedImage] = useState<ImagePlaceholder | null>(null);
@@ -24,7 +24,7 @@ export function GalleryGrid() {
 
   return (
     <>
-      <Tabs defaultValue="Singing" className="w-full">
+      <Tabs defaultValue="Music" className="w-full">
         <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8">
           {categories.map((category) => (
             <TabsTrigger key={category} value={category}>{category}</TabsTrigger>
