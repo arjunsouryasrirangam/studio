@@ -34,7 +34,7 @@ function ShuttlecockIcon(props: React.SVGProps<SVGSVGElement>) {
 const navLinks = [
   { href: '/', label: 'Home', icon: <Home size={20} /> },
   { href: '/tech', label: 'Tech', icon: <Code size={20} /> },
-  { href: '/singing', label: 'Singing', icon: <Music size={20} /> },
+  { href: '/singing', label: 'Music', icon: <Music size={20} /> },
   { href: '/piano', label: 'Piano', icon: <Piano size={20} /> },
   { href: '/swimming', label: 'Swimming', icon: <Waves size={20} /> },
   { href: '/badminton', label: 'Badminton', icon: <ShuttlecockIcon /> },

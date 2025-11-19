@@ -3,11 +3,10 @@ import { PageHeader, PageSection } from '@/components/layout/page-layout';
 import { techProjects, techSkills } from '@/lib/placeholder-data';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import Image from 'next/image';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Link from 'next/link';
-import { ArrowRight, Cpu, Layers, School, User, Link as LinkIcon, Code } from 'lucide-react';
+import { ArrowRight, Layers, School, User, Link as LinkIcon, Code, Video } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 export default function TechPage() {
   return (
@@ -62,22 +61,19 @@ export default function TechPage() {
 
       <PageSection>
         <h2 className="text-3xl font-bold text-center mb-10 font-headline">Featured Projects</h2>
+        <div className="max-w-2xl mx-auto mb-12">
+             <Alert>
+                <Video className="h-4 w-4" />
+                <AlertTitle>Media Coming Soon!</AlertTitle>
+                <AlertDescription>
+                    There aren't yet any images or videos uploaded for these projects. In the meantime, feel free to check them out using the links below.
+                </AlertDescription>
+            </Alert>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {techProjects.map((project) => {
-            const projectImage = PlaceHolderImages.find(p => p.id === project.image);
             return (
               <Card key={project.title} className="flex flex-col">
-                {projectImage && (
-                  <div className="aspect-video relative overflow-hidden rounded-t-lg">
-                    <Image
-                      src={projectImage.imageUrl}
-                      alt={projectImage.description}
-                      fill
-                      className="object-cover"
-                      data-ai-hint={projectImage.imageHint}
-                    />
-                  </div>
-                )}
                 <CardHeader>
                   <CardTitle className="font-headline">{project.title}</CardTitle>
                 </CardHeader>

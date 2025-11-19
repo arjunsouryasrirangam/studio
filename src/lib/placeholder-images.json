@@ -44,7 +44,7 @@
     },
     {
       "id": "swimming-achievement",
-      "description": "Arjun holding a swimming medal",
+      "description": "Swimming pool",
       "imageUrl": "https://images.unsplash.com/photo-1644151699511-d3c5a98af19c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzd2ltbWVyJTIwbWVkYWx8ZW58MHx8fHwxNzU5MDY1ODQ5fDA&ixlibrb-4.1.0&q=80&w=1080",
       "imageHint": "swimmer medal",
       "category": "Swimming"

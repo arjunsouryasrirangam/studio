@@ -1,23 +1,19 @@
 import { PageHeader, PageSection } from '@/components/layout/page-layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Medal, Trophy, Users, MapPin, Link as LinkIcon } from 'lucide-react';
-import Image from 'next/image';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Trophy, MapPin, Link as LinkIcon, Video } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 function ShuttlecockIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="m6 9 6 6 6-6" /><path d="m6 9 6 6 6-6" /><path d="M12 15V21" /><path d="M8 9.5 4 6" /><path d="m16 9.5 4-3.5" /><path d="M12 9.5V6" /><path d="M10 4h4" /><path d="M8 2h8" />
     </svg>
   );
 }
 
 export default function BadmintonPage() {
-    const actionImage = PlaceHolderImages.find(p => p.id === 'badminton-action');
-    const highlightImage = PlaceHolderImages.find(p => p.id === 'badminton-highlight');
-
   return (
     <div>
       <PageHeader
@@ -58,30 +54,15 @@ export default function BadmintonPage() {
         </div>
       </PageSection>
        <PageSection className='bg-card'>
-        <h2 className="text-3xl font-bold text-center mb-10 font-headline">Action Shots</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            {actionImage && (
-                <div className="aspect-video relative overflow-hidden rounded-lg shadow-lg">
-                    <Image
-                        src={actionImage.imageUrl}
-                        alt={actionImage.description}
-                        fill
-                        className="object-cover"
-                        data-ai-hint={actionImage.imageHint}
-                    />
-                </div>
-            )}
-             {highlightImage && (
-                <div className="aspect-video relative overflow-hidden rounded-lg shadow-lg">
-                    <Image
-                        src={highlightImage.imageUrl}
-                        alt={highlightImage.description}
-                        fill
-                        className="object-cover"
-                        data-ai-hint={highlightImage.imageHint}
-                    />
-                </div>
-            )}
+        <h2 className="text-3xl font-bold text-center mb-10 font-headline">Media Gallery</h2>
+         <div className="max-w-2xl mx-auto">
+            <Alert>
+                <Video className="h-4 w-4" />
+                <AlertTitle>Coming Soon!</AlertTitle>
+                <AlertDescription>
+                    There aren't yet any images or videos uploaded yet. Check back later for highlights from my matches and training sessions.
+                </AlertDescription>
+            </Alert>
         </div>
       </PageSection>
 
