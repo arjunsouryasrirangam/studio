@@ -48,13 +48,6 @@
       "imageUrl": "https://i.imgur.com/Ds9O4GO.jpeg",
       "imageHint": "award certificate",
       "category": "Singing"
-    },
-    {
-      "id": "gallery-promo",
-      "description": "A stylized icon of an image gallery.",
-      "imageUrl": "https://cdn.creazilla.com/cliparts/1795146/gallery-clipart-lg.png",
-      "imageHint": "gallery icon",
-      "category": "Programming"
     }
   ]
 }
