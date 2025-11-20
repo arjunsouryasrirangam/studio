@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, Code, Music, Piano, Waves, Home, Images, PencilRuler, Contact } from 'lucide-react';
+import { Menu, Code, Music, Piano, Waves, Home, Images, PencilRuler, Contact, Calendar } from 'lucide-react';
 import Logo from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
@@ -18,7 +18,7 @@ import {
 
 function ShuttlecockIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="m6 9 6 6 6-6" />
       <path d="m6 9 6 6 6-6" />
       <path d="M12 15V21" />
@@ -39,6 +39,7 @@ const navLinks = [
   { href: '/swimming', label: 'Swimming', icon: <Waves size={20} /> },
   { href: '/badminton', label: 'Badminton', icon: <ShuttlecockIcon /> },
   { href: '/gallery', label: 'Gallery', icon: <Images size={20} /> },
+  { href: '/upcoming-events', label: 'Events', icon: <Calendar size={20} /> },
   { href: '/request-website', label: 'Request Website', icon: <PencilRuler size={16} /> },
   { href: '/contact', label: 'Contact', icon: <Contact size={16} /> },
 ];

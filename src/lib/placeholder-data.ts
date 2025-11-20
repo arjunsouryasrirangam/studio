@@ -64,3 +64,34 @@ export const badmintonAchievements = [
         description: 'Led the university team to victory in a series of intense matches.'
     }
 ];
+
+export const upcomingEvents = [
+  {
+    title: 'Hindustani Classical Concert',
+    date: '2024-09-15',
+    location: 'Delft, Netherlands',
+    description: 'A solo performance at the Sangeeti School of Music annual festival.',
+    category: 'Music'
+  },
+  {
+    title: 'Next.js Frontend Meetup',
+    date: '2024-10-05',
+    location: 'Online',
+    description: 'Presenting a talk on "Building Performant UIs with Server Components".',
+    category: 'Tech'
+  },
+  {
+    title: 'Club Badminton Tournament',
+    date: '2024-11-22',
+    location: 'Nootdorp, Netherlands',
+    description: 'Competing in the seasonal tournament at BV Door Eendracht Omhoog.',
+    category: 'Badminton'
+  },
+   {
+    title: 'Charity Piano Recital',
+    date: '2025-01-18',
+    location: 'Rijswijk, Netherlands',
+    description: 'Performing classical pieces to raise funds for a local charity.',
+    category: 'Music'
+  }
+];
