@@ -50,8 +50,8 @@ export function AiAssistant() {
     if (!trimmedInput || isLoading) return;
 
     // Check for the admin secret command
-    if (trimmedInput === 'admin:sarjunsourya.40315@') {
-      router.push('/admin');
+    if (trimmedInput === 'admin:login') {
+      router.push('/login');
       setInput('');
       setIsOpen(false);
       return;

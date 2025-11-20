@@ -1,90 +1,64 @@
 
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { useState, useEffect } from 'react';
 import { Loader2, LogIn } from 'lucide-react';
-import { useAuth, useUser } from '@/firebase';
-import { signInWithEmailAndPassword, type FirebaseError } from 'firebase/auth';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { Label } from '@/components/ui/label';
 
-const formSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email address.' }),
-  password: z.string().min(1, { message: 'Password is required.' }),
-});
+// This is a simple, hardcoded secret for demonstration.
+// In a real application, this should be handled more securely.
+const ADMIN_SECRET = 'sarjunsourya.40315@';
 
 export default function LoginPage() {
   const { toast } = useToast();
+  const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const auth = useAuth();
-  const { user, isUserLoading } = useUser();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  });
-  
   useEffect(() => {
-    if (!isUserLoading && user) {
+    // Check if user is already authenticated in this session
+    if (sessionStorage.getItem('isAdminAuthenticated') === 'true') {
+      setIsAuthenticated(true);
       const redirect = searchParams.get('redirect') || '/admin';
       router.push(redirect);
     }
-  }, [user, isUserLoading, router, searchParams]);
+  }, [router, searchParams]);
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     setIsSubmitting(true);
-    try {
-      await signInWithEmailAndPassword(auth, values.email, values.password);
-      toast({
-        title: 'Signed In',
-        description: 'You have successfully signed in.',
-      });
-      // Redirect handled by useEffect
-    } catch (error) {
-      console.error('Sign in error:', error);
-      const firebaseError = error as FirebaseError;
-      let message = 'An unknown error occurred.';
-      // Provide more specific error messages
-      switch (firebaseError.code) {
-          case 'auth/user-not-found':
-          case 'auth/wrong-password':
-          case 'auth/invalid-credential':
-              message = 'Invalid email or password. Please try again.';
-              break;
-          case 'auth/invalid-email':
-              message = 'The email address you entered is not valid.';
-              break;
-          case 'auth/too-many-requests':
-              message = 'Too many failed login attempts. Please try again later.';
-              break;
-          default:
-              message = firebaseError.message;
-              break;
-      }
-      toast({
-        variant: 'destructive',
-        title: 'Authentication Failed',
-        description: message,
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
 
-  if (isUserLoading || user) {
-      return (
+    // Simulate a network request
+    setTimeout(() => {
+      if (password === ADMIN_SECRET) {
+        sessionStorage.setItem('isAdminAuthenticated', 'true');
+        toast({
+          title: 'Signed In',
+          description: 'You have successfully signed in.',
+        });
+        const redirect = searchParams.get('redirect') || '/admin';
+        router.push(redirect);
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Authentication Failed',
+          description: 'Invalid password. Please try again.',
+        });
+        setIsSubmitting(false);
+        setPassword('');
+      }
+    }, 500);
+  };
+  
+  if (isAuthenticated) {
+     return (
           <div className="flex justify-center items-center min-h-[calc(100vh-200px)]">
               <Loader2 className="h-16 w-16 animate-spin text-primary" />
           </div>
@@ -96,51 +70,32 @@ export default function LoginPage() {
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="font-headline text-2xl">Admin Login</CardTitle>
-          <CardDescription>Enter your credentials to access the admin dashboard.</CardDescription>
+          <CardDescription>Enter the password to access the admin dashboard.</CardDescription>
         </CardHeader>
         <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input type="email" placeholder="you@example.com" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" placeholder="••••••••" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" disabled={isSubmitting || !auth} className="w-full">
-                {isSubmitting ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  <LogIn className="mr-2 h-4 w-4" />
-                )}
-                {isSubmitting ? 'Signing In...' : 'Sign In'}
-              </Button>
-            </form>
-          </Form>
+          <form onSubmit={handleSubmit} className="space-y-6">
+             <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                    id="password"
+                    type="password"
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    disabled={isSubmitting}
+                />
+             </div>
+            <Button type="submit" disabled={isSubmitting || !password} className="w-full">
+              {isSubmitting ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <LogIn className="mr-2 h-4 w-4" />
+              )}
+              {isSubmitting ? 'Signing In...' : 'Sign In'}
+            </Button>
+          </form>
         </CardContent>
       </Card>
     </div>
   );
 }
-
-    
