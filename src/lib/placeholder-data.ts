@@ -67,31 +67,20 @@ export const badmintonAchievements = [
 
 export const upcomingEvents = [
   {
-    title: 'Hindustani Classical Concert',
-    date: '2024-09-15',
-    location: 'Delft, Netherlands',
-    description: 'A solo performance at the Sangeeti School of Music annual festival.',
-    category: 'Music'
-  },
-  {
-    title: 'Next.js Frontend Meetup',
-    date: '2024-10-05',
-    location: 'Online',
-    description: 'Presenting a talk on "Building Performant UIs with Server Components".',
-    category: 'Tech'
-  },
-  {
-    title: 'Club Badminton Tournament',
-    date: '2024-11-22',
-    location: 'Nootdorp, Netherlands',
-    description: 'Competing in the seasonal tournament at BV Door Eendracht Omhoog.',
-    category: 'Badminton'
-  },
-   {
-    title: 'Charity Piano Recital',
-    date: '2025-01-18',
-    location: 'Rijswijk, Netherlands',
-    description: 'Performing classical pieces to raise funds for a local charity.',
-    category: 'Music'
+    title: 'Shravyh Musicals Junior Band — Live in Concert',
+    date: '2025-11-21',
+    category: 'Music',
+    about: 'Experience an inspiring evening of music as the Shravyh Musicals Junior Band takes the stage for a special live performance. Featuring talented young musicians, this concert highlights their dedication, creativity, and passion for music. Expect an engaging programme filled with vibrant arrangements and heartfelt performances suitable for audiences of all ages.',
+    whatToExpect: [
+        'High-quality performances by skilled young artists',
+        'A diverse selection of musical pieces',
+        'A warm, family-friendly atmosphere',
+        'A professionally curated programme designed to showcase emerging talent'
+    ],
+    venue: {
+        name: 'Gandhi Centre',
+        address: 'Parkstraat 99, 2514 JH Den Haag, The Netherlands',
+        description: 'The Gandhi Centre offers an elegant and welcoming setting in the heart of The Hague, easily accessible by public transport.'
+    }
   }
 ];

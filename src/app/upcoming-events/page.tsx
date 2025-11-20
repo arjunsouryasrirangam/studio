@@ -3,21 +3,12 @@ import { PageHeader, PageSection } from '@/components/layout/page-layout';
 import { upcomingEvents } from '@/lib/placeholder-data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, MapPin, Music, Code, Medal } from 'lucide-react';
+import { Calendar, MapPin, Music, CheckCircle2 } from 'lucide-react';
 import { format } from 'date-fns';
-
-function ShuttlecockIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m6 9 6 6 6-6" /><path d="m6 9 6 6 6-6" /><path d="M12 15V21" /><path d="M8 9.5 4 6" /><path d="m16 9.5 4-3.5" /><path d="M12 9.5V6" /><path d="M10 4h4" /><path d="M8 2h8" />
-    </svg>
-  );
-}
+import { Separator } from '@/components/ui/separator';
 
 const categoryIcons = {
     'Music': <Music className="h-4 w-4" />,
-    'Tech': <Code className="h-4 w-4" />,
-    'Badminton': <ShuttlecockIcon className="h-4 w-4" />,
 };
 
 export default function UpcomingEventsPage() {
@@ -29,34 +20,65 @@ export default function UpcomingEventsPage() {
       />
       <PageSection>
         <div className="max-w-4xl mx-auto space-y-8">
-            {upcomingEvents.map((event, index) => (
-                <Card key={index} className="overflow-hidden">
-                   <CardHeader>
-                        <div className="flex flex-col sm:flex-row justify-between sm:items-start gap-4">
-                           <div>
-                                <Badge variant="secondary" className="mb-3 flex w-fit items-center gap-2">
-                                    {categoryIcons[event.category as keyof typeof categoryIcons]}
-                                    {event.category}
-                                </Badge>
-                                <CardTitle className="font-headline text-2xl">{event.title}</CardTitle>
-                           </div>
-                           <div className="flex-shrink-0 text-left sm:text-right">
-                                <p className="font-semibold text-primary flex items-center gap-2 sm:justify-end">
-                                    <Calendar className="h-4 w-4" />
-                                    {format(new Date(event.date), 'PPP')}
-                                </p>
-                                <p className="text-sm text-muted-foreground flex items-center gap-2 sm:justify-end">
-                                    <MapPin className="h-4 w-4" />
-                                    {event.location}
-                                </p>
-                           </div>
+            {upcomingEvents.length > 0 ? upcomingEvents.map((event, index) => (
+                <Card key={index} className="overflow-hidden shadow-lg">
+                   <CardHeader className="bg-muted/30">
+                        <Badge variant="secondary" className="mb-4 flex w-fit items-center gap-2 text-sm">
+                            {categoryIcons[event.category as keyof typeof categoryIcons]}
+                            {event.category}
+                        </Badge>
+                        <CardTitle className="font-headline text-3xl">{event.title}</CardTitle>
+                        <div className="flex flex-col sm:flex-row gap-x-6 gap-y-2 pt-2 text-muted-foreground">
+                            <p className="font-semibold text-primary flex items-center gap-2">
+                                <Calendar className="h-4 w-4" />
+                                {format(new Date(event.date), 'PPP')}
+                            </p>
+                            <p className="text-sm flex items-center gap-2">
+                                <MapPin className="h-4 w-4" />
+                                {event.venue.name}, The Hague
+                            </p>
                         </div>
                    </CardHeader>
-                   <CardContent>
-                        <p className="text-muted-foreground">{event.description}</p>
+                   <CardContent className="p-6 md:p-8 space-y-8">
+                        <div>
+                            <h3 className="font-headline text-xl font-semibold mb-3">About the Event</h3>
+                            <p className="text-muted-foreground leading-relaxed">{event.about}</p>
+                        </div>
+                        
+                        <Separator />
+                        
+                        <div>
+                            <h3 className="font-headline text-xl font-semibold mb-4">What You Can Expect</h3>
+                            <ul className="space-y-3">
+                                {event.whatToExpect.map((item, i) => (
+                                    <li key={i} className="flex items-start gap-3">
+                                        <CheckCircle2 className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                                        <span className="text-muted-foreground">{item}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        <Separator />
+
+                         <div>
+                            <h3 className="font-headline text-xl font-semibold mb-3">Venue</h3>
+                            <div className="rounded-lg border bg-card p-4">
+                                <p className="font-bold">{event.venue.name}</p>
+                                <p className="text-muted-foreground">{event.venue.address}</p>
+                                <p className="text-sm text-muted-foreground mt-2">{event.venue.description}</p>
+                            </div>
+                        </div>
                    </CardContent>
                 </Card>
-            ))}
+            )) : (
+                 <Card className="text-center p-12">
+                    <CardHeader>
+                        <CardTitle className="font-headline">No Upcoming Events</CardTitle>
+                        <CardDescription>Please check back soon for future performances and engagements!</CardDescription>
+                    </CardHeader>
+                 </Card>
+            )}
         </div>
       </PageSection>
     </div>
