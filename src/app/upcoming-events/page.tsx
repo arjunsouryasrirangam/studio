@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Calendar, MapPin, Music, CheckCircle2, Ticket, UserPlus, Phone, Mail } from 'lucide-react';
 import { format } from 'date-fns';
 import { Separator } from '@/components/ui/separator';
+import Image from 'next/image';
 
 const categoryIcons = {
     'Music': <Music className="h-4 w-4" />,
@@ -23,21 +24,34 @@ export default function UpcomingEventsPage() {
             {upcomingEvents.length > 0 ? upcomingEvents.map((event, index) => (
                 <Card key={index} className="overflow-hidden shadow-lg">
                    <CardHeader className="bg-muted/30">
-                        <Badge variant="secondary" className="mb-4 flex w-fit items-center gap-2 text-sm">
-                            {categoryIcons[event.category as keyof typeof categoryIcons]}
-                            {event.category}
-                        </Badge>
-                        <CardTitle className="font-headline text-3xl">{event.title}</CardTitle>
-                        <CardDescription className="text-lg !mt-1">{event.subtitle}</CardDescription>
-                        <div className="flex flex-col sm:flex-row gap-x-6 gap-y-2 pt-4 text-muted-foreground">
-                            <p className="font-semibold text-primary flex items-center gap-2">
-                                <Calendar className="h-4 w-4" />
-                                {format(new Date(event.date), 'PPP')}
-                            </p>
-                            <p className="text-sm flex items-center gap-2">
-                                <MapPin className="h-4 w-4" />
-                                {event.venue.name}, The Netherlands
-                            </p>
+                        <div className="flex flex-col md:flex-row gap-6 items-start">
+                            <div className="flex-grow">
+                                <Badge variant="secondary" className="mb-4 flex w-fit items-center gap-2 text-sm">
+                                    {categoryIcons[event.category as keyof typeof categoryIcons]}
+                                    {event.category}
+                                </Badge>
+                                <CardTitle className="font-headline text-3xl">{event.title}</CardTitle>
+                                <CardDescription className="text-lg !mt-1">{event.subtitle}</CardDescription>
+                                <div className="flex flex-col sm:flex-row gap-x-6 gap-y-2 pt-4 text-muted-foreground">
+                                    <p className="font-semibold text-primary flex items-center gap-2">
+                                        <Calendar className="h-4 w-4" />
+                                        {format(new Date(event.date), 'PPP')}
+                                    </p>
+                                    <p className="text-sm flex items-center gap-2">
+                                        <MapPin className="h-4 w-4" />
+                                        {event.venue.name}, The Netherlands
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="flex-shrink-0">
+                                <Image
+                                    src="https://i.imgur.com/ODp3s7C.png"
+                                    alt="Pinnacle Cultural Forum Logo"
+                                    width={120}
+                                    height={120}
+                                    className="rounded-lg"
+                                />
+                            </div>
                         </div>
                    </CardHeader>
                    <CardContent className="p-6 md:p-8 space-y-8">
