@@ -45,7 +45,7 @@ export default function UpcomingEventsPage() {
                             </div>
                             <div className="flex-shrink-0">
                                 <Image
-                                    src="https://i.imgur.com/ODp3s7C.png"
+                                    src="https://i.imgur.com/RphjeJN.png"
                                     alt="Pinnacle Cultural Forum Logo"
                                     width={120}
                                     height={120}
