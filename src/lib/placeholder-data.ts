@@ -67,20 +67,34 @@ export const badmintonAchievements = [
 
 export const upcomingEvents = [
   {
-    title: 'Shravyh Musicals Junior Band — Live in Concert',
-    date: '2025-11-21',
+    title: 'Talent Hunt Show',
+    subtitle: 'Live Performance — Featuring Arjun',
+    date: '2025-11-29',
     category: 'Music',
-    about: 'Experience an inspiring evening of music as the Shravyh Musicals Junior Band takes the stage for a special live performance. Featuring talented young musicians, this concert highlights their dedication, creativity, and passion for music. Expect an engaging programme filled with vibrant arrangements and heartfelt performances suitable for audiences of all ages.',
+    about: 'Arjun will be performing at the Talent Hunt Show, a cultural programme organized by the Pinnacle Cultural Forum for young talents aged 6 to 13 years. The event features a variety of solo and group performances, each limited to 5 minutes, creating a dynamic and energetic showcase of creativity and talent.\n\nThis afternoon event offers a supportive environment for emerging performers and an engaging experience for families and audiences of all ages.',
     whatToExpect: [
-        'High-quality performances by skilled young artists',
-        'A diverse selection of musical pieces',
-        'A warm, family-friendly atmosphere',
-        'A professionally curated programme designed to showcase emerging talent'
+        'Performances by talented young artists across multiple art forms',
+        'A friendly, community-focused vibe',
+        'Short, high-energy acts',
+        'An entertaining and family-friendly programme',
+        'A chance to cheer on upcoming performers'
     ],
     venue: {
-        name: 'Gandhi Centre',
-        address: 'Parkstraat 99, 2514 JH Den Haag, The Netherlands',
-        description: 'The Gandhi Centre offers an elegant and welcoming setting in the heart of The Hague, easily accessible by public transport.'
+        name: 'Kudelstaart',
+        address: 'Kudelstaartseweg 239, 1433 GH Kudelstaart, The Netherlands',
+        description: 'The venue provides a welcoming setting with comfortable seating and easy accessibility for families and guests.'
+    },
+    details: {
+        time: '15:30',
+        audienceTickets: '€7 per person',
+        childrenFree: 'Children under 4: Free'
+    },
+    registration: {
+        fee: '€10 per performer',
+        contact: {
+            phone: '0616917600',
+            email: 'pinnacle.almere@gmail.com'
+        }
     }
   }
 ];

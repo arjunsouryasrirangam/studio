@@ -3,7 +3,7 @@ import { PageHeader, PageSection } from '@/components/layout/page-layout';
 import { upcomingEvents } from '@/lib/placeholder-data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, MapPin, Music, CheckCircle2 } from 'lucide-react';
+import { Calendar, MapPin, Music, CheckCircle2, Ticket, UserPlus, Phone, Mail } from 'lucide-react';
 import { format } from 'date-fns';
 import { Separator } from '@/components/ui/separator';
 
@@ -28,21 +28,22 @@ export default function UpcomingEventsPage() {
                             {event.category}
                         </Badge>
                         <CardTitle className="font-headline text-3xl">{event.title}</CardTitle>
-                        <div className="flex flex-col sm:flex-row gap-x-6 gap-y-2 pt-2 text-muted-foreground">
+                        <CardDescription className="text-lg !mt-1">{event.subtitle}</CardDescription>
+                        <div className="flex flex-col sm:flex-row gap-x-6 gap-y-2 pt-4 text-muted-foreground">
                             <p className="font-semibold text-primary flex items-center gap-2">
                                 <Calendar className="h-4 w-4" />
                                 {format(new Date(event.date), 'PPP')}
                             </p>
                             <p className="text-sm flex items-center gap-2">
                                 <MapPin className="h-4 w-4" />
-                                {event.venue.name}, The Hague
+                                {event.venue.name}, The Netherlands
                             </p>
                         </div>
                    </CardHeader>
                    <CardContent className="p-6 md:p-8 space-y-8">
                         <div>
                             <h3 className="font-headline text-xl font-semibold mb-3">About the Event</h3>
-                            <p className="text-muted-foreground leading-relaxed">{event.about}</p>
+                            <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">{event.about}</p>
                         </div>
                         
                         <Separator />
@@ -61,6 +62,35 @@ export default function UpcomingEventsPage() {
 
                         <Separator />
 
+                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <h3 className="font-headline text-xl font-semibold mb-3 flex items-center gap-2"><Ticket /> Event Details</h3>
+                                <div className="rounded-lg border bg-card p-4 space-y-2">
+                                    <p><span className='font-semibold'>Date:</span> {format(new Date(event.date), 'MMMM dd, yyyy')}</p>
+                                    <p><span className='font-semibold'>Time:</span> {event.details.time}</p>
+                                    <p><span className='font-semibold'>Audience Tickets:</span> {event.details.audienceTickets}</p>
+                                    <p className="text-sm text-muted-foreground">{event.details.childrenFree}</p>
+                                </div>
+                            </div>
+                             <div>
+                                <h3 className="font-headline text-xl font-semibold mb-3 flex items-center gap-2"><UserPlus /> Performer Registration</h3>
+                                <div className="rounded-lg border bg-card p-4 space-y-2">
+                                    <p><span className='font-semibold'>Registration Fee:</span> {event.registration.fee}</p>
+                                    <p className='font-semibold'>Contact for Queries:</p>
+                                     <div className='flex items-center gap-2 text-sm text-muted-foreground'>
+                                        <Phone className="h-4 w-4" />
+                                        <span>{event.registration.contact.phone} (Phone/WhatsApp)</span>
+                                    </div>
+                                    <a href={`mailto:${event.registration.contact.email}`} className='flex items-center gap-2 text-sm text-primary hover:underline'>
+                                        <Mail className="h-4 w-4" />
+                                        <span>{event.registration.contact.email}</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                         <Separator />
+                         
                          <div>
                             <h3 className="font-headline text-xl font-semibold mb-3">Venue</h3>
                             <div className="rounded-lg border bg-card p-4">
