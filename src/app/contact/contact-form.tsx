@@ -63,17 +63,17 @@ export function ContactForm() {
     const success = sendContactForm(values.name, values.email, values.message);
 
     // Because of "no-cors", we can't know if it truly succeeded,
-    // so we'll optimistically assume it did.
+    // so we'll optimistically assume it did and show success immediately.
     if (success) {
-      setTimeout(() => {
-        toast({
-          title: 'Message Sent!',
-          description: "Thanks for reaching out. I'll get back to you soon.",
-        });
-        form.reset();
-        setIsSubmitting(false);
-      }, 500); // Add a small delay to feel more natural
+      toast({
+        title: 'Message Sent!',
+        description: "Thanks for reaching out. I'll get back to you soon.",
+      });
+      form.reset();
     }
+    // We don't want to wait for the fetch to complete since we can't read the response.
+    // The UI should feel fast.
+    setIsSubmitting(false);
   }
 
   return (
