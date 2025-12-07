@@ -8,7 +8,7 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowRight, Code, Music, Briefcase, User, PencilRuler, Piano, Waves, Images, GitCommit, Calendar, Zap, Timer, Contact } from 'lucide-react';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Autoplay from "embla-carousel-autoplay";
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@/components/ui/carousel';
 import { cn } from '@/lib/utils';
@@ -141,6 +141,12 @@ export default function Home() {
     const [textApi, setTextApi] = React.useState<CarouselApi>();
     const [current, setCurrent] = React.useState(0);
     const [progress, setProgress] = React.useState(0);
+    const [lastActivityDate, setLastActivityDate] = useState<string | null>(null);
+
+    useEffect(() => {
+        // This ensures the date is only rendered on the client, avoiding a hydration mismatch.
+        setLastActivityDate(new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }));
+    }, []);
 
 
      React.useEffect(() => {
@@ -319,7 +325,7 @@ export default function Home() {
                     <Card className="p-4">
                         <CardContent className="flex flex-col items-start gap-2 p-0">
                             <div className="flex items-center gap-2 text-muted-foreground"><Calendar/> Last Activity</div>
-                             <div className="text-2xl font-bold font-headline">{new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+                             <div className="text-2xl font-bold font-headline">{lastActivityDate || 'Loading...'}</div>
                         </CardContent>
                     </Card>
                     <Card className="p-4">
