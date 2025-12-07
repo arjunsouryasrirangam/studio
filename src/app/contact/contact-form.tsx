@@ -12,6 +12,7 @@ import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import { addDocumentNonBlocking, useFirestore } from '@/firebase';
 import { collection } from 'firebase/firestore';
+import { notifyOnContactSubmission } from '@/ai/flows/contact-form-flow';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -43,6 +44,9 @@ export function ContactForm() {
         ...values,
         submissionDate: new Date(),
       });
+      
+      // Notify via AI flow
+      await notifyOnContactSubmission(values);
 
       toast({
         title: 'Message Sent!',
