@@ -20,12 +20,12 @@ const formSchema = z.object({
 
 /**
  * Submits the contact form data to a Google Form.
- * @param name - The user's name.
- * @param email - The user's email.
- * @param message - The user's message.
- * @returns {boolean} - Always returns true.
+ * This function sends the data to a pre-configured Google Form URL.
+ * @param name The name of the person submitting the form.
+ * @param email The email of the person submitting the form.
+ * @param message The message content.
  */
-function sendContactForm(name: string, email: string, message: string): boolean {
+function sendContactForm(name: string, email: string, message: string) {
   const BASE_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdPlkf8jkusPaxYbUGyWFkDNpbZW3laq0-Pz-eVa-tn2flgFA/viewform?usp=pp_url";
 
   const url =
@@ -38,8 +38,6 @@ function sendContactForm(name: string, email: string, message: string): boolean 
     method: "POST",
     mode: "no-cors"
   });
-
-  return true;
 }
 
 
@@ -59,21 +57,18 @@ export function ContactForm() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     
-    // Use the Google Form submission function
-    const success = sendContactForm(values.name, values.email, values.message);
+    sendContactForm(values.name, values.email, values.message);
 
-    // Because of "no-cors", we can't know if it truly succeeded,
-    // so we'll optimistically assume it did and show success immediately.
-    if (success) {
-      toast({
-        title: 'Message Sent!',
-        description: "Thanks for reaching out. I'll get back to you soon.",
-      });
-      form.reset();
-    }
-    // We don't want to wait for the fetch to complete since we can't read the response.
-    // The UI should feel fast.
-    setIsSubmitting(false);
+    // Because of "no-cors", we can't confirm submission success.
+    // We'll show a success message optimistically and let the request complete in the background.
+    setTimeout(() => {
+        toast({
+            title: 'Message Sent!',
+            description: "Thanks for reaching out. I'll get back to you soon.",
+        });
+        form.reset();
+        setIsSubmitting(false);
+    }, 1000); // A small delay to feel more natural
   }
 
   return (
