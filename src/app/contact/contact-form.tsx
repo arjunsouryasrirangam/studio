@@ -1,4 +1,3 @@
-
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -11,6 +10,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
+import { addDocumentNonBlocking, useFirestore } from '@/firebase';
+import { collection, serverTimestamp } from 'firebase/firestore';
+
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -18,32 +20,11 @@ const formSchema = z.object({
   message: z.string().min(10, { message: 'Message must be at least 10 characters.' }),
 });
 
-/**
- * Submits the contact form data to a Google Form.
- * This function sends the data to a pre-configured Google Form URL.
- * @param name The name of the person submitting the form.
- * @param email The email of the person submitting the form.
- * @param message The message content.
- */
-function sendContactForm(name: string, email: string, message: string) {
-  const BASE_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdPlkf8jkusPaxYbUGyWFkDNpbZW3laq0-Pz-eVa-tn2flgFA/viewform?usp=pp_url";
-
-  const url =
-    BASE_URL +
-    "&entry.1585567196=" + encodeURIComponent(name) +
-    "&entry.1705563378=" + encodeURIComponent(email) +
-    "&entry.1709314949=" + encodeURIComponent(message);
-
-  fetch(url, {
-    method: "POST",
-    mode: "no-cors"
-  });
-}
-
 
 export function ContactForm() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const firestore = useFirestore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -54,21 +35,42 @@ export function ContactForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!firestore) {
+        toast({
+            variant: "destructive",
+            title: "Database not available",
+            description: "We couldn't connect to the database. Please try again later.",
+        });
+        return;
+    }
+
     setIsSubmitting(true);
     
-    sendContactForm(values.name, values.email, values.message);
+    try {
+        const submissionsRef = collection(firestore, 'contact_form_submissions');
+        await addDocumentNonBlocking(submissionsRef, {
+            ...values,
+            submissionDate: serverTimestamp(),
+        });
 
-    // Because of "no-cors", we can't confirm submission success.
-    // We'll show a success message optimistically and let the request complete in the background.
-    setTimeout(() => {
         toast({
             title: 'Message Sent!',
             description: "Thanks for reaching out. I'll get back to you soon.",
         });
         form.reset();
+
+    } catch (e) {
+        const message = e instanceof Error ? e.message : "An unknown error occurred.";
+        console.error("Contact form submission error:", e);
+        toast({
+            variant: "destructive",
+            title: "Uh oh! Something went wrong.",
+            description: `Could not send your message. Error: ${message}`,
+        });
+    } finally {
         setIsSubmitting(false);
-    }, 1000); // A small delay to feel more natural
+    }
   }
 
   return (
@@ -113,7 +115,7 @@ export function ContactForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={isSubmitting} className="w-full">
+        <Button type="submit" disabled={isSubmitting || !firestore} className="w-full">
           {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {isSubmitting ? 'Sending...' : 'Send Message'}
         </Button>
