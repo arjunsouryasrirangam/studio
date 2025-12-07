@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,8 +11,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
-import { addDocumentNonBlocking, useFirestore } from '@/firebase';
-import { collection } from 'firebase/firestore';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -19,10 +18,34 @@ const formSchema = z.object({
   message: z.string().min(10, { message: 'Message must be at least 10 characters.' }),
 });
 
+/**
+ * Submits the contact form data to a Google Form.
+ * @param name - The user's name.
+ * @param email - The user's email.
+ * @param message - The user's message.
+ * @returns {boolean} - Always returns true.
+ */
+function sendContactForm(name: string, email: string, message: string): boolean {
+  const BASE_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdPlkf8jkusPaxYbUGyWFkDNpbZW3laq0-Pz-eVa-tn2flgFA/viewform?usp=pp_url";
+
+  const url =
+    BASE_URL +
+    "&entry.1585567196=" + encodeURIComponent(name) +
+    "&entry.1705563378=" + encodeURIComponent(email) +
+    "&entry.1709314949=" + encodeURIComponent(message);
+
+  fetch(url, {
+    method: "POST",
+    mode: "no-cors"
+  });
+
+  return true;
+}
+
+
 export function ContactForm() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const firestore = useFirestore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -33,32 +56,23 @@ export function ContactForm() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!firestore) return;
-
+  function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
-    try {
-      const submissionsRef = collection(firestore, 'contact_form_submissions');
-      await addDocumentNonBlocking(submissionsRef, {
-        ...values,
-        submissionDate: new Date(),
-      });
-      
-      toast({
-        title: 'Message Sent!',
-        description: "Thanks for reaching out. I'll get back to you soon.",
-      });
-      form.reset();
-    } catch (error) {
-      console.error('Error saving contact form submission:', error);
-      const message = error instanceof Error ? error.message : 'There was a problem sending your message.';
-      toast({
-        variant: 'destructive',
-        title: 'Uh oh! Something went wrong.',
-        description: message,
-      });
-    } finally {
-      setIsSubmitting(false);
+    
+    // Use the Google Form submission function
+    const success = sendContactForm(values.name, values.email, values.message);
+
+    // Because of "no-cors", we can't know if it truly succeeded,
+    // so we'll optimistically assume it did.
+    if (success) {
+      setTimeout(() => {
+        toast({
+          title: 'Message Sent!',
+          description: "Thanks for reaching out. I'll get back to you soon.",
+        });
+        form.reset();
+        setIsSubmitting(false);
+      }, 500); // Add a small delay to feel more natural
     }
   }
 
@@ -72,7 +86,7 @@ export function ContactForm() {
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input placeholder="Your Name" {...field} />
+                <Input placeholder="Your Name" {...field} disabled={isSubmitting} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -85,7 +99,7 @@ export function ContactForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="your.email@example.com" {...field} />
+                <Input placeholder="your.email@example.com" {...field} disabled={isSubmitting} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -98,13 +112,13 @@ export function ContactForm() {
             <FormItem>
               <FormLabel>Message</FormLabel>
               <FormControl>
-                <Textarea placeholder="How can I help you?" className="min-h-[120px]" {...field} />
+                <Textarea placeholder="How can I help you?" className="min-h-[120px]" {...field} disabled={isSubmitting} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={isSubmitting || !firestore} className="w-full">
+        <Button type="submit" disabled={isSubmitting} className="w-full">
           {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {isSubmitting ? 'Sending...' : 'Send Message'}
         </Button>
