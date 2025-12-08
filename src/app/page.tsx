@@ -7,12 +7,14 @@ import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowRight, Code, Music, Briefcase, User, PencilRuler, Piano, Waves, Images, Calendar, Contact } from 'lucide-react';
+import { ArrowRight, Code, Music, Briefcase, User, PencilRuler, Piano, Waves, Images, Calendar, Contact, Sparkles, Wand2 } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import Autoplay from "embla-carousel-autoplay";
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@/components/ui/carousel';
 import { cn } from '@/lib/utils';
 import { Progress } from '@/components/ui/progress';
+import { generateBio, type BioPersona } from '@/ai/flows/bio-generator-flow';
+import { AnimatePresence, motion } from 'framer-motion';
 
 
 function ShuttlecockIcon(props: React.SVGProps<SVGSVGElement>) {
@@ -22,34 +24,6 @@ function ShuttlecockIcon(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
-
-const aboutSections = [
-    {
-        icon: <User className="h-8 w-8 text-primary" />,
-        title: "About Me",
-        text: "I'm a 10-year-old with a passion for building things. Whether it's with code, music, or on the badminton court, I love the process of creating and improving. This portfolio is a showcase of my journey so far."
-    },
-    {
-        icon: <Music className="h-6 w-6 text-primary" />,
-        title: "Musician",
-        text: "With over 6 years of singing experience and 4 years playing the piano, my musical journey started at a young age. I find joy in expressing myself through music and continue to hone my skills."
-    },
-    {
-        icon: <Code className="h-6 w-6 text-primary" />,
-        title: "Coder",
-        text: "I have been coding for 3 years and enjoy the process of building and creating. I use my skills to bring ideas to life, from simple projects to more complex applications."
-    },
-    {
-        icon: <ShuttlecockIcon className="h-6 w-6 text-primary" />,
-        title: "Athlete",
-        text: "A dedicated badminton player for 1.5 years, I am an enthusiastic athlete who thrives on the court. I enjoy the fast-paced nature of the sport and the challenge of friendly competition."
-    },
-    {
-        icon: <Briefcase className="h-6 w-6 text-primary" />,
-        title: "Future Entrepreneur",
-        text: "At just 10, I am already looking to the future with big ambitions. I dream of creating my own hotel group and airline, inspired by brands like Marriott and Mandarin Oriental."
-    }
-];
 
 const carouselSlides = [
     {
@@ -111,6 +85,82 @@ const carouselSlides = [
     }
 ]
 
+const AnimatedBio = () => {
+    const [persona, setPersona] = useState<BioPersona>('Default');
+    const [bio, setBio] = useState("I'm a 10-year-old with a passion for building things. Whether it's with code, music, or on the badminton court, I love the process of creating and improving. This portfolio is a showcase of my journey so far.");
+    const [isLoading, setIsLoading] = useState(false);
+    const [key, setKey] = useState(0);
+
+    const personas: BioPersona[] = ['Tech Innovator', 'Musical Prodigy', 'Future Entrepreneur', 'Default'];
+
+    const handleGenerateBio = async () => {
+        setIsLoading(true);
+        const currentPersonaIndex = personas.indexOf(persona);
+        const nextPersona = personas[(currentPersonaIndex + 1) % personas.length];
+        
+        try {
+            const newBio = await generateBio({ persona: nextPersona });
+            setPersona(nextPersona);
+            setBio(newBio);
+            setKey(prevKey => prevKey + 1); // Reset animation
+        } catch (error) {
+            console.error("Failed to generate bio:", error);
+            // Optionally set a friendly error message
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const textVariants = {
+        hidden: { opacity: 0 },
+        visible: (i: number = 0) => ({
+            opacity: 1,
+            transition: { staggerChildren: 0.01, delayChildren: i * 0.1 }
+        })
+    };
+
+    const charVariants = {
+        hidden: { opacity: 0, y: 10 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { type: 'spring', damping: 12, stiffness: 200 }
+        }
+    };
+
+    return (
+        <div className="container mx-auto max-w-5xl text-center animate-fade-in-up">
+            <div className="p-3 bg-primary/10 rounded-full mb-4 inline-block">
+                <Sparkles className="h-8 w-8 text-primary" />
+            </div>
+            <h2 className="text-3xl font-bold font-headline mb-6">Who is Arjun?</h2>
+            
+            <div className="relative min-h-[120px]">
+                <AnimatePresence mode="wait">
+                    <motion.p
+                        key={key}
+                        className="text-muted-foreground max-w-2xl mx-auto text-lg"
+                        variants={textVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit="hidden"
+                    >
+                        {bio.split("").map((char, index) => (
+                            <motion.span key={`${key}-${index}`} variants={charVariants}>
+                                {char}
+                            </motion.span>
+                        ))}
+                    </motion.p>
+                </AnimatePresence>
+            </div>
+
+            <Button onClick={handleGenerateBio} disabled={isLoading} className="mt-8" variant="outline" size="lg">
+                <Wand2 className={cn("mr-2 h-5 w-5", isLoading && "animate-spin")} />
+                {isLoading ? 'Generating...' : 'Tell Me More!'}
+            </Button>
+        </div>
+    );
+};
 
 
 export default function Home() {
@@ -123,6 +173,12 @@ export default function Home() {
     const [current, setCurrent] = React.useState(0);
     const [progress, setProgress] = React.useState(0);
     
+     const [lastActivityDate, setLastActivityDate] = React.useState<string | null>(null);
+
+    React.useEffect(() => {
+        // This ensures the date is only rendered on the client, avoiding a hydration mismatch.
+        setLastActivityDate(new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }));
+    }, []);
 
      React.useEffect(() => {
         if (!mainApi || !textApi) {
@@ -257,13 +313,7 @@ export default function Home() {
       </section>
 
       <section className="py-16 md:py-24 bg-card/95">
-           <div className="container mx-auto max-w-5xl text-center animate-fade-in-up">
-             <div className="p-3 bg-primary/10 rounded-full mb-4 inline-block">
-                {aboutSections[0].icon}
-            </div>
-            <h2 className="text-3xl font-bold font-headline mb-4">{aboutSections[0].title}</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">{aboutSections[0].text}</p>
-        </div>
+           <AnimatedBio />
       </section>
 
     </div>
