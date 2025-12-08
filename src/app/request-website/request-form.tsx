@@ -12,8 +12,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useState } from 'react';
 import { Loader2, Send } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { addDocumentNonBlocking, useFirestore } from '@/firebase';
-import { collection } from 'firebase/firestore';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -25,10 +23,31 @@ const formSchema = z.object({
 
 const websiteTypes = ['Personal Portfolio', 'Business/Corporate', 'E-commerce Store', 'Blog', 'Landing Page', 'Other'];
 
+function sendToGoogleForm(values: z.infer<typeof formSchema>) {
+    const BASE_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfU6NZYsadXXaDfFl0e0-XLHdfbe_sq9nYdF53tGcoM1t3F3g/formResponse";
+
+    const url =
+        BASE_URL +
+        "?usp=pp_url" +
+        "&entry.2094040328=" + encodeURIComponent(values.name) +
+        "&entry.1712461974=" + encodeURIComponent(values.email) +
+        "&entry.2129485873=" + encodeURIComponent(values.company || '') +
+        "&entry.81749806=" + encodeURIComponent(values.websiteType) +
+        "&entry.1753636342=" + encodeURIComponent(values.description);
+
+    fetch(url, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    });
+}
+
+
 export function WebsiteRequestForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
-  const firestore = useFirestore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -42,29 +61,27 @@ export function WebsiteRequestForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!firestore) return;
     setIsSubmitting(true);
     try {
-      const requestsRef = collection(firestore, 'website_requests');
-      await addDocumentNonBlocking(requestsRef, {
-        ...values,
-        submissionDate: new Date(),
-      });
+      sendToGoogleForm(values);
 
-      toast({
-        title: 'Request Sent!',
-        description: 'Your request has been submitted successfully! Arjun will get back to you shortly.',
-      });
-      form.reset();
+      // We can't know if it succeeded due to 'no-cors', so we optimistically show a success message.
+       setTimeout(() => {
+            toast({
+                title: 'Request Sent!',
+                description: 'Your request has been submitted successfully! I will get back to you shortly.',
+            });
+            form.reset();
+            setIsSubmitting(false);
+        }, 800);
+
     } catch (e) {
-      const message = e instanceof Error ? e.message : 'An unexpected error occurred. Please try again.';
+      console.error("Website request submission error:", e);
       toast({
         variant: 'destructive',
         title: 'Submission Failed',
-        description: message,
+        description: 'An unexpected error occurred. Please try again.',
       });
-      console.error(e);
-    } finally {
       setIsSubmitting(false);
     }
   }
@@ -86,7 +103,7 @@ export function WebsiteRequestForm() {
                   <FormItem>
                     <FormLabel>Full Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="John Doe" {...field} />
+                      <Input placeholder="John Doe" {...field} disabled={isSubmitting} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -99,7 +116,7 @@ export function WebsiteRequestForm() {
                   <FormItem>
                     <FormLabel>Email Address</FormLabel>
                     <FormControl>
-                      <Input placeholder="you@example.com" {...field} />
+                      <Input placeholder="you@example.com" {...field} disabled={isSubmitting} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -113,7 +130,7 @@ export function WebsiteRequestForm() {
                   <FormItem>
                     <FormLabel>Company Name (Optional)</FormLabel>
                     <FormControl>
-                      <Input placeholder="Your Company, Inc." {...field} />
+                      <Input placeholder="Your Company, Inc." {...field} disabled={isSubmitting} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -125,7 +142,7 @@ export function WebsiteRequestForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Type of Website</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isSubmitting}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select a website type" />
@@ -152,6 +169,7 @@ export function WebsiteRequestForm() {
                       placeholder="Tell me a bit about your project, your goals, and any specific features you need."
                       className="min-h-[150px]"
                       {...field}
+                      disabled={isSubmitting}
                     />
                   </FormControl>
                    <FormDescription>
@@ -161,7 +179,7 @@ export function WebsiteRequestForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={isSubmitting || !firestore} className="w-full">
+            <Button type="submit" disabled={isSubmitting} className="w-full">
               {isSubmitting ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : (
