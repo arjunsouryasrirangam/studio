@@ -10,14 +10,10 @@ function SnapchatIcon(props: React.SVGProps<SVGSVGElement>) {
             {...props}
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            fill="currentColor"
+            stroke="none"
         >
-            <path d="M14.5 10.5c-2.8 3.4-3.3 4.8-3.3 4.8s-.5-1.4-3.3-4.8c-2.3-2.7-6-3-6-3S3 21 11.2 21c8.2 0 8.3-7.5 8.3-7.5s-3.7.3-6-3z" />
-            <path d="M12 1.5L9.5 4h5L12 1.5z" />
+            <path d="M11.9 3.1C7.8 3.1 4.5 6.4 4.5 10.5c0 4.1 3.3 7.4 7.4 7.4s7.4-3.3 7.4-7.4c0-4.1-3.3-7.4-7.4-7.4zm4.2 8.9c0 .4-.1.7-.3 1s-.4.4-.7.6-.6.3-1 .3h-4c-.4 0-.7-.1-1-.3s-.5-.3-.7-.6-.3-.6-.3-1V9.5c0-.4.1-.7.3-1s.4-.4.7-.6.6-.3 1-.3h4c.4 0 .7.1 1 .3s.5.3.7.6.3.6.3 1v2.5z" />
         </svg>
     );
 }
