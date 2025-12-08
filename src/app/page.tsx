@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowRight, Code, Music, Briefcase, User, PencilRuler, Piano, Waves, Images, GitCommit, Calendar, Zap, Timer, Contact } from 'lucide-react';
+import { ArrowRight, Code, Music, Briefcase, User, PencilRuler, Piano, Waves, Images, Calendar, Contact } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import Autoplay from "embla-carousel-autoplay";
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@/components/ui/carousel';
@@ -111,26 +111,7 @@ const carouselSlides = [
     }
 ]
 
-const ContributionCell = ({ level }: { level: 0 | 1 | 2 | 3 | 4 }) => {
-  const levelClasses = {
-    0: 'bg-muted/30',
-    1: 'bg-primary/20',
-    2: 'bg-primary/50',
-    3: 'bg-primary/70',
-    4: 'bg-primary',
-  };
-  return <div className={cn('h-3.5 w-3.5 rounded-sm', levelClasses[level])} />;
-};
 
-const contributionData = [
-    // Mock data for contribution graph
-    0, 0, 1, 2, 0, 0, 0, 0, 2, 3, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 0, 1, 2, 0, 0, 0,
-    1, 2, 3, 2, 1, 0, 0, 4, 4, 2, 1, 0, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 2, 1,
-    2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 2, 1, 0, 0, 1, 2, 0, 0, 0, 0, 2, 3, 1, 0,
-    0, 1, 2, 0, 0, 0, 0, 2, 3, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 0, 1, 2, 0, 0, 0,
-    1, 2, 3, 2, 1, 0, 0, 4, 4, 2, 1, 0, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 2, 1,
-    2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 2, 1, 0, 0, 1, 2, 0, 0, 0, 0, 2, 3, 1, 0,
-];
 
 export default function Home() {
     const plugin = React.useRef(
@@ -141,13 +122,7 @@ export default function Home() {
     const [textApi, setTextApi] = React.useState<CarouselApi>();
     const [current, setCurrent] = React.useState(0);
     const [progress, setProgress] = React.useState(0);
-    const [lastActivityDate, setLastActivityDate] = useState<string | null>(null);
-
-    useEffect(() => {
-        // This ensures the date is only rendered on the client, avoiding a hydration mismatch.
-        setLastActivityDate(new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }));
-    }, []);
-
+    
 
      React.useEffect(() => {
         if (!mainApi || !textApi) {
@@ -291,59 +266,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-16 md:py-24 bg-background">
-        <div className="container mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12 animate-fade-in-up">
-            <div className="lg:col-span-1 space-y-6">
-                 <h2 className="text-3xl font-bold font-headline flex items-center gap-3">
-                    <GitCommit className="text-primary" />
-                    About This Project
-                 </h2>
-                 <p className="text-muted-foreground">
-                    This project was started as a way for me, Arjun, to get my hands dirty with modern web development. I believe that building real applications is the most effective way to truly learn and apply new technologies. This portfolio is the result of that journey.
-                 </p>
-                 <Button asChild>
-                    <Link href="/tech">View All Projects <ArrowRight className="ml-2" /></Link>
-                 </Button>
-            </div>
-
-            <div className="lg:col-span-2 space-y-8">
-                <div>
-                    <h3 className="font-headline text-xl mb-4">Contribution Activity</h3>
-                     <div className="grid grid-rows-7 grid-flow-col gap-1.5">
-                        {contributionData.map((level, index) => (
-                          <ContributionCell key={index} level={level as any} />
-                        ))}
-                    </div>
-                </div>
-                 <div className="grid grid-cols-2 gap-4 text-sm">
-                    <Card className="p-4">
-                        <CardContent className="flex flex-col items-start gap-2 p-0">
-                            <div className="flex items-center gap-2 text-muted-foreground"><GitCommit/> Total Commits</div>
-                            <div className="text-2xl font-bold font-headline">348</div>
-                        </CardContent>
-                    </Card>
-                    <Card className="p-4">
-                        <CardContent className="flex flex-col items-start gap-2 p-0">
-                            <div className="flex items-center gap-2 text-muted-foreground"><Calendar/> Last Activity</div>
-                             <div className="text-2xl font-bold font-headline">{lastActivityDate || 'Loading...'}</div>
-                        </CardContent>
-                    </Card>
-                    <Card className="p-4">
-                        <CardContent className="flex flex-col items-start gap-2 p-0">
-                            <div className="flex items-center gap-2 text-muted-foreground"><Timer/> Project Duration</div>
-                            <div className="text-2xl font-bold font-headline">42 days</div>
-                        </CardContent>
-                    </Card>
-                    <Card className="p-4">
-                        <CardContent className="flex flex-col items-start gap-2 p-0">
-                            <div className="flex items-center gap-2 text-muted-foreground"><Zap/> Busiest Day</div>
-                            <div className="text-2xl font-bold font-headline">Jul 8 (18 commits)</div>
-                        </CardContent>
-                    </Card>
-                </div>
-            </div>
-        </div>
-      </section>
     </div>
   );
 }
